@@ -52,6 +52,14 @@ if ($args) {
         if ($argAsUri -and $argAsUri.LocalPath -match '\.git') {
             $clonedRepo = git clone $arg
             $clonedRepo | Push-Location
+            $foundConfigYaml = Get-ChildItem -Path $pwd -filter "_config.yml" -Recurse | 
+                Select -First 1 
+            if ($foundConfigYaml) {
+                $foundConfigYaml | 
+                    Split-Path | 
+                    Push-Location   
+            }
+                
             Start-PSJekyll
         }
     }
