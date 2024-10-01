@@ -1,5 +1,5 @@
 <div align='center'>
-<img src='Assets/PowerShellWeb-Animated.svg' />
+<img src='Assets/PSJekyll-Animated.svg' />
 </div>
 
 # PSJekyll
