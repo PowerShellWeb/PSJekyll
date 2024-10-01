@@ -31,16 +31,15 @@ param()
 $env:IN_CONTAINER = $true
 $PSStyle.OutputRendering = 'Ansi'
 
-$mountedDrives = @(if (Test-Path '/proc/mounts') {
+$mountedFolders = @(if (Test-Path '/proc/mounts') {
     (Select-String "\S+\s(?<p>\S+).+rw?,.+symlinkroot=/mnt/host" "/proc/mounts").Matches.Groups |
         Where-Object Name -eq p |
-        Get-Item -path { $_.Value } | 
-        New-PSDrive -Name { "Mount", $_.Name -join '.' } -PSProvider FileSystem -Root { $_.Value } -Scope Global -ErrorAction Ignore
+        Get-Item -path { $_.Value }
 })
    
-if ($global:ContainerInfo.MountedPaths) {
-    "Mounted $($mountedPaths.Length) drives:" | Out-Host
-    $mountedDrives | Out-Host
+if ($mountedFolders) {
+    "Mounted $($mountedFolders.Length) folders:" | Out-Host
+    $mountedFolders | Out-Host
 }
 
 if ($args) {
@@ -56,8 +55,8 @@ if ($args) {
     else 
     {
         # If a single drive is mounted, start the Jekyll server.
-        if ($mountedDrives.Length -eq 1) {
-            Push-Location "$($mountedDrives.Name):"
+        if ($mountedFolders.Length -eq 1) {
+            Push-Location $mountedFolders[0].Fullname
             Start-PSJekyll
         }
         <#Start-ThreadJob -Name "${env:ModuleName}.Jekyll" -ScriptBlock {            
