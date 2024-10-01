@@ -48,11 +48,11 @@ if ($args) {
 
     #region Custom
     foreach ($arg in $args) {
-        if ($arg -as [uri] -and $arg.LocalPath -match '\.git') {
+        $argAsUri = $arg -as [uri]
+        if ($argAsUri -and $argAsUri.LocalPath -match '\.git') {
             $clonedRepo = git clone $arg
             $clonedRepo | Push-Location
             Start-PSJekyll
-            break
         }
     }
     #endregion Custom

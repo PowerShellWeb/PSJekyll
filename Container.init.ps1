@@ -62,7 +62,7 @@ Get-ChildItem -Path $PSScriptRoot |
     Copy-Item -Destination /
 
 # If we have packages to install
-if ($InstallPackages) {
+if ($InstallAptGet) {
     # install the packages
     apt-get update && 
         apt-get install -y @InstallAptGet '--no-install-recommends' && 
@@ -75,14 +75,17 @@ New-Item -Path $Profile -ItemType File -Force |
     # and import this module in the profile
     Add-Content -Value "Import-Module $ModuleName" -Force
 # If we have modules to install
-if ($InstallModules) { 
+if ($InstallModule) { 
     # Install the modules
-    Install-Module -Name $InstallModules -Force -AcceptLicense -Scope CurrentUser 
+    Install-Module -Name $InstallModule -Force -AcceptLicense -Scope CurrentUser 
     # and import them in the profile
-    Add-Content -Path $Profile -Value "Import-Module '$($InstallModules -join "','")'" -Force
+    Add-Content -Path $Profile -Value "Import-Module '$($InstallModule -join "','")'" -Force
 }
-# In our profile, push into the module's directory
-Add-Content -Path $Profile -Value "Get-Module $ModuleName | Split-Path | Push-Location" -Force
+
+if ($ModuleName) {
+    # In our profile, push into the module's directory
+    Add-Content -Path $Profile -Value "Get-Module $ModuleName | Split-Path | Push-Location" -Force
+}
 
 # Remove the .git directories from any modules
 Get-ChildItem -Path $rootModuleDirectory -Directory -Force -Recurse |
