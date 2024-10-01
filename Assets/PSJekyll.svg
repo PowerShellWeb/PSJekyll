@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generated with PSSVG 0.2.10 <https://github.com/StartAutomating/PSSVG> -->
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 200 200" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
   <symbol id="PowerShellWeb">
     <!-- Generated with PSSVG 0.2.10 <https://github.com/StartAutomating/PSSVG> -->
     <svg viewBox="0 0 200 200" transform-origin="50% 50%" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
@@ -19,5 +19,5 @@
     </svg>
   </symbol>
   <use href="#PowerShellWeb" height="60%" width="60%" x="20%" y="20%" />
-  <text x="50%" y="80%" text-anchor="middle" font-family="" font-size="5em" fill="#4488FF" dominant-baseline="middle">PSJekyll</text>
+  <text x="50%" y="80%" text-anchor="middle" font-family="" font-size="1em" fill="#4488FF" dominant-baseline="middle">PSJekyll</text>
 </svg>
