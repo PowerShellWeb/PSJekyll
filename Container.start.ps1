@@ -62,14 +62,14 @@ if ($args) {
             if (-not (Test-Path './Gemfile')) {
                 $defaultGemFile = @(
                     "source 'https://rubygems.org'"
-                    "gem 'jekyll' '~> $((jekyll --version) -replace '^jekyll\s' -replace '\s')'"
+                    "gem 'jekyll', '~> $((jekyll --version) -replace '^jekyll\s' -replace '\s')'"
                     if ($env:JekyllThemeName -and $env:JekyllThemeVersion) {
                         "gem '$env:JekyllThemeName', '~> $env:JekyllThemeVersion'"
                     } else {
                         'gem "minima", "~> 2.5"'
                     }                    
                     "group :jejkyll_plugins do"
-                    "  gem 'jekyll-feed'"
+                    "  gem 'jekyll-feed', '~> 0.12'"
                     "end"                    
                     'gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]'
                 ) -join [Environment]::newline
