@@ -53,11 +53,23 @@ if ($args) {
             $clonedRepo = git clone $arg
             $clonedRepo | Push-Location
             $foundConfigYaml = Get-ChildItem -Path $pwd -filter "_config.yml" -Recurse | 
-                Select -First 1 
+                Select-Object -First 1 
             if ($foundConfigYaml) {
                 $foundConfigYaml | 
                     Split-Path | 
                     Push-Location   
+            }
+            if (-not (Test-Path './Gemfile')) {
+                $defaultGemFile = @(
+                    "source 'https://rubygems.org'"
+                    "gem 'jekyll' '~> $((jekyll --version) -replace '^\jekyll\s')'"
+                    'gem "minima", "~> 2.5"'
+                    "group :jejkyll_plugins do"
+                    "  gem 'jekyll-feed'"
+                    "end"                    
+                    'gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]'
+                ) -join [Environment]::newline
+                Set-Content -Path './Gemfile' -Value $defaultGemFile
             }
                 
             Start-PSJekyll
