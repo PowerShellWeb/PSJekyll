@@ -55,6 +55,11 @@ if ($args) {
     #region Custom
     else 
     {
+        # If a single drive is mounted, start the Jekyll server.
+        if ($mountedDrives.Length -eq 1) {
+            Push-Location "$($mountedDrives.Name):"
+            Start-PSJekyll
+        }
         <#Start-ThreadJob -Name "${env:ModuleName}.Jekyll" -ScriptBlock {            
             jekyll serve --host "$(
                 if ($env:JEKYLL_HOST) { $env:JEKYLL_HOST }
