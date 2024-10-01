@@ -62,7 +62,7 @@ if ($args) {
             if (-not (Test-Path './Gemfile')) {
                 $defaultGemFile = @(
                     "source 'https://rubygems.org'"
-                    "gem 'jekyll' '~> $((jekyll --version) -replace '^jekyll\s')'"
+                    "gem 'jekyll' '~> $((jekyll --version) -replace '^jekyll\s' -replace '\s')'"
                     if ($env:JekyllThemeName -and $env:JekyllThemeVersion) {
                         "gem '$env:JekyllThemeName', '~> $env:JekyllThemeVersion'"
                     } else {
