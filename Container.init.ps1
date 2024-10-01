@@ -37,16 +37,15 @@ param(
     }
 ),
 # The packages to be installed.
-[string[]]$InstallPackages = @(
-    if ($env:InstallPackages) { $env:InstallPackages -split ',' }    
+[string[]]$InstallAptGet = @(
+    if ($env:InstallAptGet) { $env:InstallAptGet -split ',' }    
 ),
 # The modules to be installed.
-[string[]]$InstallModules = @(
-    if ($env:InstallModules) { $env:InstallModules -split ',' }    
+[string[]]$InstallModule = @(
+    if ($env:InstallModule) { $env:InstallModule -split ',' }    
     else {  }
 )
 )
-
 
 # Get the root module directory
 $rootModuleDirectory = @($env:PSModulePath -split '[;:]')[0]
@@ -65,7 +64,10 @@ Get-ChildItem -Path $PSScriptRoot |
 # If we have packages to install
 if ($InstallPackages) {
     # install the packages
-    apt-get update && apt-get install -y @InstallPackages '--no-install-recommends' && apt-get clean | Out-Host
+    apt-get update && 
+        apt-get install -y @InstallAptGet '--no-install-recommends' && 
+            apt-get clean |
+                Out-Host
 }
 
 # Create a new profile

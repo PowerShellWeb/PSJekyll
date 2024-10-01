@@ -44,7 +44,18 @@ if ($mountedFolders) {
 
 if ($args) {
     # If there are arguments, output them (you could handle them in a more complex way).
-    "$args" | Out-Host    
+    "$args" | Out-Host
+
+    #region Custom
+    foreach ($arg in $args) {
+        if ($arg -as [uri] -and $arg.LocalPath -match '\.git') {
+            $clonedRepo = git clone $arg
+            $clonedRepo | Push-Location
+            Start-PSJekyll
+            break
+        }
+    }
+    #endregion Custom
 } else {
     # If there are no arguments, see if there is a Microservice.ps1
     if (Test-Path './Microservice.ps1') {
@@ -59,15 +70,6 @@ if ($args) {
             Push-Location $mountedFolders[0].Fullname
             Start-PSJekyll
         }
-        <#Start-ThreadJob -Name "${env:ModuleName}.Jekyll" -ScriptBlock {            
-            jekyll serve --host "$(
-                if ($env:JEKYLL_HOST) { $env:JEKYLL_HOST }
-                else { '*' }
-            )" '--port' $(
-                if ($env:JEKYLL_PORT) { $env:JEKYLL_PORT }
-                else { 4000 }
-            )
-        }#>
     }
     #endregion Custom
 }
