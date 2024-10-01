@@ -86,8 +86,10 @@ foreach ($variant in '','Animated') {
     )
 
     svg -Content @(
+        SVG.GoogleFont -FontName $fontName
         $symbolDefinition
         SVG.Use -Href '#PowerShellWeb' -Height 60% -Width 60% -X 20% -Y 20%
-        SVG.text -X 50% -Y 80% -TextAnchor middle -FontFamily $fontName -FontSize 1em -Fill '#4488FF' -Content 'PSJekyll'  -DominantBaseline middle
-    ) -OutputPath $outputPath -ViewBox 0, 0, 200, 200
+        
+        SVG.text -X 50% -Y 80% -TextAnchor middle -FontFamily $fontName -Style "font-family:`"$fontName`",sans-serif" -FontSize 4.2em -Fill '#4488FF' -Content 'PSJekyll'  -DominantBaseline middle
+    ) -OutputPath $outputPath -ViewBox 0, 0, 1080, 1080
 }
