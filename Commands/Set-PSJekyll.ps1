@@ -40,6 +40,12 @@ function Set-PSJekyll {
     if ((-not $allInput) -and $Content) {
         $allInput = @($Content)
     }
+
+    if (-not $allInput) { return }
+    if (-not (Test-Path $path)) {        
+        New-Item -Path $path -Type File -Force | Out-Null
+        if (-not $?) { return }
+    }
     
     if ($path -match '\.json$') {
         if ($allInput.Length -eq 1) {         
