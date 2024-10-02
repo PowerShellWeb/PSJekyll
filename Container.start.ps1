@@ -77,8 +77,7 @@ if ($args) {
             }
                 
             $jekyllJob = Start-PSJekyll
-            while ($jekyllJob.State.State -notin 'Completed','Failed') {
-                "Running jekyll job $($jekyllJob.Name) $($jekyllJob.State)" | Out-Host
+            while ($jekyllJob.State -notin 'Completed','Failed') {                
                 Start-Sleep -Milliseconds (Get-Random -Min 1000 -Max 10000)
                 $jekyllJob | Receive-Job | Out-Host
             }            
