@@ -76,7 +76,11 @@ if ($args) {
                 Set-Content -Path './Gemfile' -Value $defaultGemFile
             }
                 
-            Start-PSJekyll
+            $jekyllJob = Start-PSJekyll
+            while ($jekyllJob.JobStateInfo.State -notin 'Completed','Failed') {
+                Start-Sleep -Milliseconds (Get-Random -Min 1000 -Max 10000)
+                $jekyllJob | Receive-Job | Out-Host
+            }            
         }
     }
     #endregion Custom
