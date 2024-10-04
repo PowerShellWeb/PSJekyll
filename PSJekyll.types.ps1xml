@@ -639,4 +639,19 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>PSJekyll.Site</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>File</Name>
+        <GetScriptBlock>
+                        if ($this.Directory -and -not $this.'.FileList') {
+    $this.psobject.properties.add([psnoteproperty]::new('.FileList', @($this.Directory.EnumerateFiles("*",'AllDirectories'))))    
+}
+return $this.'.FileList'
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
 </Types>
