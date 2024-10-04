@@ -737,7 +737,7 @@ foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
       <ScriptProperty>
         <Name>Page</Name>
         <GetScriptBlock>
-                        foreach ($specialFile in $this.File -notmatch '[\\/]_.+?[\\/]' -match '(?&gt;\.md|\.markdown|.\html)$') {
+                        foreach ($specialFile in $this.File -notmatch '[\\/]_.+?[\\/]' -match '\.(?&gt;md|markdown|html?)$') {
     $specialFile.pstypenames.add("PSJekyll.Page")    
     $specialFile
 }
