@@ -650,6 +650,10 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
         <Name>Files</Name>
         <ReferencedMemberName>File</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Includes</Name>
+        <ReferencedMemberName>Include</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Data</Name>
         <GetScriptBlock>
@@ -689,6 +693,19 @@ foreach ($specialFile in $this.File -match '[\\/]_drafts[\\/]') {
     $this.psobject.properties.add([psnoteproperty]::new('.FileList', @($this.Directory.EnumerateFiles("*",'AllDirectories'))))    
 }
 return $this.'.FileList'
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Include</Name>
+        <GetScriptBlock>
+                        param()
+
+foreach ($specialFile in $this.File -match '[\\/]_includes[\\/]') {
+    $specialFile.pstypenames.add("PSJekyll.IncludeFile")
+    $specialFile
+}
+
 
                     </GetScriptBlock>
       </ScriptProperty>
