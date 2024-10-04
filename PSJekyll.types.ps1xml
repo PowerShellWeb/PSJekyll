@@ -642,6 +642,14 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
   <Type>
     <Name>PSJekyll.Site</Name>
     <Members>
+      <AliasProperty>
+        <Name>Drafts</Name>
+        <ReferencedMemberName>Draft</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Files</Name>
+        <ReferencedMemberName>File</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Data</Name>
         <GetScriptBlock>
@@ -656,6 +664,19 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
 }
 foreach ($specialFile in $this.File -match '[\\/]_data[\\/]') {
     $specialFile.pstypenames.add("PSJekyll.DataFile")
+    $specialFile
+}
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Draft</Name>
+        <GetScriptBlock>
+                        param()
+
+foreach ($specialFile in $this.File -match '[\\/]_drafts[\\/]') {    
+    $specialFile.pstypenames.add("PSJekyll.Draft.Post")
+    $specialFile.pstypenames.add("PSJekyll.Post")    
     $specialFile
 }
 
