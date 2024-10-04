@@ -654,6 +654,14 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
         <Name>Includes</Name>
         <ReferencedMemberName>Include</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Layouts</Name>
+        <ReferencedMemberName>Layout</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Pages</Name>
+        <ReferencedMemberName>Page</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Data</Name>
         <GetScriptBlock>
@@ -720,6 +728,15 @@ foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
 }
 
 
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Page</Name>
+        <GetScriptBlock>
+                        foreach ($specialFile in $this.File -notmatch '[\\/]_.+?[\\/]' -match '(?&gt;\.md|\.markdown|.\html)$') {
+    $specialFile.pstypenames.add("PSJekyll.Page")    
+    $specialFile
+}
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
