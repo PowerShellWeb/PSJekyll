@@ -662,6 +662,10 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
         <Name>Pages</Name>
         <ReferencedMemberName>Page</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>Posts</Name>
+        <ReferencedMemberName>Post</ReferencedMemberName>
+      </AliasProperty>
       <ScriptProperty>
         <Name>Data</Name>
         <GetScriptBlock>
@@ -737,6 +741,19 @@ foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
     $specialFile.pstypenames.add("PSJekyll.Page")    
     $specialFile
 }
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Post</Name>
+        <GetScriptBlock>
+                        param()
+
+foreach ($specialFile in $this.File -match '[\\/]_posts[\\/]') {    
+    $specialFile.pstypenames.add("PSJekyll.Published.Post")
+    $specialFile.pstypenames.add("PSJekyll.Post")    
+    $specialFile
+}
+
                     </GetScriptBlock>
       </ScriptProperty>
     </Members>
