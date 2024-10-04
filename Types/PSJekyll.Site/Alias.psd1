@@ -1,0 +1,4 @@
+@{
+    Files = 'File'
+    Drafts = 'Draft'
+}
