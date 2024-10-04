@@ -709,6 +709,19 @@ foreach ($specialFile in $this.File -match '[\\/]_includes[\\/]') {
 
                     </GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Layout</Name>
+        <GetScriptBlock>
+                        param()
+
+foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
+    $specialFile.pstypenames.add("PSJekyll.LayoutFile")
+    $specialFile
+}
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
 </Types>
