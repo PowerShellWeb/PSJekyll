@@ -57,7 +57,7 @@ if ($args) {
                     # If there were only two segments, then it is a repo.
                     if ($argAsUri.Segments -eq 3) {
                         "$arg"
-                    } elseif ($argAsUri.Segments -match '/tree' -and $argAsUri.Segments.Length -ge 4) {
+                    } elseif ($argAsUri.Segments -match 'tree/$' -and $argAsUri.Segments.Length -ge 4) {
                         $branchName = $argAsUri.Segments[4..$($argAsUri.Segments.Length - 1)] -join ''
                         "https://github.com$($argAsUri.Segments[0..2] -join '')"
                     }
