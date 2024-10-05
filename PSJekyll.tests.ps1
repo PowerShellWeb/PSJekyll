@@ -34,14 +34,23 @@ describe PSJekyll {
             }
             Push-Location $siteName
             $randomPort = (Get-Random -Min 5000 -Maximum 8000)
+            Add-Content -Path "_config.yml" -Value "permalink: pretty"
+            $psJekyll.CurrentSite.Data = @{"StartTime"=[DateTime]::Now}
+            $psJekyll.CurrentSite.Layout = "contentOnly", "{{content}}"
+            $psJekyll.CurrentSite.Page = "aPage.md", @{"title"="My Page";layout="contentOnly"}, "This is my page. It was started at {{ site.data.StartTime }}"
             $startingSite = Start-PSJekyll -Port $randomPort
             if ($startingSite -is [Management.Automation.Job]) {
                 $startingSite | Wait-Job -Timeout 15
                 $startingSite = $startingSite | Receive-Job
             }
             Invoke-RestMethod -Uri "http://localhost:$randomPort" | Should -Not -Be $Null
+            $aPageOutput = Invoke-RestMethod -Uri "http://localhost:$randomPort/aPage"
+            $aPageOutput | Should -Not -Be $null
+            if ($aPageOutput.OuterXml) {
+                $aPageOutput.OuterXml | Should -Match "$([DateTime]::now.ToString('yyyy-MM-dd'))"
+            }            
             Pop-Location
-            Get-Job | Stop-Job
+            Get-Job | Stop-PSJekyll
             Get-Job | Remove-Job
             Remove-Item -Recurse -Force $siteName            
         }
