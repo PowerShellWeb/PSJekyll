@@ -724,6 +724,23 @@ foreach ($arg in $unrolledArguments) {
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Domain</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the domain name of the site.
+.DESCRIPTION
+    Gets the domain name of the Jekyll site.  
+    
+    This can be provided by a CNAME file in the root of the site.
+#&gt;
+$cNamePath = Join-Path $this.Directory "CNAME"
+if (Test-Path $cNamePath) {
+    Get-Content -Path $cNamePath
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Draft</Name>
         <GetScriptBlock>
                         param()
