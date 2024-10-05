@@ -1,4 +1,10 @@
 describe PSJekyll {
+    beforeAll {
+        if ($PSVersionTable.OS -match 'Nix') {
+            sudo apt-get install ruby-full
+            sudo gem install jekyll 
+        }
+    }
     context 'New-Jekyll' {
         it 'Will create a jekyll site' {
             $siteName = "MyRandomSite$(Get-Random)"
