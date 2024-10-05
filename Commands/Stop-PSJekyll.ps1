@@ -10,6 +10,7 @@ function Stop-PSJekyll {
     [Alias('Stop-Jekyll')]   
     param(
     # The name of the Jekyll job
+    [Parameter(ValueFromPipelineByPropertyName)]
     [string]
     $Name = '*'
     )
