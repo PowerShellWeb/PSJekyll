@@ -637,6 +637,12 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
 
                     </GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>
+                        [PSCustomObject]@{PSTypeName='PSJekyll.Template'}
+                    </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
   <Type>
