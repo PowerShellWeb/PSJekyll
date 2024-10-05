@@ -828,15 +828,19 @@ if (-not $metadata.title) {
 }
 
 
-
-Set-Content -Path (
-    $this.Directory,"_includes",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
+$destinationPath = $this.Directory,"_includes",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = $(
     @(
         $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
         $content
     ) -join [Environment]::NewLine
 )
+
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -881,16 +885,24 @@ if (-not $metadata.title) {
     $metadata.title = $Name
 }
 
+if ($name -notmatch '\.[^\.]+$') {
+    $Name += '.html'
+}
 
 
-Set-Content -Path (
-    $this.Directory,"_layouts",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
+$destinationPath = $this.Directory,"_layouts",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = $(
     @(
         $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
         $content
     ) -join [Environment]::NewLine
 )
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
+
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
@@ -931,16 +943,22 @@ if (-not $metadata.title) {
     $metadata.title = $Name
 }
 
+if ($name -notmatch '\.(?&gt;md|markdown|html?)$') {
+    $Name += '.md'
+}
 
+$destinationPath = $this.Directory,($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = @(
+    $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
+    $content
+) -join [Environment]::NewLine
 
-Set-Content -Path (
-    $this.Directory,($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
-    @(
-        $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
-        $content
-    ) -join [Environment]::NewLine
-)
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
+
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
