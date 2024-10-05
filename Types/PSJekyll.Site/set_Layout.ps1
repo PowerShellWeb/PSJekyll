@@ -27,13 +27,20 @@ if (-not $metadata.title) {
     $metadata.title = $Name
 }
 
+if ($name -notmatch '\.[^\.]+$') {
+    $Name += '.html'
+}
 
 
-Set-Content -Path (
-    $this.Directory,"_layouts",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
+$destinationPath = $this.Directory,"_layouts",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = $(
     @(
         $metadata | & $psJekyll.FormatYaml.Script -YamlHeader
         $content
     ) -join [Environment]::NewLine
 )
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
