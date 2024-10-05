@@ -27,13 +27,18 @@ if (-not $metadata.title) {
     $metadata.title = $Name
 }
 
+if ($name -notmatch '\.(?>md|markdown|html?)$') {
+    $Name += '.md'
+}
 
+$destinationPath = $this.Directory,($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = @(
+    $metadata | & $psJekyll.FormatYaml.Script -YamlHeader
+    $content
+) -join [Environment]::NewLine
 
-Set-Content -Path (
-    $this.Directory,($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
-    @(
-        $metadata | & $psJekyll.FormatYaml.Script -YamlHeader
-        $content
-    ) -join [Environment]::NewLine
-)
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
