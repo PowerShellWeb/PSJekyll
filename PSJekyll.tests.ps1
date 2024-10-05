@@ -4,8 +4,8 @@ describe PSJekyll {
         if (-not $jekyllInPath -and $env:GITHUB_WORKFLOW) {
             "::group::Installing FFMpeg" | Out-Host
             sudo apt update | Out-Host            
-            sudo apt install ruby-full -y | Out-Host
-            sudo gem install bundle jekyll | Out-Host
+            sudo apt install ruby-full bundler -y | Out-Host
+            sudo gem install jekyll | Out-Host
             "::endgroup::" | Out-Host
         }                                
     }
