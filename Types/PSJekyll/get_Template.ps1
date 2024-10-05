@@ -1,0 +1,1 @@
+[PSCustomObject]@{PSTypeName='PSJekyll.Template'}
