@@ -1087,6 +1087,36 @@ Set-Content -Path (
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeGoogleFont</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a Google Font.
+.DESCRIPTION
+    Includes a Google Font in the site.
+    
+    This will add a link to the Google Font.  It should be located in the head of the site.
+#&gt;
+
+param(
+# The name of the font to include.
+[string]
+$FontName
+)
+if ($FontName) {
+    "&lt;link href='https://fonts.googleapis.com/css?family=$fontName' rel='stylesheet'&gt;"
+} else {
+    @(
+        "&lt;% if site.googleFont %&gt;"
+            "&lt;link href='https://fonts.googleapis.com/css?family={{site.googleFont}}' rel='stylesheet'&gt;"
+        "&lt;% endif %&gt;"
+    ) -join [Environment]::Newline
+}
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>MinGemFile</Name>
         <Script>
                         &lt;#
