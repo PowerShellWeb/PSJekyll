@@ -1031,6 +1031,25 @@ Set-Content -Path (
     <Name>PSJekyll.Template</Name>
     <Members>
       <ScriptMethod>
+        <Name>IncludeGoogleAnalytics</Name>
+        <Script>
+                        param($AnalyticsId = 'site.analyticsId')
+
+@"
+{% if $AnalyticsId %}
+&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id={{$AnalyticsId}}"&gt;&lt;/script&gt;
+&lt;script&gt;
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{$AnalyticsId}}');
+&lt;/script&gt;
+{% endif %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>MinGemFile</Name>
         <Script>
                         &lt;#
