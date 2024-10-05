@@ -45,6 +45,7 @@ if ($mountedFolders) {
 if ($args) {
     # If there are arguments, output them (you could handle them in a more complex way).
     "$args" | Out-Host
+    $global:ContainerStartArguments = @() + $args
 
     #region Custom
     foreach ($arg in $args) {
@@ -65,7 +66,7 @@ if ($args) {
                 }
             $clonedRepo = 
                 if ($branchName) {
-                    git clone $repoUrl --branch $branchName
+                    git clone --branch $branchName $repoUrl
                 } else {
                     git clone $repoUrl
                 }
