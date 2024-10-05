@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated with PSSVG 0.2.10 <https://github.com/StartAutomating/PSSVG> -->
+<svg viewBox="0 0 1080 1080" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css">@import url('')</style>
+  <symbol id="PowerShellWeb">
+    <!-- Generated with PSSVG 0.2.10 <https://github.com/StartAutomating/PSSVG> -->
+    <svg viewBox="0 0 200 200" transform-origin="50% 50%" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+      <style type="text/css">@import url('')</style>
+      <symbol id="psChevron" viewBox="0 0 100 100">
+        <polygon points="40,20 45,20 60,50 35,80 32.5,80 55,50" />
+      </symbol>
+      <circle cx="50%" cy="50%" r="42%" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="23%" ry="42%" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="16%" ry="42%" opacity=".9" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="15%" ry="42%" opacity=".8" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="42%" ry="23%" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="42%" ry="16%" opacity=".9" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <ellipse cx="50%" cy="50%" rx="42%" ry="15%" opacity=".8" fill="transparent" stroke="#4488FF" class="foreground-stroke" stroke-width="0.5%" />
+      <use href="#psChevron" y="29%" height="42%" fill="#4488FF" class="foreground-fill" />
+    </svg>
+  </symbol>
+  <use href="#PowerShellWeb" height="60%" width="60%" x="20%" y="20%" />
+  <text x="50%" y="80%" text-anchor="middle" font-family="" style="font-family:&quot;&quot;,sans-serif" font-size="4.2em" fill="#4488FF" dominant-baseline="middle">PSJekyll</text>
+</svg>
