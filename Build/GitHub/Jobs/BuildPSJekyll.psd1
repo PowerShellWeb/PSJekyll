@@ -20,15 +20,15 @@
             name = 'Use PipeScript Action'
             uses = 'StartAutomating/PipeScript@main'
             id = 'PipeScript'
-        },
+        },        
+        'RunEZOut',
+        'RunHelpOut',
         @{
             name = 'Run PSJekyll (on branch)'
             if   = '${{github.ref_name != ''main''}}'
             uses = './'
             id = 'PSJekyllBranch'
-        },        
-        'RunEZOut',
-        'RunHelpOut',
+        },
         'BuildAndPublishContainer'
     )
 }

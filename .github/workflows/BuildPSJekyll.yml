@@ -500,14 +500,14 @@ jobs:
       - name: Use PipeScript Action
         uses: StartAutomating/PipeScript@main
         id: PipeScript
-      - name: Run PSJekyll (on branch)
-        if: ${{github.ref_name != 'main'}}
-        uses: ./
-        id: PSJekyllBranch
       - name: UseEZOut
         uses: StartAutomating/EZOut@master
       - name: UseHelpOut
         uses: StartAutomating/HelpOut@master
+      - name: Run PSJekyll (on branch)
+        if: ${{github.ref_name != 'main'}}
+        uses: ./
+        id: PSJekyllBranch
       - name: Log in to ghcr.io
         uses: docker/login-action@master
         with: 
