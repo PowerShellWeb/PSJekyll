@@ -1,8 +1,10 @@
 $myGitDirectory = Join-Path $PSScriptRoot .git
-if (Test-Path $myGitDirectory) {
-    $commandsPath = Join-Path $PSScriptRoot .\Commands
+if (Test-Path $myGitDirectory) {    
+    $commandsPath = Join-Path $PSScriptRoot Commands
+    Write-Verbose "Git directory found, loading commands from $commandsPath"
     [include('*-*')]$commandsPath
 } else {
+    Write-Verbose "Git directory not found, loading allcommands.ps1"
     . (Join-Path $PSScriptRoot "allcommands.ps1")
 }
 
