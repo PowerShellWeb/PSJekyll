@@ -1,6 +1,7 @@
 $myGitDirectory = Join-Path $PSScriptRoot .git
-if (Test-Path $myGitDirectory) {
-    $commandsPath = Join-Path $PSScriptRoot .\Commands
+if (Test-Path $myGitDirectory) {    
+    $commandsPath = Join-Path $PSScriptRoot Commands
+    Write-Verbose "Git directory found, loading commands from $commandsPath"
     :ToIncludeFiles foreach ($file in (Get-ChildItem -Path "$commandsPath" -Filter "*-*" -Recurse)) {
         if ($file.Extension -ne '.ps1')      { continue }  # Skip if the extension is not .ps1
         foreach ($exclusion in '\.[^\.]+\.ps1$') {
@@ -12,6 +13,7 @@ if (Test-Path $myGitDirectory) {
         . $file.FullName
     }
 } else {
+    Write-Verbose "Git directory not found, loading allcommands.ps1"
     . (Join-Path $PSScriptRoot "allcommands.ps1")
 }
 
