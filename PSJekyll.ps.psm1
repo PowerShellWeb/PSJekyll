@@ -1,5 +1,11 @@
-$commandsPath = Join-Path $PSScriptRoot .\Commands
-[include('*-*')]$commandsPath
+$myGitDirectory = Join-Path $PSScriptRoot .git
+if (Test-Path $myGitDirectory) {
+    $commandsPath = Join-Path $PSScriptRoot .\Commands
+    [include('*-*')]$commandsPath
+} else {
+    . (Join-Path $PSScriptRoot "allcommands.ps1")
+}
+
 
 $myModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $ExecutionContext.SessionState.PSVariable.Set($myModule.Name, $myModule)
