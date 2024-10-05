@@ -27,6 +27,9 @@ if (-not $metadata) {
 if (-not $metadata.date) {
     $metadata.date = [DateTime]::Now.ToString("yyyy-MM-dd HH:mm:ss K")
 }
+if (-not $metadata.title) {
+    $metadata.title = $Name
+}
 
 
 
