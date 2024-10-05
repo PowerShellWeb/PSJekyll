@@ -49,8 +49,27 @@ if ($args) {
     #region Custom
     foreach ($arg in $args) {
         $argAsUri = $arg -as [uri]
-        if ($argAsUri -and $argAsUri.LocalPath -match '\.git') {
-            $clonedRepo = git clone $arg
+        if ($argAsUri -and $argAsUri.LocalPath -match '\.git' -or $argAsUri.DnsSafeHost -eq 'github.com') {
+            $branchName = ''
+            $repoUrl = 
+                if ($argAsUri.DnsSafeHost -eq 'github.com') {
+                    # If there were only two segments, then it is a repo.
+                    if ($argAsUri.Segments -eq 3) {
+                        "$arg"
+                    } elseif ($argAsUri.Segments -match '/tree' -and $argAsUri.Segments.Length -ge 4) {
+                        $branchName = $argAsUri.Segments[4]
+                        "https://github.com$($argAsUri.Segments[0..2] -join '')"
+                    }
+                } else {
+                    $arg
+                }
+            $clonedRepo = 
+                if ($branchName) {
+                    git clone $repoUrl --branch $branchName
+                } else {
+                    git clone $repoUrl
+                }
+            
             $clonedRepo | Push-Location
             $foundConfigYaml = Get-ChildItem -Path $pwd -filter "_config.yml" -Recurse | 
                 Select-Object -First 1 
