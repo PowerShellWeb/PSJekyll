@@ -52,7 +52,7 @@ Get-ChildItem -Path $PSScriptRoot |
     Copy-Item -Destination /
 
 # Create a profile
-New-Item -Path $Profile -ItemType File | Out-Null
+New-Item -Path $Profile -ItemType File -Force | Out-Null
 
 if ($ModuleName) {
     # Get the root module directory
