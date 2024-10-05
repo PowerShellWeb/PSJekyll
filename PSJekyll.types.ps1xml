@@ -1021,4 +1021,25 @@ Set-Content -Path (
       </ScriptProperty>
     </Members>
   </Type>
+  <Type>
+    <Name>PSJekyll.Template</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>MinGemFile</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Minimal Gemfile for Jekyll projects.
+.DESCRIPTION
+    Generates the minimal Gemfile for Jekyll projects.
+#&gt;
+param()
+
+"source 'https://rubygems.org'"
+"gem 'jekyll'"
+
+                    </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
 </Types>
