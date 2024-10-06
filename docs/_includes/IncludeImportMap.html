@@ -1,0 +1,17 @@
+---
+
+title: IncludeImportMap.html
+---
+{% if site.data.imports %}
+<script type="importmap">
+    {
+        "imports": {
+            {% for eachImport in site.data.imports %}
+                "{{eachImport[0]}}": "{{eachImport[1]}}"{% unless forloop.last %},
+                {% endunless %}
+            {% endfor %}
+        }
+    }    
+</script>
+    
+{% endif %}
