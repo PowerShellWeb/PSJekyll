@@ -4,5 +4,7 @@
 ### Script Methods
 
 
+* [get_Config](get_Config.md)
+* [set_Config](set_Config.md)
 * [get_Domain](get_Domain.md)
 * [set_Domain](set_Domain.md)
