@@ -1237,6 +1237,39 @@ if ($ImportMap) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeMargin</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes site margins
+.DESCRIPTION
+    Includes site margins in the site.
+    
+    This will add a style tag with the margin.  It should be located in the head of the site.
+
+    If the margin parameter is provided, it will be used.  Otherwise, the site.margin will be used.
+#&gt;
+param(
+# The margin to include.
+[string]
+$Margin
+)
+
+if ($margin) {
+    "&lt;style type='text/css'&gt;body { margin: $margin } &lt;/style&gt;" 
+} else {
+    @(
+        "{% if site.margin %}"
+            "&lt;style type='text/css'&gt;body &gt; * { margin: {{site.margin}} } &lt;/style&gt;"
+        "{% else %}"
+            "&lt;style type='text/css'&gt;body &gt; * { margin: 2.5% } &lt;/style&gt;"
+        "{% endif %}"
+    ) -join [Environment]::Newline
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>IncludeOpenGraph</Name>
         <Script>
                         param()
@@ -1309,6 +1342,7 @@ if ($ImportMap) {
     {% include OpenGraph.html %}
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
+    {% include Margin.html %}
 &lt;/head&gt;
 &lt;body&gt;
 {{content}}
