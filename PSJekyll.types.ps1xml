@@ -1293,6 +1293,29 @@ if ($ImportMap) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>LayoutDefault</Name>
+        <Script>
+                        
+@"
+&lt;!DOCTYPE html&gt;
+&lt;html lang="{{ site.lang | default: "en" }}"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    {% include GoogleAnalytics.html %}
+    {% include ImportMap.html %}
+    {% include OpenGraph.html %}
+    {% include GoogleFont.html %}
+    {% include 4bitcss.html %}
+&lt;/head&gt;
+&lt;body&gt;
+{{content}}
+&lt;/body&gt;
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>MinGemFile</Name>
         <Script>
                         &lt;#
