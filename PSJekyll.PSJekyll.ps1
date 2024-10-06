@@ -21,7 +21,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     }
     $templateFileType = $matches.0
     
-    $templateFileName = $templateMethod.Name
+    $templateFileName = $templateMethod.Name -replace "^$templateFileType"
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
@@ -29,6 +29,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     $templateOut = $templateMethod.Invoke()
     $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut    
 }
+
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 
