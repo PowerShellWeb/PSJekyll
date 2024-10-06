@@ -11,6 +11,7 @@
     {% include OpenGraph.html %}
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
+    {% include Margin.html %}
 </head>
 <body>
 {{content}}
