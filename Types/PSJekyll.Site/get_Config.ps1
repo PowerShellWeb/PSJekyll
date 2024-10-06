@@ -9,5 +9,5 @@
 
 $configFile = Join-Path $this.Directory "_config.yml"
 if (Test-Path $configFile) {
-    Get-Content -Path $configFile
+    Get-Item -Path $configFile
 }

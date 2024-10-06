@@ -13,7 +13,11 @@ $configFile = Join-Path $this.Directory "_config.yml"
 $valueToAdd = 
     if ($value -is [string]) {
         $value
-    } else {
+    } 
+    elseif ($value -is [IO.FileInfo]) {
+        Get-Content -Path $value.FullName
+    }
+    else {
         & $PSJekyll.FormatYAML.Script $value
     }
 if (Test-Path $configFile) {    
