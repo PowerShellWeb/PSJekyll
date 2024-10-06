@@ -1354,7 +1354,6 @@ body &gt; * { margin: 1em; }
                         param()
 
 @'
-&lt;menu id='SiteMap'&gt;
 {% assign pages_by_url = site.pages | sort: "url" %}
 {% assign page_depth = 0 %}
 
@@ -1375,7 +1374,6 @@ body &gt; * { margin: 1em; }
 &lt;a href='{{page.url}}'&gt;{{ page.title }}&lt;/a&gt;
 &lt;/li&gt;      
 {% endfor %}
-&lt;/menu&gt;
 '@
                     </Script>
       </ScriptMethod>
