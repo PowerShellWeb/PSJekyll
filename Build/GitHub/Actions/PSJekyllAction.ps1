@@ -179,9 +179,10 @@ function OutError {
     $anyRuntimeExceptions = $false
     foreach ($err in $error) {        
         $errParts = @(
-            "::error"
-            @(if ($err.ScriptName) {
-                " file=$($err.ScriptName)"
+            "::error "
+            @(
+                if ($err.InvocationInfo.ScriptName) {
+                "file=$($err.InvocationInfo.ScriptName)"
             }
             if ($err.InvocationInfo.ScriptLineNumber -ge 1) {
                 "line=$($err.InvocationInfo.ScriptLineNumber)"
