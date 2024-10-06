@@ -928,12 +928,8 @@ if (-not $metadata.title) {
 
 
 $destinationPath = $this.Directory,"_includes",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-$destinationContent = $(
-    @(
-        $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
-        $content
-    ) -join [Environment]::NewLine
-)
+# Includes cannot have front matter.
+$destinationContent = $content
 
 if (-not (Test-Path $destinationPath)) {
     New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
