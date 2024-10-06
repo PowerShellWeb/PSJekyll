@@ -22,4 +22,10 @@ The name of the font to include.
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
+#### **CodeFont**
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
 ---
