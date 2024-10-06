@@ -1117,6 +1117,63 @@ if ($FontName) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeOpenGraph</Name>
+        <Script>
+                        param()
+
+@'
+&lt;meta content="{{ site.title }}" property="og:site_name" /&gt;
+{% if page.title %}
+&lt;meta content="{{ page.title }}" property="og:title" /&gt;
+{% elsif page.stylesheet %}
+&lt;meta content="{{ page.stylesheet }}" property="og:title" /&gt;
+{% else %}
+&lt;meta content="{{ site.title }}" property="og:title" /&gt;
+{% endif %}
+{% if page.type %}
+&lt;meta content="{{ page.type }}" property="og:type" /&gt;
+{% else %}
+&lt;meta content="website" property="og:type" /&gt;
+{% endif %}
+{% if page.description %}
+&lt;meta content="{{ page.description }}" property="og:description" /&gt;
+&lt;meta name="description" content="{{ page.description }}" /&gt;
+&lt;meta name="twitter:description" content="{{ page.description }}" /&gt;
+{% elsif content %}
+
+&lt;meta property="og:description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+&lt;meta name="description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+&lt;meta name="twitter:description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+
+{% elsif site.description %}
+&lt;meta content="{{ site.description }}" property="og:description" /&gt;
+&lt;meta name="description" content="{{ site.description }}" /&gt;
+&lt;meta name="twitter:description" content="{{ site.description }}" /&gt;
+{% endif %}
+{% if page.date %}
+    &lt;meta content="{{ page.date | date_to_xmlschema }}" property="article:published_time" /&gt;
+{% endif %}
+{% if page.url %}
+    &lt;meta content="{{ site.url }}{{ page.url }}" property="og:url" /&gt;
+    &lt;meta name="twitter:url" content="{{ site.url }}{{ page.url }}" /&gt;
+    &lt;meta name="twitter:domain" content="{{ site.url }}" /&gt;
+{% endif %}
+
+{% if page.image %}
+    &lt;meta content="/{{ page.image }}" property="og:image" /&gt;
+    &lt;meta name="twitter:image" content="{{ site.url }}/{{ page.image }}" /&gt;
+    &lt;meta name="twitter:image:src" content="{{ site.url }}/{{ page.image }}"  /&gt;
+{% elsif site.image %}
+    &lt;meta content="{{ site.url }}/{{ site.image }}" property="og:image" /&gt;
+    &lt;meta name="twitter:image" content="{{ site.url }}/{{ site.image }}" /&gt;
+    &lt;meta name="twitter:image:src" content="{{ site.url }}/{{ site.image }}" /&gt;
+{% endif %}
+'@
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>MinGemFile</Name>
         <Script>
                         &lt;#
