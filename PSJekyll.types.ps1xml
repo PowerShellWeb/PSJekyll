@@ -1352,6 +1352,37 @@ body &gt; * { margin: 1em; }
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeSiteMap</Name>
+        <Script>
+                        param()
+
+@'
+&lt;menu id='sitemap'&gt;
+{% assign pages_by_url = site.pages | sort: "url" %}
+{% assign page_depth = 0 %}
+
+{% for page in pages_by_url %}
+    {% if page.title == nil %}
+        {% continue %}
+    {% endif %}
+    {% assign page_parts = page.url | split: "/" %}
+    {% if page_parts.size &gt; page_depth %}
+    {% assign page_depth = page_parts.size %}
+&lt;ul&gt;
+    {% endif %}       
+    {% if page_parts.size &lt; page_depth %}
+    {% assign page_depth = page_parts.size %}
+&lt;/ul&gt;
+    {% endif %}
+&lt;li&gt;
+&lt;a href='{{page.url}}'&gt;{{ page.title }}&lt;/a&gt;
+&lt;/li&gt;      
+{% endfor %}
+&lt;/menu&gt;
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>LayoutDefault</Name>
         <Script>
                         
