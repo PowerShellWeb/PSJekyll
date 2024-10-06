@@ -18,7 +18,7 @@ if ($FontName) {
     @(
         "{% if site.googleFont %}"
             "<link href='https://fonts.googleapis.com/css?family={{site.googleFont}}' rel='stylesheet'>"
-            "<style type='text/css'>font-family: {{site.googleFont}};</style>"
+            "<style type='text/css'>body { font-family: '{{site.googleFont}}',sans-serif } </style>"
         "{% endif %}"
     ) -join [Environment]::Newline
 }
