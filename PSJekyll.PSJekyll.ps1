@@ -4,7 +4,9 @@ Push-Location $sitePath
 $PSJekyll.CurrentSite.Domain = "psjekyll.powershellweb.com"
 $PSJekyll.CurrentSite.Data = @{LastDateBuilt = [datetime]::UtcNow.Date.ToString('yyyy-MM-dd')}
 $PSJekyll.CurrentSite.Data
-$PSJekyll.CurrentSite.Config = @{
+# It is important to use [Ordered], otherwise, the order of the keys will be random.
+# (this will generate more changes than necessary in the git repository, and will be noisier than desired)
+$PSJekyll.CurrentSite.Config = [Ordered]@{
     title = "PSJekyll"
     description = "A PowerShell module for creating Jekyll sites."
     baseurl = "/"
