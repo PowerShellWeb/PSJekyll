@@ -1256,13 +1256,20 @@ $Margin
 )
 
 if ($margin) {
-    "&lt;style type='text/css'&gt;body { margin: $margin } &lt;/style&gt;" 
+    "&lt;style type='text/css' id='globalMargin'&gt;$margin&lt;/style&gt;" 
 } else {
     @(
         "{% if site.margin %}"
-            "&lt;style type='text/css'&gt;body &gt; * { margin: {{site.margin}} } &lt;/style&gt;"
+            "&lt;style id='globalMargin' type='text/css'&gt;{{site.margin}}&lt;/style&gt;"
         "{% else %}"
-            "&lt;style type='text/css'&gt;body &gt; * { margin: 2.5% } &lt;/style&gt;"
+@"
+&lt;style type='text/css' id='globalMargin'&gt;
+body &gt; * { margin: 1em; }                
+@media (max-width: 960px) {
+    body &gt; * { margin: .5em; }
+}
+&lt;/style&gt;
+"@
         "{% endif %}"
     ) -join [Environment]::Newline
 }
