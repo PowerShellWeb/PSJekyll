@@ -8,10 +8,13 @@ $PSJekyll.CurrentSite.Data
 # (this will generate more changes than necessary in the git repository, and will be noisier than desired)
 $PSJekyll.CurrentSite.Config = [Ordered]@{
     title = "PSJekyll"
-    description = "A PowerShell module for creating Jekyll sites."
-    baseurl = "/"
+    description = "A PowerShell module for creating Jekyll sites."    
     url = "https://psjekyll.powershellweb.com"
-    permalink = 'pretty'        
+    permalink = 'pretty'
+    palette = 'Konsolas'
+    defaults = @([Ordered]@{        
+        values = @{layout='Default'}
+    })
 }
 $PSJekyll.CurrentSite.Config
 
@@ -21,7 +24,12 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     }
     $templateFileType = $matches.0
     
-    $templateFileName = $templateMethod.Name -replace "^$templateFileType"    
+    $templateFileName = $templateMethod.Name -replace "^$templateFileType"
+
+    # Correct the case of anything named "default"
+    if ($templateFileName -eq 'default') {
+        $templateFileName = 'default'
+    }
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
