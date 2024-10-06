@@ -1,7 +1,7 @@
 param()
 
 @'
-<menu id='sitemap'>
+<menu id='SiteMap'>
 {% assign pages_by_url = site.pages | sort: "url" %}
 {% assign page_depth = 0 %}
 
