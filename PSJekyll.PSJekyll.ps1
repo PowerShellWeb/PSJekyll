@@ -12,6 +12,7 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
     url = "https://psjekyll.powershellweb.com"
     permalink = 'pretty'
     palette = 'Konsolas'
+    googleFont = 'Noto Sans'
     defaults = @([Ordered]@{        
         values = @{layout='Default'}
     })
@@ -25,7 +26,6 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     $templateFileType = $matches.0
     
     $templateFileName = $templateMethod.Name -replace "^$templateFileType"
-
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
