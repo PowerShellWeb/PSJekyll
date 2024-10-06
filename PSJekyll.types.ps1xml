@@ -1133,9 +1133,9 @@ if ($PaletteName) {
 "@
 } else {
     @(
-        "&lt;% if site.palette %&gt;"
+        "{% if site.palette %}"
         '&lt;link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{site.palette}}.css" /&gt;'
-        "&lt;% endif %&gt;"
+        "{% endif %}"
     ) -join [Environment]::Newline
 }
 
