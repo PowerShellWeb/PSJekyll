@@ -1378,6 +1378,30 @@ body &gt; * { margin: 1em; }
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeStylesheet</Name>
+        <Script>
+                        param()
+
+@'
+{% if site.data.stylesheet %}
+    {% for stylesheet in site.data.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+{% if page.stylesheet %}
+    {% for stylesheet in page.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+{% if include.stylesheet %}
+    {% for stylesheet in include.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>LayoutDefault</Name>
         <Script>
                         
@@ -1394,6 +1418,7 @@ body &gt; * { margin: 1em; }
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
     {% include Margin.html %}
+    {% include Stylesheet.html %}
 &lt;/head&gt;
 &lt;body&gt;
 {{content}}
