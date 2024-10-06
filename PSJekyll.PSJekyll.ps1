@@ -15,4 +15,21 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
 }
 $PSJekyll.CurrentSite.Config
 
+foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
+    if ($templateMethod.Name -notmatch '^(?>layout|include)') {
+        continue
+    }
+    $templateFileType = $matches.0
+    
+    $templateFileName = $templateMethod.Name
+
+    if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
+        $templateFileName += '.html'
+    }
+    $templateOut = $templateMethod.Invoke()
+    $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut    
+}
+$PSJekyll.CurrentSite.Layout
+$PSJekyll.CurrentSite.Include
+
 Pop-Location
