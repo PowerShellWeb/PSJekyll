@@ -931,11 +931,8 @@ $destinationPath = $this.Directory,"_includes",($Name | toFileName) -join ([IO.P
 # Includes cannot have front matter.
 $destinationContent = $content
 
-if (-not (Test-Path $destinationPath)) {
-    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
-} else {
-    Set-Content -Path $destinationPath -Value $destinationContent
-}
+New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
