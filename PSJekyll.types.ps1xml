@@ -1177,7 +1177,10 @@ if ($PaletteName) {
 param(
 # The name of the font to include.
 [string]
-$FontName
+$FontName,
+
+[string]
+$CodeFont
 )
 if ($FontName) {
     "&lt;link href='https://fonts.googleapis.com/css?family=$fontName' rel='stylesheet'&gt;"
@@ -1186,6 +1189,23 @@ if ($FontName) {
         "{% if site.googleFont %}"
             "&lt;link href='https://fonts.googleapis.com/css?family={{site.googleFont}}' rel='stylesheet'&gt;"
             "&lt;style type='text/css'&gt;body { font-family: '{{site.googleFont}}',sans-serif } &lt;/style&gt;"
+        "{% else %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;body { font-family: 'Roboto',sans-serif } &lt;/style&gt;"
+        "{% endif %}"
+    ) -join [Environment]::Newline
+}
+
+if ($CodeFont) {
+    "&lt;link href='https://fonts.googleapis.com/css?family=$CodeFont' rel='stylesheet'&gt;"
+} else {
+    @(
+        "{% if site.codeFont %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family={{site.codeFont}}' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;code, pre { font-family: '{{site.codeFont}}',monospace } &lt;/style&gt;"
+        "{% else %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;code, pre { font-family: 'Roboto Mono',monospace } &lt;/style&gt;"
         "{% endif %}"
     ) -join [Environment]::Newline
 }
