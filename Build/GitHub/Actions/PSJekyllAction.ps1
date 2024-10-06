@@ -44,6 +44,7 @@ $UserName
 )
 
 $ErrorActionPreference = 'continue'
+$error.Clear()
 "::group::Parameters" | Out-Host
 [PSCustomObject]$PSBoundParameters | Format-List | Out-Host
 "::endgroup::" | Out-Host
@@ -170,8 +171,19 @@ function InvokeActionModule {
         $SummaryOfMyScripts | 
             Out-File -Append -FilePath $env:GITHUB_STEP_SUMMARY
     }
-    #region Custom    
+    #region Custom
     #endregion Custom
+}
+
+function OutError {
+    foreach ($err in $error) {        
+        $errParts = @(
+            "::error"
+            "::"
+            $err.Exception.Message
+        ) -join ''
+        $errParts | Out-Host        
+    }
 }
 
 function PushActionOutput {
@@ -239,3 +251,4 @@ filter ProcessOutput {
 . InitializeAction
 . InvokeActionModule
 . PushActionOutput
+. OutError

@@ -34,11 +34,11 @@ runs:
       shell: pwsh
       env: 
         PSJekyllScript: ${{inputs.PSJekyllScript}}
+        SkipPSJekyllPS1: ${{inputs.SkipPSJekyllPS1}}
         UserName: ${{inputs.UserName}}
+        UserEmail: ${{inputs.UserEmail}}
         CommitMessage: ${{inputs.CommitMessage}}
         InstallModule: ${{inputs.InstallModule}}
-        SkipPSJekyllPS1: ${{inputs.SkipPSJekyllPS1}}
-        UserEmail: ${{inputs.UserEmail}}
       run: |
         $Parameters = @{}
         $Parameters.PSJekyllScript = ${env:PSJekyllScript}
@@ -101,6 +101,7 @@ runs:
         )
         
         $ErrorActionPreference = 'continue'
+        $error.Clear()
         "::group::Parameters" | Out-Host
         [PSCustomObject]$PSBoundParameters | Format-List | Out-Host
         "::endgroup::" | Out-Host
@@ -227,8 +228,19 @@ runs:
                 $SummaryOfMyScripts | 
                     Out-File -Append -FilePath $env:GITHUB_STEP_SUMMARY
             }
-            #region Custom    
+            #region Custom
             #endregion Custom
+        }
+        
+        function OutError {
+            foreach ($err in $error) {        
+                $errParts = @(
+                    "::error"
+                    "::"
+                    $err.Exception.Message
+                ) -join ''
+                $errParts | Out-Host        
+            }
         }
         
         function PushActionOutput {
@@ -295,5 +307,6 @@ runs:
         . ImportActionModule
         . InitializeAction
         . InvokeActionModule
-        . PushActionOutput} @Parameters
+        . PushActionOutput
+        . OutError} @Parameters
 
