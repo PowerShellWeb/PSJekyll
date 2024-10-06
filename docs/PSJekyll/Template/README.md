@@ -5,4 +5,5 @@
 
 
 * [IncludeGoogleFont](IncludeGoogleFont.md)
+* [IncludeImportMap](IncludeImportMap.md)
 * [MinGemFile](MinGemFile.md)
