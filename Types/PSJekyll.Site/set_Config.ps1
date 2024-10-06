@@ -17,9 +17,7 @@ $valueToAdd =
         & $PSJekyll.FormatYAML.Script $value
     }
 if (Test-Path $configFile) {    
-    if ($valueToAdd) {
-        Add-Content -Path $configFile -Value $valueToAdd
-    }
+    Set-Content -Path $configFile -Value $valueToAdd    
 } else {
     New-Item -ItemType File -Path $configFile -Force -Value $valueToAdd
 }
