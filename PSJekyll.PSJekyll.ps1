@@ -26,10 +26,6 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     
     $templateFileName = $templateMethod.Name -replace "^$templateFileType"
 
-    # Correct the case of anything named "default"
-    if ($templateFileName -eq 'default') {
-        $templateFileName = 'default'
-    }
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
