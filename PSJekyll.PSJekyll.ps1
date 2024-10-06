@@ -11,11 +11,7 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
     description = "A PowerShell module for creating Jekyll sites."
     baseurl = "/"
     url = "https://psjekyll.powershellweb.com"
-    permalink = 'pretty'
-    defaults = [Ordered]@{
-        scope = @{path=''}
-        values = @{layout='Default'}
-    }    
+    permalink = 'pretty'        
 }
 $PSJekyll.CurrentSite.Config
 
