@@ -31,10 +31,13 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
         $templateFileName += '.html'
     }
     $templateOut = $templateMethod.Invoke()
-    $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut    
+    $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut
 }
+
+$PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
 
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
+$PSJekyll.CurrentSite.Page
 
 Pop-Location
