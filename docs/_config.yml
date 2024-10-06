@@ -1,6 +1,6 @@
 
-permalink: pretty
 title: PSJekyll
 description: A PowerShell module for creating Jekyll sites.
-url: https://psjekyll.powershellweb.com
 baseurl: /
+url: https://psjekyll.powershellweb.com
+permalink: pretty
