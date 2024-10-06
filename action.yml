@@ -233,13 +233,34 @@ runs:
         }
         
         function OutError {
+            $anyRuntimeExceptions = $false
             foreach ($err in $error) {        
                 $errParts = @(
                     "::error"
+                    @(if ($err.ScriptName) {
+                        " file=$($err.ScriptName)"
+                    }
+                    if ($err.InvocationInfo.ScriptLineNumber -ge 1) {
+                        "line=$($err.InvocationInfo.ScriptLineNumber)"
+                        if ($err.InvocationInfo.OffsetInLine -ge 1) {
+                            "col=$($err.InvocationInfo.OffsetInLine)"
+                        }
+                    }
+                    if ($err.CategoryInfo.Activity) {
+                        "title=$($err.CategoryInfo.Activity)"
+                    }
+                    ) -join ','
                     "::"
                     $err.Exception.Message
+                    if ($err.CategoryInfo.Category -eq 'OperationStopped' -and 
+                        $err.CategoryInfo.Reason -eq 'RuntimeException') {
+                        $anyRuntimeExceptions = $true
+                    }
                 ) -join ''
-                $errParts | Out-Host        
+                $errParts | Out-Host
+                if ($anyRuntimeExceptions) {
+                    exit 1
+                }
             }
         }
         
