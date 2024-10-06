@@ -4,8 +4,3 @@ description: A PowerShell module for creating Jekyll sites.
 baseurl: /
 url: https://psjekyll.powershellweb.com
 permalink: pretty
-defaults: 
-  scope: 
-    path: 
-  values: 
-    layout: Default
