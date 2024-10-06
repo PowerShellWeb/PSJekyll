@@ -1357,7 +1357,7 @@ body &gt; * { margin: 1em; }
                         param()
 
 @'
-&lt;menu id='sitemap'&gt;
+&lt;menu id='SiteMap'&gt;
 {% assign pages_by_url = site.pages | sort: "url" %}
 {% assign page_depth = 0 %}
 
