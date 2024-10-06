@@ -14,7 +14,7 @@ $valueToAdd =
     if ($value -is [string]) {
         $value
     } else {
-        $PSJekyll.FormatYAML($value)
+        & $PSJekyll.FormatYAML.Script $value
     }
 if (Test-Path $configFile) {    
     if ($valueToAdd) {
