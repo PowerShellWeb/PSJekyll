@@ -1,0 +1,5 @@
+
+title: PSJekyll
+baseurl: /
+url: https://psjekyll.powershellweb.com
+description: A PowerShell module for creating Jekyll sites.
