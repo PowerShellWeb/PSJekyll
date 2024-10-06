@@ -12,6 +12,7 @@
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
     {% include Margin.html %}
+    {% include Stylesheet.html %}
 </head>
 <body>
 {{content}}
