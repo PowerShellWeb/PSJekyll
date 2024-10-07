@@ -35,6 +35,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
 }
 
 $PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
+$PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.html %}"
 
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
