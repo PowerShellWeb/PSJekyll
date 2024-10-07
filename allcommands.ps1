@@ -271,8 +271,12 @@ function Start-PSJekyll
     Write-Verbose "Starting Jekyll server $jekyllSplat"
     $jobName = if ($hostHeader) { "PSJekyll.$hostHeader" } else { "Start-PSJekyll" }
     $jekyllJob = 
-        Start-ThreadJob -ScriptBlock {            
-            bundle install
+        Start-ThreadJob -ScriptBlock {
+            if ($ExecutionContext.SessionState.InvokeCommand.GetCommand('sudo','application')) {
+                sudo bundle install
+            } else {
+                bundle install
+            }
                         
             if ($args -match '^\*$' -and $args -match '^--host$') {
                 $otherArgs = @($args -notmatch '^(?>--host|\*)$')                
