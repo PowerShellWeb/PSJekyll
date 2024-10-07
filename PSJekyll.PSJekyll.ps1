@@ -3,6 +3,8 @@ $sitePath = Join-Path $PSScriptRoot 'docs'
 Push-Location $sitePath
 $PSJekyll.CurrentSite.Domain = "psjekyll.powershellweb.com"
 $PSJekyll.CurrentSite.Data = @{LastDateBuilt = [datetime]::UtcNow.Date.ToString('yyyy-MM-dd')}
+# Tracing the GitHub event that triggered the build into a data file.
+$PSJekyll.CurrentSite.Data = @{GitHubEvent = $gitHubEvent}
 $PSJekyll.CurrentSite.Data
 # It is important to use [Ordered], otherwise, the order of the keys will be random.
 # (this will generate more changes than necessary in the git repository, and will be noisier than desired)
@@ -38,7 +40,6 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
 
 $PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
 $PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.html %}"
-
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 $PSJekyll.CurrentSite.Page
