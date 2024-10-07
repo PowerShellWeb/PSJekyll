@@ -1,0 +1,27 @@
+{
+  "Name": "PSJekyll",
+  "Version": {
+    "Major": 0,
+    "Minor": 1,
+    "Build": -1,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  },
+  "Description": "Give Jekyll more power with PowerShell",
+  "Copyright": null,
+  "CompanyName": "PowerShellWeb",
+  "Author": "James Brundage",
+  "PrivateData": {
+    "PSData": {
+      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
+      "Tags": [
+        "PowerShellWeb",
+        "Jekyll",
+        "Docker",
+        "GitHubAction"
+      ],
+      "ProjectUri": "https://github.com/PowerShellWeb/PSJekyll"
+    }
+  }
+}
