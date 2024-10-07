@@ -14,7 +14,8 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
     palette = 'Konsolas'
     analyticsId = 'G-R5C30737B2'
     googleFont = 'Noto Sans'
-    defaults = @([Ordered]@{        
+    stylesheet = 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'
+    defaults = @([Ordered]@{
         values = @{layout='Default'}
     })
 }
