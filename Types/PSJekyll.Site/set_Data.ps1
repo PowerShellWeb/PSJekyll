@@ -29,8 +29,7 @@ foreach ($arg in $unrolledArguments) {
             $null = New-Item -Path $targetPath -ItemType File -Force
         }
         Set-Content -Path $targetPath -Value (
-            ConvertTo-Json -Depth $FormatEnumerationLimit -InputObject $arg
-        )
-            
+            ConvertTo-Json -Depth ($FormatEnumerationLimit * 2) -InputObject $arg
+        )            
     }
 }

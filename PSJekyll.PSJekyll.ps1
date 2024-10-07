@@ -1,10 +1,22 @@
 # PSJekyll site self creation
 $sitePath = Join-Path $PSScriptRoot 'docs'
+
+$sourceModule = Import-Module ./ -PassThru
+
+
 Push-Location $sitePath
 $PSJekyll.CurrentSite.Domain = "psjekyll.powershellweb.com"
 $PSJekyll.CurrentSite.Data = @{LastDateBuilt = [datetime]::UtcNow.Date.ToString('yyyy-MM-dd')}
-# Tracing the GitHub event that triggered the build into a data file.
-$PSJekyll.CurrentSite.Data = @{GitHubEvent = $gitHubEvent}
+$PSJekyll.CurrentSite.Data = @{
+    PSModuleInfo = $sourceModule |
+        Select-Object -Property Name, 
+            Version, 
+            Description, 
+            Copyright, 
+            CompanyName, 
+            Author, 
+            PrivateData
+}
 $PSJekyll.CurrentSite.Data
 # It is important to use [Ordered], otherwise, the order of the keys will be random.
 # (this will generate more changes than necessary in the git repository, and will be noisier than desired)
