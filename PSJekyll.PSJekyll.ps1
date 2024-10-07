@@ -16,6 +16,35 @@ $PSJekyll.CurrentSite.Data = @{
             CompanyName, 
             Author, 
             PrivateData
+    PSModuleExports = @(
+        foreach ($command in $sourceModule.ExportedCommands.Values) {
+            [Ordered]@{
+                Name = $command.Name
+                CommandType = $command.CommandType
+                Definition = $command.Definition
+                ParameterName = $command.Parameters.Keys
+                Parameter = @(
+                    $command.Parameters.Values | 
+                        Select-Object -Property Name, 
+                            @{
+                                Name='ParameterType'
+                                Expression = { $_.ParameterType.ToString() }
+                            },                            
+                            Position, 
+                            Mandatory, 
+                            ValueFromPipeline, 
+                            ValueFromPipelineByPropertyName, 
+                            ValueFromRemainingArguments, 
+                            HelpMessage
+                )
+            }       
+        }
+    )
+        
+    PSModuleFunctionNames = $sourceModule.ExportedFunctions.Keys
+    PSModuleCmdletNames   = $sourceModule.ExportedCmdlets.Keys
+    PSModuleAliasNames    = $sourceModule.ExportedAliases.Keys
+    PSModuleVariableNames = $sourceModule.ExportedVariables.Keys
 }
 $PSJekyll.CurrentSite.Data
 # It is important to use [Ordered], otherwise, the order of the keys will be random.
