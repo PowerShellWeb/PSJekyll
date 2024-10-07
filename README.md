@@ -30,13 +30,15 @@ PSJekyll ships every build in a container.
 To pull down PSJekyll and start your own server, use something like:
 
 ~~~PowerShell
+# Pull down the latest image
 docker pull ghcr.io/powershellweb/psjekyll
 
-docker run -interactive --tty --publish 8069:4000 ghcr.io/powershellweb/psjekyll
+# Start the image in an interactive terminal on port 8069.
+docker run --interactive --tty --publish 8069:4000 ghcr.io/powershellweb/psjekyll
 ~~~
 
 ## PSJekyll Commands
 
-* `New-PSJekyll` creates sites with `jekyll new`.
-* `Start-PSJekyll` starts Jekyll servers in a jobs.
-* `Stop-PSJekyll` stops running Jekyll jobs.
+* [New-PSJekyll](New-PSJekyll) creates sites with `jekyll new`
+* [Start-PSJekyll](Start-PSJekyll) starts Jekyll servers in a job.
+* [Stop-PSJekyll](Stop-PSJekyll) stops running Jekyll jobs.
