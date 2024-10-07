@@ -12,6 +12,7 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
     url = "https://psjekyll.powershellweb.com"
     permalink = 'pretty'
     palette = 'Konsolas'
+    analyticsId = 'G-R5C30737B2'
     googleFont = 'Noto Sans'
     defaults = @([Ordered]@{        
         values = @{layout='Default'}
