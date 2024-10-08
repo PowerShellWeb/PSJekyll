@@ -1401,6 +1401,33 @@ body &gt; * { margin: 1em; }
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeMenu</Name>
+        <Script>
+                        param()
+
+
+@'
+{% capture TopLeftMenu %}
+{% if page.menu.TopLeft %}
+    {{page.menu.TopLeft}}
+{% elsif site.menu.TopLeft %}
+    {{site.menu.TopLeft}}
+{% elsif site.data.menu.TopLeft %}
+    {{site.data.menu.TopLeft}}
+{% else %}
+    {{include.GitHubLink}}
+{% endif %}
+{% endcapture %}
+{% if topLeftMenu %}
+&lt;menu class='TopLeftMenu'&gt;
+    {{topLeftMenu}}
+&lt;/menu&gt;
+{% endif %}
+'@
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>IncludeMenuStyle</Name>
         <Script>
                         param()
@@ -1624,6 +1651,7 @@ param()
     {% include MenuStyle.html %}
 &lt;/head&gt;
 &lt;body&gt;
+{% include IncludeMenu.html %}
 {{content}}
 {% include Footer.html %}
 &lt;/body&gt;
