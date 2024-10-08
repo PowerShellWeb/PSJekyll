@@ -14,8 +14,8 @@
   "Author": "James Brundage",
   "PrivateData": {
     "PSData": {
-      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
       "ProjectUri": "https://github.com/PowerShellWeb/PSJekyll",
+      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
       "Tags": [
         "PowerShellWeb",
         "Jekyll",
