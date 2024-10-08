@@ -16,5 +16,6 @@
 </head>
 <body>
 {{content}}
+{% include Footer.html %}
 </body>
 "@
