@@ -1,0 +1,7 @@
+[
+  "New-PSJekyll",
+  "Remove-PSJekyll",
+  "Set-PSJekyll",
+  "Start-PSJekyll",
+  "Stop-PSJekyll"
+]
