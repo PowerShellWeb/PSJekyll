@@ -1125,12 +1125,14 @@ $PaletteName
 
 if ($PaletteName) {
 @"
-&lt;link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/$($PaletteName -replace '\.css$').css" /&gt;
+&lt;link rel="stylesheet" id="4bitcss" type="text/css" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/$($PaletteName -replace '\.css$').css" /&gt;
 "@
 } else {
     @(
-        "{% if site.palette %}"
-        '&lt;link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{site.palette}}.css" /&gt;'
+        "{% if page.palette %}"
+            '&lt;link rel="stylesheet" type="text/css" id="4bitcss" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{page.palette}}.css" /&gt;'
+        "{% elsif site.palette %}"
+            '&lt;link rel="stylesheet" type="text/css" id="4bitcss" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{site.palette}}.css" /&gt;'
         "{% endif %}"
     ) -join [Environment]::Newline
 }
