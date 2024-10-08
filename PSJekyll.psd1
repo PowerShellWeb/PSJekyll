@@ -6,6 +6,7 @@
     TypesToProcess = @('PSJekyll.types.ps1xml')
     FormatsToProcess = @('PSJekyll.format.ps1xml')
     Author = 'James Brundage'
+    Copyright = '2024'
     CompanyName = 'PowerShellWeb'
     PrivateData = @{
         PSData = @{
