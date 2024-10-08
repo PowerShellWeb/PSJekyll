@@ -16,6 +16,7 @@
     {% include MenuStyle.html %}
 </head>
 <body>
+{% include IncludeMenu.html %}
 {{content}}
 {% include Footer.html %}
 </body>
