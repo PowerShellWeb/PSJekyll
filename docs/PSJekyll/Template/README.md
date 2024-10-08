@@ -5,6 +5,7 @@
 
 
 * [IncludeCopyright](IncludeCopyright.md)
+* [IncludeFooter](IncludeFooter.md)
 * [IncludeGitHubLink](IncludeGitHubLink.md)
 * [IncludeGoogleFont](IncludeGoogleFont.md)
 * [IncludeImportMap](IncludeImportMap.md)
