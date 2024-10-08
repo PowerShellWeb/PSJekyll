@@ -30,9 +30,9 @@ if ($ImportMap) {
     {% assign importMap = site.imports %}
 {% elsif site.importMap %}
     {% assign importMap = site.importMap %}
-{% elseif site.data.imports %}
+{% elsif site.data.imports %}
     {% assign importMap = site.data.imports %}
-{% elseif site.data.importMap %}
+{% elsif site.data.importMap %}
     {% assign importMap = site.data.importMap %}
 {% endif %}
 {% if importMap %}
