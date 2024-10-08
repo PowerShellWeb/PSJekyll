@@ -1140,6 +1140,40 @@ if ($PaletteName) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>IncludeCopyright</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a copyright notice
+.DESCRIPTION
+    Include for a copyright notice.
+    
+    This can be included in Jekyll anytime a copyright notice is needed.
+#&gt;
+param(
+# A custom copyright notice.
+[string]
+$Copyright
+)
+
+if ($Copyright) {
+    return $Copyright
+} else {
+@"
+&amp;copy; {% if page.copyright %}
+    {{page.copyright}}
+{% elsif site.copyright %}
+    {{site.copyright}}
+{% elsif site.data.PSModuleInfo.Copyright %}
+    {{site.data.PSModuleInfo.Copyright}}
+{% else %}
+    {{ site.time | date: '%Y' }} {{ site.author }}
+{% endif %}
+"@
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>IncludeGoogleAnalytics</Name>
         <Script>
                         param($AnalyticsId = 'site.analyticsId')
