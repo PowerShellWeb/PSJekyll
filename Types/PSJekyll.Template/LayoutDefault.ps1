@@ -13,6 +13,7 @@
     {% include 4bitcss.html %}
     {% include Margin.html %}
     {% include Stylesheet.html %}
+    {% include MenuStyle.html %}
 </head>
 <body>
 {{content}}
