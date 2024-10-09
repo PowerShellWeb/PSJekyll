@@ -1,3 +1,15 @@
+<#
+.SYNOPSIS
+    Gets the current site.
+.DESCRIPTION
+    Gets one or more current Jekyll sites.
+    
+    The current site is any directory containing a _config.yml.  
+    
+    If no directory is found, it will consider the the current directory to be the site.
+.EXAMPLE
+    $psJekyll.CurrentSite
+#>
 param(
 $this = $PSJekyll
 )
@@ -19,7 +31,3 @@ foreach ($jekyllConfigFile in $jekyllConfigFiles) {
         SiteName = $jekyllConfigFile.Directory.Name
     }
 }
-
-
-
-
