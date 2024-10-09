@@ -16,7 +16,7 @@ param()
     {{site.menu.TopRight}}
     {{site.data.menu.TopRight}}
     {% unless site.NoGitHubLink or site.NoLink %}
-        {{include GitHubLink}}
+        {% include GitHubLink %}
     {% endunless %}
 {% endcapture %}
 {% assign TopRightMenu = TopRightMenu | strip %}
@@ -104,49 +104,49 @@ param()
 </style>
 {% endif %}
 
-{% if TopLeftMenu | strip %}
+{% if TopLeftMenu %}
 <menu class='Top Left'>
     {{TopLeftMenu}}
 </menu>
 {% endif %}
 
-{% if TopRightMenu | strip %}
+{% if TopRightMenu %}
 <menu class='Top Right'>
     {{TopRightMenu}}
 </menu>
 {% endif %}
 
-{% if TopCenterMenu | strip %}
+{% if TopCenterMenu %}
 <menu class='Top Center'>
     {{TopCenterMenu}}
 </menu>
 {% endif %}
 
-{% if BottomLeftMenu | strip %}
+{% if BottomLeftMenu %}
 <menu class='Bottom Left'>
     {{BottomLeftMenu}}
 </menu>
 {% endif %}
 
-{% if BottomRightMenu | strip %}
+{% if BottomRightMenu %}
 <menu class='Bottom Right'>
     {{BottomRightMenu}}
 </menu>
 {% endif %}
 
-{% if BottomCenterMenu | strip %}
+{% if BottomCenterMenu %}
 <menu class='Bottom Center'>
     {{BottomCenterMenu}}
 </menu>
 {% endif %}
 
-{% if LeftCenterMenu | strip %}
+{% if LeftCenterMenu %}
 <menu class='Left Center'>
     {{LeftCenterMenu}}
 </menu>
 {% endif %}
 
-{% if RightCenterMenu | strip %}
+{% if RightCenterMenu %}
 <menu class='Right Center'>
     {{RightCenterMenu}}
 </menu>
