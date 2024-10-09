@@ -1653,7 +1653,7 @@ param()
     {% include MenuStyle.html %}
 &lt;/head&gt;
 &lt;body&gt;
-{% include IncludeMenu.html %}
+{% include Menu.html %}
 {{content}}
 {% include Footer.html %}
 &lt;/body&gt;
