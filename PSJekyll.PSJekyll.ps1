@@ -70,7 +70,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     }
     $templateFileType = $matches.0 -replace '\p{P}+$'
     
-    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))"
+    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))\p{P}+"
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
