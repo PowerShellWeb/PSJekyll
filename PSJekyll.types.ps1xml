@@ -1830,6 +1830,16 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.OrgMember.md</Name>
+        <Script>
+                        param()
+
+"{% for member in site.github.organization_members %}"
+"* [{{ member.login }}]({{ member.html_url }})"
+"{% endfor %}"
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.PSAlias.md</Name>
         <Script>
                         param()
