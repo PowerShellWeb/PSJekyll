@@ -1750,6 +1750,18 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.PSFunctions.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for functionName in site.data.PSModuleFunctionNames %}
+    "[{{ functionName }}](/{{functionName}})"
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.SiteTree.html</Name>
         <Script>
                         &lt;#
