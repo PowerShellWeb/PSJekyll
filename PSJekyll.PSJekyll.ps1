@@ -65,12 +65,12 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
 $PSJekyll.CurrentSite.Config
 
 foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
-    if ($templateMethod.Name -notmatch '^(?>layout|include)') {
+    if ($templateMethod.Name -notmatch '^(?>layout|include)\p{P}+') {
         continue
     }
     $templateFileType = $matches.0
     
-    $templateFileName = $templateMethod.Name -replace "^$templateFileType"
+    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))"
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
