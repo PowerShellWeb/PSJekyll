@@ -15,13 +15,13 @@
   "PrivateData": {
     "PSData": {
       "ProjectUri": "https://github.com/PowerShellWeb/PSJekyll",
-      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
       "Tags": [
         "PowerShellWeb",
         "Jekyll",
         "Docker",
         "GitHubAction"
-      ]
+      ],
+      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE"
     }
   }
 }
