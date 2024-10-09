@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+    Sets the posts in a site.
+.DESCRIPTION
+    Sets the post files in a Jekyll site.
+
+    Any file in the _posts directory is considered a post.
+.LINK
+    https://jekyllrb.com/docs/posts/
+#>
 param()
 
 $unrolledArguments = @($args | . { process { $_ } })
