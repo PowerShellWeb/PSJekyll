@@ -9,7 +9,7 @@ param()
 {{site.data.menu.TopLeft}}
 {% unless site.NoGitHubLink or site.NoLink %}
     {{include.GitHubLink}}
-{% endif %}
+{% endunless %}
 {% endcapture %}
 
 {% if topLeftMenu %}
