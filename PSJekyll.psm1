@@ -1,22 +1,14 @@
-$myGitDirectory = Join-Path $PSScriptRoot .git
-if (Test-Path $myGitDirectory) {    
-    $commandsPath = Join-Path $PSScriptRoot Commands
-    Write-Verbose "Git directory found, loading commands from $commandsPath"
-    :ToIncludeFiles foreach ($file in (Get-ChildItem -Path "$commandsPath" -Filter "*-*" -Recurse)) {
-        if ($file.Extension -ne '.ps1')      { continue }  # Skip if the extension is not .ps1
-        foreach ($exclusion in '\.[^\.]+\.ps1$') {
-            if (-not $exclusion) { continue }
-            if ($file.Name -match $exclusion) {
-                continue ToIncludeFiles  # Skip excluded files
-            }
-        }     
-        . $file.FullName
-    }
-} else {
-    Write-Verbose "Git directory not found, loading allcommands.ps1"
-    . (Join-Path $PSScriptRoot "allcommands.ps1")
+$commandsPath = Join-Path $PSScriptRoot Commands
+:ToIncludeFiles foreach ($file in (Get-ChildItem -Path "$commandsPath" -Filter "*-*" -Recurse)) {
+    if ($file.Extension -ne '.ps1')      { continue }  # Skip if the extension is not .ps1
+    foreach ($exclusion in '\.[^\.]+\.ps1$') {
+        if (-not $exclusion) { continue }
+        if ($file.Name -match $exclusion) {
+            continue ToIncludeFiles  # Skip excluded files
+        }
+    }     
+    . $file.FullName
 }
-
 
 $myModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $ExecutionContext.SessionState.PSVariable.Set($myModule.Name, $myModule)
@@ -31,8 +23,6 @@ if ($home) {
     }
     New-PSDrive -Name "My$($MyModule.Name)" -PSProvider FileSystem -Scope Global -Root $MyModuleProfileDirectory -ErrorAction Ignore
 }
-
-$KnownVerbs = Get-Verb | Select-Object -ExpandProperty Verb
 
 # Set a script variable of this, set to the module
 # (so all scripts in this scope default to the correct `$this`)
