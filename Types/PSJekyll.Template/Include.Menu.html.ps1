@@ -3,11 +3,9 @@ param()
 
 @'
 {% capture TopLeftMenu %}
-
-{{page.menu.TopLeft}}
-{{site.menu.TopLeft}}
-{{site.data.menu.TopLeft}}
-
+    {{page.menu.TopLeft}}
+    {{site.menu.TopLeft}}
+    {{site.data.menu.TopLeft}}
 {% endcapture %}
 {% assign TopLeftMenu = TopLeftMenu | strip %}}
 
@@ -29,37 +27,37 @@ param()
 {% assign TopCenterMenu = TopCenterMenu | strip %}
 
 {% capture BottomLeftMenu %}
-{{page.menu.BottomLeft}}
-{{site.menu.BottomLeft}}
-{{site.data.menu.BottomLeft}}
+    {{page.menu.BottomLeft}}
+    {{site.menu.BottomLeft}}
+    {{site.data.menu.BottomLeft}}
 {% endcapture %}
 {% assign BottomLeftMenu = BottomLeftMenu | strip %}
 
 {% capture BottomRightMenu %}
-{{page.menu.BottomRight}}
-{{site.menu.BottomRight}}
-{{site.data.menu.BottomRight}}
+    {{page.menu.BottomRight}}
+    {{site.menu.BottomRight}}
+    {{site.data.menu.BottomRight}}
 {% endcapture %}
 {% assign BottomRightMenu = BottomRightMenu | strip %}
 
 {% capture BottomCenterMenu %}
-{{page.menu.BottomCenter}}
-{{site.menu.BottomCenter}}
-{{site.data.menu.BottomCenter}}
+    {{page.menu.BottomCenter}}
+    {{site.menu.BottomCenter}}
+    {{site.data.menu.BottomCenter}}
 {% endcapture %}
 {% assign BottomCenterMenu = BottomCenterMenu | strip %}
 
 {% capture LeftCenterMenu %}
-{{page.menu.LeftCenter}}
-{{site.menu.LeftCenter}}
-{{site.data.menu.LeftCenter}}
+    {{page.menu.LeftCenter}}
+    {{site.menu.LeftCenter}}
+    {{site.data.menu.LeftCenter}}
 {% endcapture %}
 {% assign LeftCenterMenu = LeftCenterMenu | strip %}
 
 {% capture RightCenterMenu %}
-{{page.menu.RightCenter}}
-{{site.menu.RightCenter}}
-{{site.data.menu.RightCenter}}
+    {{page.menu.RightCenter}}
+    {{site.menu.RightCenter}}
+    {{site.data.menu.RightCenter}}
 {% endcapture %}
 {% assign RightCenterMenu = RightCenterMenu | strip %}
 
@@ -89,16 +87,16 @@ param()
     menu[class~=Center] {
         text-align: center;
     }
-    .Top .Center {
+    .Top.Center {
         width: 100%;
     }
-    .Left .Center {
+    .Left.Center {
         height: 100%;
     }
-    .Right .Center {
+    .Right.Center {
         height: 100%;
     }
-    .Bottom .Center {
+    .Bottom.Center {
         width: 100%;
     }
 </style>
