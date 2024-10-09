@@ -92,6 +92,8 @@ $PSJekyll.CurrentSite.Page = 'Tree', "{% include SiteTree.html %}"
 $PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.md %}"
 $PSJekyll.CurrentSite.Page = 'Function', "{% include PSFunctions.md %}"
 $PSJekyll.CurrentSite.Page = 'Functions', "{% include PSFunctions.md %}"
+$PSJekyll.CurrentSite.Page = 'Alias', "{% include PSAlias.md %}"
+$PSJekyll.CurrentSite.Page = 'Aliases', "{% include PSAlias.md %}"
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 $PSJekyll.CurrentSite.Page
