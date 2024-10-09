@@ -1414,51 +1414,59 @@ body &gt; * { margin: 1em; }
 {{site.data.menu.TopLeft}}
 
 {% endcapture %}
+{% assign TopLeftMenu = TopLeftMenu | strip %}}
 
 {% capture TopRightMenu %}
-{{page.menu.TopRight}}
-{{site.menu.TopRight}}
-{{site.data.menu.TopRight}}
-{% unless site.NoGitHubLink or site.NoLink %}
-    {{include GitHubLink}}
-{% endunless %}
+    {{page.menu.TopRight}}
+    {{site.menu.TopRight}}
+    {{site.data.menu.TopRight}}
+    {% unless site.NoGitHubLink or site.NoLink %}
+        {{include GitHubLink}}
+    {% endunless %}
 {% endcapture %}
+{% assign TopRightMenu = TopRightMenu | strip %}
 
 {% capture TopCenterMenu %}
-{{page.menu.TopCenter}}
-{{site.menu.TopCenter}}
-{{site.data.menu.TopCenter}}
+    {{page.menu.TopCenter}}
+    {{site.menu.TopCenter}}
+    {{site.data.menu.TopCenter}}
 {% endcapture %}
+{% assign TopCenterMenu = TopCenterMenu | strip %}
 
 {% capture BottomLeftMenu %}
 {{page.menu.BottomLeft}}
 {{site.menu.BottomLeft}}
 {{site.data.menu.BottomLeft}}
 {% endcapture %}
+{% assign BottomLeftMenu = BottomLeftMenu | strip %}
 
 {% capture BottomRightMenu %}
 {{page.menu.BottomRight}}
 {{site.menu.BottomRight}}
 {{site.data.menu.BottomRight}}
 {% endcapture %}
+{% assign BottomRightMenu = BottomRightMenu | strip %}
 
 {% capture BottomCenterMenu %}
 {{page.menu.BottomCenter}}
 {{site.menu.BottomCenter}}
 {{site.data.menu.BottomCenter}}
 {% endcapture %}
+{% assign BottomCenterMenu = BottomCenterMenu | strip %}
 
 {% capture LeftCenterMenu %}
 {{page.menu.LeftCenter}}
 {{site.menu.LeftCenter}}
 {{site.data.menu.LeftCenter}}
 {% endcapture %}
+{% assign LeftCenterMenu = LeftCenterMenu | strip %}
 
 {% capture RightCenterMenu %}
 {{page.menu.RightCenter}}
 {{site.menu.RightCenter}}
 {{site.data.menu.RightCenter}}
 {% endcapture %}
+{% assign RightCenterMenu = RightCenterMenu | strip %}
 
 {% if TopLeftMenu or TopRightMenu or TopCenterMenu or BottomLeftMenu or BottomRightMenu or BottomCenterMenu or LeftCenterMenu or RightCenterMenu %}
 &lt;style&gt;
@@ -1485,7 +1493,19 @@ body &gt; * { margin: 1em; }
     }
     menu[class~=Center] {
         text-align: center;
-    }    
+    }
+    .Top .Center {
+        width: 100%;
+    }
+    .Left .Center {
+        height: 100%;
+    }
+    .Right .Center {
+        height: 100%;
+    }
+    .Bottom .Center {
+        width: 100%;
+    }
 &lt;/style&gt;
 {% endif %}
 
