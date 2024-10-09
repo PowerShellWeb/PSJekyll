@@ -93,6 +93,7 @@ foreach ($templateMember in $PSJekyll.Template.psobject.Members) {
 
 $PSJekyll.CurrentSite.Page = 'Tree', "{% include SiteTree.html %}"
 $PSJekyll.CurrentSite.Page = 'Repos', "{% include Repos.md %}"
+$PSJekyll.CurrentSite.Page = 'Releases', "{% include Releases.md %}"
 $PSJekyll.CurrentSite.Page = 'Contibutors', "{% include Contributor.md %}"
 $PSJekyll.CurrentSite.Page = 'Members', "{% include OrgMember.md %}"
 $PSJekyll.CurrentSite.Page = 'Function', "{% include PSFunctions.md %}"
