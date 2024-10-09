@@ -1714,9 +1714,10 @@ param()
 &lt;/head&gt;
 &lt;body&gt;
 
-
+{% include Menu.html %}
 
 {{content}}
+
 {% include Footer.html %}
 &lt;/body&gt;
 "@
