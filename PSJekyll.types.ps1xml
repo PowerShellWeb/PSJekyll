@@ -1116,6 +1116,34 @@ Set-Content -Path (
     <Name>PSJekyll.Template</Name>
     <Members>
       <ScriptMethod>
+        <Name>Include.GitHubLink.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a link to a GitHub repository.
+.DESCRIPTION
+    Include for a link to a GitHub repository.
+    
+    This can be included in Jekyll anytime a link to a GitHub repository is needed.
+
+    If no link is provided, the template will attempt to use the site's repository URL.
+    (this will only work in a GitHub page)
+#&gt;
+param(
+[uri]
+$RepositoryUrl
+)
+
+@(if ($RepositoryUrl) {
+    "&lt;a href='$RepositoryUrl'&gt;GitHub&lt;/a&gt;"
+} else {
+    "{% if site.github.repository_url %}"
+        "&lt;a href='{{site.github.repository_url}}'&gt;GitHub&lt;/a&gt;"
+    "{% endif %}"
+}) -join [Environment]::Newline
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include4bitcss</Name>
         <Script>
                         param(
@@ -1206,34 +1234,6 @@ if ($footer) {
 &lt;/footer&gt;
 "@
 }
-                    </Script>
-      </ScriptMethod>
-      <ScriptMethod>
-        <Name>IncludeGitHubLink</Name>
-        <Script>
-                        &lt;#
-.SYNOPSIS
-    Includes a link to a GitHub repository.
-.DESCRIPTION
-    Include for a link to a GitHub repository.
-    
-    This can be included in Jekyll anytime a link to a GitHub repository is needed.
-
-    If no link is provided, the template will attempt to use the site's repository URL.
-    (this will only work in a GitHub page)
-#&gt;
-param(
-[uri]
-$RepositoryUrl
-)
-
-@(if ($RepositoryUrl) {
-    "&lt;a href='$RepositoryUrl'&gt;GitHub&lt;/a&gt;"
-} else {
-    "{% if site.github.repository_url %}"
-        "&lt;a href='{{site.github.repository_url}}'&gt;GitHub&lt;/a&gt;"
-    "{% endif %}"
-}) -join [Environment]::Newline
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
