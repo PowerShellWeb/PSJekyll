@@ -30,6 +30,10 @@ $SkipPSJekyllPS1,
 [string[]]
 $InstallModule,
 
+# If provided, will checkout a new branch before making the changes.
+[string]
+$TargetBranch,
+
 # If provided, will commit any remaining changes made to the workspace with this commit message.
 [string]
 $CommitMessage,
@@ -115,6 +119,14 @@ function InitializeAction {
 
     # Pull down any changes
     git pull | Out-Host
+
+    if ($TargetBranch) {
+        "::notice title=Expanding target branch string $targetBranch" | Out-Host
+        $TargetBranch = $ExecutionContext.SessionState.InvokeCommand.ExpandString($TargetBranch)
+        "::notice title=Checking out target branch::$targetBranch" | Out-Host
+        git checkout -b $TargetBranch | Out-Host    
+        git pull | Out-Host
+    }
 }
 
 function InvokeActionModule {
@@ -227,7 +239,11 @@ function PushActionOutput {
         $checkDetached = git symbolic-ref -q HEAD
         if (-not $LASTEXITCODE) {
             "::notice::Pushing Changes" | Out-Host
-            git push
+            if ($TargetBranch -and $anyFilesChanged) {
+                git push --set-upstream origin $TargetBranch
+            } elseif ($anyFilesChanged) {
+                git push
+            }
             "Git Push Output: $($gitPushed  | Out-String)"
         } else {
             "::notice::Not pushing changes (on detached head)" | Out-Host

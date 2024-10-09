@@ -14,6 +14,9 @@ inputs:
   InstallModule: 
     required: false
     description: A list of modules to be installed from the PowerShell gallery before scripts run.
+  TargetBranch: 
+    required: false
+    description: If provided, will checkout a new branch before making the changes.
   CommitMessage: 
     required: false
     description: If provided, will commit any remaining changes made to the workspace with this commit message.
@@ -39,6 +42,7 @@ runs:
         PSJekyllScript: ${{inputs.PSJekyllScript}}
         CommitMessage: ${{inputs.CommitMessage}}
         UserName: ${{inputs.UserName}}
+        TargetBranch: ${{inputs.TargetBranch}}
       run: |
         $Parameters = @{}
         $Parameters.PSJekyllScript = ${env:PSJekyllScript}
@@ -46,6 +50,7 @@ runs:
         $Parameters.SkipPSJekyllPS1 = $parameters.SkipPSJekyllPS1 -match 'true';
         $Parameters.InstallModule = ${env:InstallModule}
         $Parameters.InstallModule = $parameters.InstallModule -split ';' -replace '^[''"]' -replace  '[''"]$'
+        $Parameters.TargetBranch = ${env:TargetBranch}
         $Parameters.CommitMessage = ${env:CommitMessage}
         $Parameters.UserEmail = ${env:UserEmail}
         $Parameters.UserName = ${env:UserName}
@@ -86,6 +91,10 @@ runs:
         # A list of modules to be installed from the PowerShell gallery before scripts run.
         [string[]]
         $InstallModule,
+        
+        # If provided, will checkout a new branch before making the changes.
+        [string]
+        $TargetBranch,
         
         # If provided, will commit any remaining changes made to the workspace with this commit message.
         [string]
@@ -172,6 +181,14 @@ runs:
         
             # Pull down any changes
             git pull | Out-Host
+        
+            if ($TargetBranch) {
+                "::notice title=Expanding target branch string $targetBranch" | Out-Host
+                $TargetBranch = $ExecutionContext.SessionState.InvokeCommand.ExpandString($TargetBranch)
+                "::notice title=Checking out target branch::$targetBranch" | Out-Host
+                git checkout -b $TargetBranch | Out-Host    
+                git pull | Out-Host
+            }
         }
         
         function InvokeActionModule {
@@ -284,7 +301,11 @@ runs:
                 $checkDetached = git symbolic-ref -q HEAD
                 if (-not $LASTEXITCODE) {
                     "::notice::Pushing Changes" | Out-Host
-                    git push
+                    if ($TargetBranch -and $anyFilesChanged) {
+                        git push --set-upstream origin $TargetBranch
+                    } elseif ($anyFilesChanged) {
+                        git push
+                    }
                     "Git Push Output: $($gitPushed  | Out-String)"
                 } else {
                     "::notice::Not pushing changes (on detached head)" | Out-Host
