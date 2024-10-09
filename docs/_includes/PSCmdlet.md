@@ -1,7 +1,3 @@
-{% for cmdletName in site.data.PSModuleCmdletNames %}
-{% if site.pages | where: "url", "/{{cmdletName}}" %}
+{% for cmdletName in site.data.PSModule.CmdletNames %}
 * [{{ cmdletName }}](/{{cmdletName}})
-{% else %}
-* {{ cmdletName }}
-{% endif %}
 {% endfor %}
