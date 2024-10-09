@@ -25,7 +25,7 @@ if ($margin) {
     @(
         "{% if page.margin %}"
             "<style id='globalMargin' type='text/css'>{{page.margin}}</style>"
-        "{% if site.margin %}"
+        "{% elsif site.margin %}"
             "<style id='globalMargin' type='text/css'>{{site.margin}}</style>"
         "{% else %}"
 @"
