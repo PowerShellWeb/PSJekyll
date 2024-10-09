@@ -14,6 +14,7 @@
 * [set_Domain](set_Domain.md)
 * [get_Draft](get_Draft.md)
 * [set_Draft](set_Draft.md)
+* [get_File](get_File.md)
 * [get_Include](get_Include.md)
 * [set_Include](set_Include.md)
 * [get_Layout](get_Layout.md)
