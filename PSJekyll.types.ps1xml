@@ -1422,7 +1422,108 @@ body &gt; * { margin: 1em; }
 {% unless site.NoGitHubLink or site.NoLink %}
     {{include.GitHubLink}}
 {% endunless %}
-{% capture TopRightMenu %}
+{% endcapture %}
+
+{% capture TopCenterMenu %}
+{{page.menu.TopCenter}}
+{{site.menu.TopCenter}}
+{{site.data.menu.TopCenter}}
+{% endcapture %}
+
+{% capture BottomLeftMenu %}
+{{page.menu.BottomLeft}}
+{{site.menu.BottomLeft}}
+{{site.data.menu.BottomLeft}}
+{% endcapture %}
+
+{% capture BottomRightMenu %}
+{{page.menu.BottomRight}}
+{{site.menu.BottomRight}}
+{{site.data.menu.BottomRight}}
+{% endcapture %}
+
+{% capture BottomCenterMenu %}
+{{page.menu.BottomCenter}}
+{{site.menu.BottomCenter}}
+{{site.data.menu.BottomCenter}}
+{% endcapture %}
+
+{% capture LeftCenterMenu %}
+{{page.menu.LeftCenter}}
+{{site.menu.LeftCenter}}
+{{site.data.menu.LeftCenter}}
+{% endcapture %}
+
+{% capture RightCenterMenu %}
+{{page.menu.RightCenter}}
+{{site.menu.RightCenter}}
+{{site.data.menu.RightCenter}}
+{% endcapture %}
+
+{% if TopLeftMenu or TopRightMenu or TopCenterMenu or BottomLeftMenu or BottomRightMenu or BottomCenterMenu or LeftCenterMenu or RightCenterMenu %}
+&lt;style&gt;
+    /* Menu Styles */
+    menu {
+        z-index: 100;
+        position: fixed;
+        display: float;
+        margin: 1em;
+    }
+    {% if TopLeftMenu %}
+    menu .TopLeftMenu {        
+        text-align: left;
+        top: 0;
+        left: 0;
+    }
+    {% endif %}
+    {% if TopRightMenu %}
+    menu .TopRightMenu {
+        text-align: right;        
+        top: 0;
+        right: 0;
+    }
+    {% endif %}
+    {% if BottomRightMenu %}
+    menu .BottomRightMenu {        
+        text-align: right;                
+        bottom: 0;
+        right: 0;
+    }
+    {% endif %}
+    {% if TopCenterMenu %}
+    menu .TopCenterMenu {        
+        text-align: center;        
+        top: 0;
+        width: 100%;        
+    }
+    {% endif %}
+    {% if BottomCenterMenu %}
+    menu .BottomCenterMenu {        
+        text-align: center;        
+        bottom: 0;
+        width: 100%;        
+    }
+    {% endif %}
+    {% if LeftCenterMenu %}
+    menu .LeftCenterMenu {
+        text-align: left;
+        vertical-align: middle;        
+        left: 0;
+        height: 100%;    
+    }
+    {% endif %}
+    {% if RightCenterMenu %}
+    menu .RightCenterMenu {
+        text-align: right;
+        vertical-align: middle;        
+        right: 0;
+        height: 100%;
+    }
+    {% endif %}
+&lt;/style&gt;
+{% endif %}
+
+
 
 {% if TopLeftMenu %}
 &lt;menu class='TopLeftMenu'&gt;
@@ -1435,74 +1536,42 @@ body &gt; * { margin: 1em; }
     {{TopRightMenu}}
 &lt;/menu&gt;
 {% endif %}
-'@
 
-                    </Script>
-      </ScriptMethod>
-      <ScriptMethod>
-        <Name>IncludeMenuStyle</Name>
-        <Script>
-                        param()
+{% if TopCenterMenu %}
+&lt;menu class='TopCenterMenu'&gt;
+    {{TopCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
 
-@'
-&lt;style&gt;
-    /* Menu Styles */
-    menu {
-        z-index: 100;
-        position: fixed;
-        display: float;
-        margin: 1em;
-    }
-    menu .TopLeftMenu {        
-        text-align: left;
-        top: 0;
-        left: 0;
-    }
+{% if BottomLeftMenu %}
+&lt;menu class='BottomLeftMenu'&gt;
+    {{BottomLeftMenu}}
+&lt;/menu&gt;
+{% endif %}
 
-    menu .BottomLeftMenu {
-        text-align: left;
-        bottom: 0;
-        left: 0;
-    }
+{% if BottomRightMenu %}
+&lt;menu class='BottomRightMenu'&gt;
+    {{BottomRightMenu}}
+&lt;/menu&gt;
+{% endif %}
 
-    menu .TopRightMenu {
-        text-align: right;        
-        top: 0;
-        right: 0;
-    }
+{% if BottomCenterMenu %}
+&lt;menu class='BottomCenterMenu'&gt;
+    {{BottomCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
 
-    menu .BottomRightMenu {        
-        text-align: right;                
-        bottom: 0;
-        right: 0;
-    }
+{% if LeftCenterMenu %}
+&lt;menu class='LeftCenterMenu'&gt;
+    {{LeftCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
 
-    menu .TopCenterMenu {        
-        text-align: center;        
-        top: 0;
-        width: 100%;        
-    }
-
-    menu .BottomCenterMenu {        
-        text-align: center;        
-        bottom: 0;
-        width: 100%;        
-    }
-
-    menu .LeftCenterMenu {
-        text-align: left;
-        vertical-align: middle;        
-        left: 0;
-        height: 100%;    
-    }
-
-    menu .RightCenterMenu {
-        text-align: right;
-        vertical-align: middle;        
-        right: 0;
-        height: 100%;
-    }
-&lt;/style&gt;
+{% if RightCenterMenu %}
+&lt;menu class='RightCenterMenu'&gt;
+    {{RightCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
 '@
 
                     </Script>
@@ -1659,8 +1728,7 @@ param()
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
     {% include Margin.html %}
-    {% include Stylesheet.html %}
-    {% include MenuStyle.html %}
+    {% include Stylesheet.html %}    
 &lt;/head&gt;
 &lt;body&gt;
 {% include Menu.html %}
