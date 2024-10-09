@@ -1770,13 +1770,33 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.PSAlias.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for aliasName in site.data.PSModuleAliasNames %}
+{% if site.pages | where: "url", "/{{aliasName}}" %}
+* [{{ aliasName }}](/{{aliasName}})
+{% else %}
+* {{ aliasName }}
+{% endif %}
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.PSFunctions.md</Name>
         <Script>
                         param()
 
 @"
 {% for functionName in site.data.PSModuleFunctionNames %}
+{% if site.pages | where: "url", "/{{functionName}}" %}
 * [{{ functionName }}](/{{functionName}})
+{% else %}
+* {{ functionName }}
+{% endif %}
 {% endfor %}
 "@
                     </Script>
