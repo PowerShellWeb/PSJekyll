@@ -16,9 +16,10 @@
 </head>
 <body>
 
-
+{% include Menu.html %}
 
 {{content}}
+
 {% include Footer.html %}
 </body>
 "@
