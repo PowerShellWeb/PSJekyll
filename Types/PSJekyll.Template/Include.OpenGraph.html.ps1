@@ -1,11 +1,30 @@
+<#
+.SYNOPSIS
+    Include Open Graph meta tags in a Jekyll site.
+.DESCRIPTION
+    Include Open Graph meta tags in a Jekyll site.
+
+    These tags can help social media sites understand the content of your site, and show preview images.
+
+    This script is intended to be included in the head of a Jekyll site.
+
+    It will output the Open Graph meta tags for the current page and site.
+.NOTES
+    Tags included:
+    - og:site_name
+    - og:title
+    - og:type
+    - og:description
+    - og:url
+    - og:image
+    - article:published_time
+#>
 param()
 
 @'
 <meta content="{{ site.title }}" property="og:site_name" />
 {% if page.title %}
 <meta content="{{ page.title }}" property="og:title" />
-{% elsif page.stylesheet %}
-<meta content="{{ page.stylesheet }}" property="og:title" />
 {% else %}
 <meta content="{{ site.title }}" property="og:title" />
 {% endif %}
