@@ -16,7 +16,7 @@ param()
     {{site.menu.TopRight}}
     {{site.data.menu.TopRight}}
     {% unless site.NoGitHubLink or site.NoLink %}
-        {% include GitHubLink %}
+        {% include GitHubLink.html %}
     {% endunless %}
 {% endcapture %}
 {% assign TopRightMenu = TopRightMenu | strip %}
