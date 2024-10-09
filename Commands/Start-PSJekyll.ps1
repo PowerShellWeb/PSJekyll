@@ -112,7 +112,16 @@ function Start-PSJekyll
     if ($jekyllSplat -notmatch '--trace') {
         $jekyllSplat += '--trace'
     }
-    
+    $isGemFilePresent = Test-Path -Path './Gemfile'
+    if (-not $isGemFilePresent) {
+        Write-Warning "Gemfile not found in the current directory. Creating a default Gemfile."
+        $gitRemote = git remote
+        if ($gitRemote -isnot [string] -or $gitRemote -notmatch 'fatal') {
+            $PSJekyll.Template.'GitHubPages.Gemfile'() > ./Gemfile
+        } else {
+            $PSJekyll.Template.MinGemFile() > ./Gemfile
+        }        
+    }
     Write-Verbose "Starting Jekyll server $jekyllSplat"
     $jobName = if ($hostHeader) { "PSJekyll.$hostHeader" } else { "Start-PSJekyll" }
     $jekyllJob = 
