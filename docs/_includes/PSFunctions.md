@@ -1,7 +1,3 @@
-{% for functionName in site.data.PSModuleFunctionNames %}
-{% if site.pages | where: "url", "/{{functionName}}" %}
+{% for functionName in site.data.PSModule.FunctionNames %}
 * [{{ functionName }}](/{{functionName}})
-{% else %}
-* {{ functionName }}
-{% endif %}
 {% endfor %}
