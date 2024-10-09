@@ -4,9 +4,9 @@
 ### Script Methods
 
 
+* [html](html.md)
 * [IncludeCopyright](IncludeCopyright.md)
 * [IncludeFooter](IncludeFooter.md)
-* [IncludeGitHubLink](IncludeGitHubLink.md)
 * [IncludeGoogleFont](IncludeGoogleFont.md)
 * [IncludeImportMap](IncludeImportMap.md)
 * [IncludeMargin](IncludeMargin.md)
