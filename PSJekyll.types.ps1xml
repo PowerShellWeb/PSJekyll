@@ -1420,7 +1420,7 @@ body &gt; * { margin: 1em; }
 {{site.menu.TopRight}}
 {{site.data.menu.TopRight}}
 {% unless site.NoGitHubLink or site.NoLink %}
-    {{include.GitHubLink}}
+    {{include GitHubLink}}
 {% endunless %}
 {% endcapture %}
 
@@ -1469,106 +1469,70 @@ body &gt; * { margin: 1em; }
         display: float;
         margin: 1em;
     }
-    {% if TopLeftMenu %}
-    menu .TopLeftMenu {        
-        text-align: left;
-        top: 0;
+    menu[class~=Left] {
         left: 0;
-    }
-    {% endif %}
-    {% if TopRightMenu %}
-    menu .TopRightMenu {
-        text-align: right;        
-        top: 0;
-        right: 0;
-    }
-    {% endif %}
-    {% if BottomRightMenu %}
-    menu .BottomRightMenu {        
-        text-align: right;                
-        bottom: 0;
-        right: 0;
-    }
-    {% endif %}
-    {% if TopCenterMenu %}
-    menu .TopCenterMenu {        
-        text-align: center;        
-        top: 0;
-        width: 100%;        
-    }
-    {% endif %}
-    {% if BottomCenterMenu %}
-    menu .BottomCenterMenu {        
-        text-align: center;        
-        bottom: 0;
-        width: 100%;        
-    }
-    {% endif %}
-    {% if LeftCenterMenu %}
-    menu .LeftCenterMenu {
         text-align: left;
-        vertical-align: middle;        
-        left: 0;
-        height: 100%;    
     }
-    {% endif %}
-    {% if RightCenterMenu %}
-    menu .RightCenterMenu {
+    menu[class~=Right] {
+        right: 0;
         text-align: right;
-        vertical-align: middle;        
-        right: 0;
-        height: 100%;
     }
-    {% endif %}
+    menu[class~=Top] {
+        top: 0;        
+    }
+    menu[class~=Bottom] {
+        bottom: 0;        
+    }
+    menu[class~=Center] {
+        text-align: center;
+    }    
 &lt;/style&gt;
 {% endif %}
 
-
-
-{% if TopLeftMenu %}
-&lt;menu class='TopLeftMenu'&gt;
+{% if TopLeftMenu | strip %}
+&lt;menu class='Top Left'&gt;
     {{TopLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopRightMenu %}
-&lt;menu class='TopRightMenu'&gt;
+{% if TopRightMenu | strip %}
+&lt;menu class='Top Right'&gt;
     {{TopRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopCenterMenu %}
-&lt;menu class='TopCenterMenu'&gt;
+{% if TopCenterMenu | strip %}
+&lt;menu class='Top Center'&gt;
     {{TopCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomLeftMenu %}
-&lt;menu class='BottomLeftMenu'&gt;
+{% if BottomLeftMenu | strip %}
+&lt;menu class='Bottom Left'&gt;
     {{BottomLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomRightMenu %}
-&lt;menu class='BottomRightMenu'&gt;
+{% if BottomRightMenu | strip %}
+&lt;menu class='Bottom Right'&gt;
     {{BottomRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomCenterMenu %}
-&lt;menu class='BottomCenterMenu'&gt;
+{% if BottomCenterMenu | strip %}
+&lt;menu class='Bottom Center'&gt;
     {{BottomCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if LeftCenterMenu %}
-&lt;menu class='LeftCenterMenu'&gt;
+{% if LeftCenterMenu | strip %}
+&lt;menu class='Left Center'&gt;
     {{LeftCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if RightCenterMenu %}
-&lt;menu class='RightCenterMenu'&gt;
+{% if RightCenterMenu | strip %}
+&lt;menu class='Right Center'&gt;
     {{RightCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
