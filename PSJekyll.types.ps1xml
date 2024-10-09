@@ -1818,6 +1818,18 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.PSTag.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for tagName in site.data.PSModuleInfo.Tags %}
+* [{{ tagName }}](https://www.powershellgallery.com/packages?q=Tags%3A%22{{tagName}}%22)
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.SiteTree.html</Name>
         <Script>
                         &lt;#
