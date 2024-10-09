@@ -1407,19 +1407,32 @@ body &gt; * { margin: 1em; }
 
 
 @'
-
 {% capture TopLeftMenu %}
+
 {{page.menu.TopLeft}}
 {{site.menu.TopLeft}}
 {{site.data.menu.TopLeft}}
+
+{% endcapture %}
+
+{% capture TopRightMenu %}
+{{page.menu.TopRight}}
+{{site.menu.TopRight}}
+{{site.data.menu.TopRight}}
 {% unless site.NoGitHubLink or site.NoLink %}
     {{include.GitHubLink}}
 {% endunless %}
-{% endcapture %}
+{% capture TopRightMenu %}
 
-{% if topLeftMenu %}
+{% if TopLeftMenu %}
 &lt;menu class='TopLeftMenu'&gt;
-    {{topLeftMenu}}
+    {{TopLeftMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if TopRightMenu %}
+&lt;menu class='TopRightMenu'&gt;
+    {{TopRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 '@
