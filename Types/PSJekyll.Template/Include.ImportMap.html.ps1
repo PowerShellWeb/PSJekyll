@@ -11,6 +11,9 @@
     It may be called either `.imports` or `.importMap`.
 #>
 param(
+# The import map to include.
+# If no import map is included, then it will attempt to find an import map in the site or page front matter.
+[object]
 $ImportMap
 )
 
