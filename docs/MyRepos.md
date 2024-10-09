@@ -2,4 +2,4 @@
 
 title: MyRepos
 ---
-{% include MyRepos.html %}
+{% include MyRepos.md %}
