@@ -14,14 +14,14 @@
   "Author": "James Brundage",
   "PrivateData": {
     "PSData": {
+      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
+      "ProjectUri": "https://github.com/PowerShellWeb/PSJekyll",
       "Tags": [
         "PowerShellWeb",
         "Jekyll",
         "Docker",
         "GitHubAction"
-      ],
-      "LicenseUri": "https://github.com/PowerShellWeb/PSJekyll/blob/main/LICENSE",
-      "ProjectUri": "https://github.com/PowerShellWeb/PSJekyll"
+      ]
     }
   }
 }
