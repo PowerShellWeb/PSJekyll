@@ -1,0 +1,1874 @@
+[
+  {
+    "Name": "New-PSJekyll",
+    "CommandType": 2,
+    "Definition": "\n    <#\n    .SYNOPSIS\n        Creates a new Jekyll site.\n    .DESCRIPTION\n        Creates a new Jekyll site, using PowerShell.\n    .LINK\n        https://jekyllrb.com/\n    #>\n    [Alias('New-Jekyll')]\n    param(\n    # The name of the Jekyll site\n    [string]\n    $Name,\n\n    # Creates scaffolding but with empty files\n    [switch]\n    $Blank,\n\n    # Force creation even if PATH already exists\n    [switch]\n    $Force,\n\n    # Safe mode\n    [switch]\n    $Safe,\n\n    # Skip the bundle install\n    [switch]\n    $SkipBundle,\n\n    # The path to the source files\n    [string]\n    $SourcePath,\n\n    # The path to the destination files\n    [string]\n    $DestinationPath,\n\n    # The path to the layout files\n    [string]\n    $LayoutPath,\n\n    # The path to the plugin files\n    [string[]]\n    $PluginPath,\n\n    # If set,  will generate a liquid profile\n    [switch]\n    $LiquidProfile,\n\n    # If set, will trace the execution\n    [switch]\n    $Trace\n    )\n\n    $jekyllSplat = @(\n        $name\n        if ($blank) { '--blank' }\n        if ($force) { '--force' }\n        if ($safe) { '--safe' }\n        if ($skipBundle) { '--skip-bundle' }\n        if ($sourcePath) {\"--source $sourcePath\"}\n        if ($destinationPath) {\"--destination $destinationPath\"}\n        if ($layoutPath) {\"--layouts $layoutPath\"}\n        if ($pluginPath) {\"--plugins $($pluginPath -join ',')\"}\n        if ($liquidProfile) {'--profile'}\n        if ($trace) {'--trace'}\n    )\n\n    $newJekyllJob = jekyll new @jekyllSplat &\n    $newJekyllJob.pstypenames.Insert(0,'PSJekyll.Job')\n    $newJekyllJob.pstypenames.Insert(0,'PSJekyll.Job.New-PSJekyll')\n    $newJekyllJob\n",
+    "ParameterName": [
+      "Name",
+      "Blank",
+      "Force",
+      "Safe",
+      "SkipBundle",
+      "SourcePath",
+      "DestinationPath",
+      "LayoutPath",
+      "PluginPath",
+      "LiquidProfile",
+      "Trace"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Blank",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Force",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Safe",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SkipBundle",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SourcePath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "DestinationPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LayoutPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PluginPath",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiquidProfile",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Trace",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Remove-PSJekyll",
+    "CommandType": 2,
+    "Definition": "    \n    <#\n    .SYNOPSIS\n        Removes content from Jekyll\n    .DESCRIPTION\n        Removes files from Jekyll\n\n        This is a slightly limited version of Remove-Item.\n    #>\n    [Alias('Remove-Jekyll')]\n    param(\n    # The path to the file.\n    [Parameter(Mandatory,Position=0,ValueFromPipelineByPropertyName)]    \n    [ValidatePattern('^[\\\\/]')]\n    [Alias('FullName')]\n    [string]\n    $Path\n    )\n    \n    process {\n        if (Test-Path $path) {        \n            Remove-Item -Path $path         \n        }\n    }        \n",
+    "ParameterName": [
+      "Path",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Path",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Set-PSJekyll",
+    "CommandType": 2,
+    "Definition": "    \n    <#\n    .SYNOPSIS\n        Sets the content of a file in Jekyll\n    .DESCRIPTION\n        Sets the content of a file in Jekyll.\n\n        This is only slightly smarter than Set-Content.  \n        \n        It will convert the content to JSON if the file ends in .json, and to CSV if the file ends in .csv or .tsv.\n\n        Otherwise, it will create a YAML header and then set the content.\n    #>\n    [Alias('Set-Jekyll')]\n    param(\n    # The path to the file.\n    [Parameter(Mandatory,Position=0)]    \n    [ValidatePattern('^[\\\\/]')]\n    [Alias('FullName')]\n    [string]\n    $Path,\n    \n    # If set, will return the file object\n    [switch]\n    $PassThru,\n    \n    # The content to set\n    [Parameter(ValueFromPipeline)]\n    [object]\n    $Content,\n\n    # Any metadata to set.  \n    # This will create a YAML header, which is required for most files in Jekyll to be processed properly.\n    [Alias('YamlHeader')]\n    [Collections.IDictionary]\n    $MetaData = [Ordered]@{}\n    )\n    \n    $allInput = @($input)\n    if ((-not $allInput) -and $Content) {\n        $allInput = @($Content)\n    }\n\n    if (-not $allInput) { return }\n    if (-not (Test-Path $path)) {        \n        New-Item -Path $path -Type File -Force | Out-Null\n        if (-not $?) { return }\n    }\n    \n    if ($path -match '\\.json$') {\n        if ($allInput.Length -eq 1) {         \n            ConvertTo-Json -InputObject $allInput[0] -Depth $FormatEnumerationLimit | \n                Set-Content -Path $path\n        } else {\n            ConvertTo-Json -InputObject $allInput -Depth $FormatEnumerationLimit | \n                Set-Content -Path $path\n        } \n    } \n    elseif ($path -match '\\.[ct]sv$') {\n        $csvSplat = [Ordered]@{Path=$path}\n        if ($path -match '\\.t') {\n            $csvSplat.Delimiter = \"`t\"\n        }\n        $content | \n            Export-Csv @csvSplat  -NoTypeInformation \n    }\n    else {\n        @(\n            $metadata | & $psJekyll.FormatYaml.Script -YamlHeader\n            $content\n        ) | \n            Set-Content -Path $path\n    }\n    if ($? -and $PassThru) {\n        Get-Item -Path $path\n    }\n",
+    "ParameterName": [
+      "Path",
+      "PassThru",
+      "Content",
+      "MetaData",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Path",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PassThru",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Content",
+        "ParameterType": "System.Object",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "MetaData",
+        "ParameterType": "System.Collections.IDictionary",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Start-PSJekyll",
+    "CommandType": 2,
+    "Definition": "\n    <#\n    .SYNOPSIS\n        Starts a Jekyll server\n    .DESCRIPTION\n        Starts a Jekyll server in a PowerShell job.\n    .LINK\n        https://jekyllrb.com/\n    #>\n    [Alias('Start-Jekyll')]\n    [CmdletBinding()]\n    param(\n    # The name of the Jekyll site\n    [string]\n    $Name,\n\n    # One or more config files to use\n    [Alias('Configuration')]\n    [string[]]\n    $Config,\n\n    # The source directory\n    [string]\n    $SourcePath,\n\n    # The destination directory\n    [string]\n    $DestinationPath,\n    \n    # The host header\n    [string]\n    $HostHeader,\n\n    # The port to listen on\n    [uint]\n    $Port,\n\n    # The path to the plugin files\n    [string[]]\n    $PluginPath,\n\n    # If set, will show a directory list.\n    [switch]\n    $ShowDirectoryList,\n\n    # If set, will enable live reload.\n    [switch]\n    $LiveReload,\n\n    # If set,  will generate a liquid profile\n    [switch]\n    $LiquidProfile,\n\n    # If set, will trace the execution\n    [switch]\n    $Trace,    \n\n    # Watch for changes and rebuild\n    [switch]\n    $Watch,\n\n    # If set, will publish posts with a future date (previewing them).\n    [switch]\n    $PreviewFuture,\n\n    # The base URL for the site\n    [string]\n    $BaseUrl,\n\n    # If set, will detach the process\n    [switch]\n    $Detach,\n\n    # Enable incremental rebuilds\n    [switch]\n    $Incremental\n    )\n\n    if ($env:IN_CONTAINER -and -not $HostHeader) {\n        $HostHeader = '*'\n    } \n\n    $jekyllSplat = @(                \n        if ($force) { '--force' }\n        if ($safe) { '--safe' }\n        if ($Detach) { '--detach' }\n        if ($PreviewFuture) { '--future' }\n        if ($liveReload) {'--livereload'}\n        if ($sourcePath) {\"--source\";\"$sourcePath\"}\n        if ($destinationPath) {\"--destination\";\"$destinationPath\"}\n        if ($BaseUrl) {\"--baseurl\";\"$BaseUrl\"}\n        if ($Incremental) {'--incremental'}\n        if ($HostHeader) {\"--host\"; \"$HostHeader\"}\n        if ($Port) {\"--port\"; \"$Port\"}\n        if ($ShowDirectoryList) {'--show-dir-list'}\n        if ($layoutPath) {\"--layouts\"; \"$layoutPath\"}\n        if ($pluginPath) {\"--plugins\"; \"$($pluginPath -join ',')\"}\n        if ($liquidProfile) {'--profile'}\n        if ($trace) {'--trace'}\n        if ($watch) {'--watch'}\n\n    )\n        \n    $startedAfter = [DateTime]::Now\n    if ($jekyllSplat -notmatch '--watch') {\n        $jekyllSplat += '--watch'\n    }\n    if ($jekyllSplat -notmatch '--incremental') {\n        $jekyllSplat += '--incremental'\n    }\n    if ($jekyllSplat -notmatch '--trace') {\n        $jekyllSplat += '--trace'\n    }\n    $isGemFilePresent = Test-Path -Path './Gemfile'\n    if (-not $isGemFilePresent) {\n        Write-Warning \"Gemfile not found in the current directory. Creating a default Gemfile.\"\n        $gitRemote = git remote\n        if ($gitRemote -isnot [string] -or $gitRemote -notmatch 'fatal') {\n            $PSJekyll.Template.'GitHubPages.Gemfile'() > ./Gemfile\n        } else {\n            $PSJekyll.Template.MinGemFile() > ./Gemfile\n        }        \n    }\n    Write-Verbose \"Starting Jekyll server $jekyllSplat\"\n    $jobName = if ($hostHeader) { \"PSJekyll.$hostHeader\" } else { \"Start-PSJekyll\" }\n    $jekyllJob = \n        Start-ThreadJob -ScriptBlock {\n            if ($ExecutionContext.SessionState.InvokeCommand.GetCommand('sudo','application')) {\n                sudo bundle install\n            } else {\n                bundle install\n            }\n                        \n            if ($args -match '^\\*$' -and $args -match '^--host$') {\n                $otherArgs = @($args -notmatch '^(?>--host|\\*)$')                \n                bundle exec jekyll serve --host '*' @otherArgs\n            } else {\n                $promptLongForm = @('exec','jekyll','serve') + $args \n                bundle @promptLongForm\n            }                        \n        } -ArgumentList $jekyllSplat -Name $jobName\n    \n    $jekyllProcesses = Get-Process *ruby* | Where-Object { $_.StartTime -ge $startedAfter }\n\n    Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {\n        get-process ruby | Stop-Process -Force\n    } | Out-Null\n    \n    $jekyllJob.pstypenames.insert(0,\"PSJekyll.JekyllJob\")\n    $jekyllJob.psobject.properties.Add([psnoteproperty]::New(\"Processes\", $jekyllProcesses))\n    $jekyllJob\n",
+    "ParameterName": [
+      "Name",
+      "Config",
+      "SourcePath",
+      "DestinationPath",
+      "HostHeader",
+      "Port",
+      "PluginPath",
+      "ShowDirectoryList",
+      "LiveReload",
+      "LiquidProfile",
+      "Trace",
+      "Watch",
+      "PreviewFuture",
+      "BaseUrl",
+      "Detach",
+      "Incremental",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Config",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SourcePath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "DestinationPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "HostHeader",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Port",
+        "ParameterType": "System.UInt32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PluginPath",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ShowDirectoryList",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiveReload",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiquidProfile",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Trace",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Watch",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PreviewFuture",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "BaseUrl",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Detach",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Incremental",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Stop-PSJekyll",
+    "CommandType": 2,
+    "Definition": "\n    <#\n    .SYNOPSIS\n        Stops a Jekyll server\n    .DESCRIPTION\n        Stops a Jekyll server in a PowerShell job.\n    .LINK\n        https://jekyllrb.com/\n    #>\n    [Alias('Stop-Jekyll')]   \n    param(\n    # The name of the Jekyll job\n    [Parameter(ValueFromPipelineByPropertyName)]\n    [string]\n    $Name = '*'\n    )\n\n    process {\n        Get-Job -Name \"Jekyll.$Name\" | Stop-Job\n    }\n",
+    "ParameterName": [
+      "Name",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "New-Jekyll",
+    "CommandType": 1,
+    "Definition": "New-PSJekyll",
+    "ParameterName": [
+      "Name",
+      "Blank",
+      "Force",
+      "Safe",
+      "SkipBundle",
+      "SourcePath",
+      "DestinationPath",
+      "LayoutPath",
+      "PluginPath",
+      "LiquidProfile",
+      "Trace"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Blank",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Force",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Safe",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SkipBundle",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SourcePath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "DestinationPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LayoutPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PluginPath",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiquidProfile",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Trace",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Remove-Jekyll",
+    "CommandType": 1,
+    "Definition": "Remove-PSJekyll",
+    "ParameterName": [
+      "Path",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Path",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Set-Jekyll",
+    "CommandType": 1,
+    "Definition": "Set-PSJekyll",
+    "ParameterName": [
+      "Path",
+      "PassThru",
+      "Content",
+      "MetaData",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Path",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PassThru",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Content",
+        "ParameterType": "System.Object",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "MetaData",
+        "ParameterType": "System.Collections.IDictionary",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Start-Jekyll",
+    "CommandType": 1,
+    "Definition": "Start-PSJekyll",
+    "ParameterName": [
+      "Name",
+      "Config",
+      "SourcePath",
+      "DestinationPath",
+      "HostHeader",
+      "Port",
+      "PluginPath",
+      "ShowDirectoryList",
+      "LiveReload",
+      "LiquidProfile",
+      "Trace",
+      "Watch",
+      "PreviewFuture",
+      "BaseUrl",
+      "Detach",
+      "Incremental",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Config",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "SourcePath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "DestinationPath",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "HostHeader",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Port",
+        "ParameterType": "System.UInt32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PluginPath",
+        "ParameterType": "System.String[]",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ShowDirectoryList",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiveReload",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "LiquidProfile",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Trace",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Watch",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PreviewFuture",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "BaseUrl",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Detach",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Incremental",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  },
+  {
+    "Name": "Stop-Jekyll",
+    "CommandType": 1,
+    "Definition": "Stop-PSJekyll",
+    "ParameterName": [
+      "Name",
+      "Verbose",
+      "Debug",
+      "ErrorAction",
+      "WarningAction",
+      "InformationAction",
+      "ProgressAction",
+      "ErrorVariable",
+      "WarningVariable",
+      "InformationVariable",
+      "OutVariable",
+      "OutBuffer",
+      "PipelineVariable"
+    ],
+    "Parameter": [
+      {
+        "Name": "Name",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Verbose",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "Debug",
+        "ParameterType": "System.Management.Automation.SwitchParameter",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ProgressAction",
+        "ParameterType": "System.Management.Automation.ActionPreference",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "ErrorVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "WarningVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "InformationVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "OutBuffer",
+        "ParameterType": "System.Int32",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      },
+      {
+        "Name": "PipelineVariable",
+        "ParameterType": "System.String",
+        "Position": null,
+        "Mandatory": null,
+        "ValueFromPipeline": null,
+        "ValueFromPipelineByPropertyName": null,
+        "ValueFromRemainingArguments": null,
+        "HelpMessage": null
+      }
+    ]
+  }
+]
