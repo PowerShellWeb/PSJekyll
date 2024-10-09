@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+    Sets an include file.
+.DESCRIPTION
+    Sets an include file in a Jekyll site.
+
+    Include files are used to include content inline in a page.
+.LINK
+    https://jekyllrb.com/docs/includes/
+#>
 param()
 
 $unrolledArguments = @($args | . { process { $_ } })
