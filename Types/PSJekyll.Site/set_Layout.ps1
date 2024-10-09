@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+    Sets the layout files of a site.
+.DESCRIPTION
+    Sets the layout files in a Jekyll site.
+
+    Layout files are used to define the structure of a page.
+.LINK
+    https://jekyllrb.com/docs/layouts/
+#>
 param()
 
 $unrolledArguments = @($args | . { process { $_ } })
