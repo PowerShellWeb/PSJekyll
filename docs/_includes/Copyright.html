@@ -1,0 +1,9 @@
+&copy; {% if page.copyright %}
+    {{page.copyright}}
+{% elsif site.copyright %}
+    {{site.copyright}}
+{% elsif site.data.PSModuleInfo.Copyright %}
+    {{site.data.PSModuleInfo.Copyright}}
+{% else %}
+    {{ site.time | date: '%Y' }} {{ site.author }}
+{% endif %}
