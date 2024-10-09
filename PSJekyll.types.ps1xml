@@ -1787,9 +1787,17 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
-        <Name>IncludeStylesheet</Name>
+        <Name>Include.Stylesheet.html</Name>
         <Script>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Includes stylesheets in a Jekyll site.
+.DESCRIPTION
+    Optionally includes stylesheets in a Jekyll site.
+    
+    If the site or page has any `.stylesheet` property, then the stylesheets will be included.
+#&gt;
+param()
 
 @'
 {% if site.data.stylesheet %}
