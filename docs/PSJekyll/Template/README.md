@@ -10,6 +10,6 @@
 * [html](html.md)
 * [html](html.md)
 * [html](html.md)
+* [md](md.md)
 * [html](html.md)
-* [IncludeMyRepos](IncludeMyRepos.md)
 * [MinGemFile](MinGemFile.md)
