@@ -7,7 +7,7 @@ param()
     {{site.menu.TopLeft}}
     {{site.data.menu.TopLeft}}
 {% endcapture %}
-{% assign TopLeftMenu = TopLeftMenu | strip %}}
+{% assign TopLeftMenu = TopLeftMenu | strip %}
 
 {% capture TopRightMenu %}
     {{page.menu.TopRight}}
@@ -102,49 +102,49 @@ param()
 </style>
 {% endif %}
 
-{% if TopLeftMenu %}
+{% if TopLeftMenu != "" %}
 <menu class='Top Left'>
     {{TopLeftMenu}}
 </menu>
 {% endif %}
 
-{% if TopRightMenu %}
+{% if TopRightMenu != "" %}
 <menu class='Top Right'>
     {{TopRightMenu}}
 </menu>
 {% endif %}
 
-{% if TopCenterMenu %}
+{% if TopCenterMenu != "" %}
 <menu class='Top Center'>
     {{TopCenterMenu}}
 </menu>
 {% endif %}
 
-{% if BottomLeftMenu %}
+{% if BottomLeftMenu != "" %}
 <menu class='Bottom Left'>
     {{BottomLeftMenu}}
 </menu>
 {% endif %}
 
-{% if BottomRightMenu %}
+{% if BottomRightMenu != "" %}
 <menu class='Bottom Right'>
     {{BottomRightMenu}}
 </menu>
 {% endif %}
 
-{% if BottomCenterMenu %}
+{% if BottomCenterMenu != "" %}
 <menu class='Bottom Center'>
     {{BottomCenterMenu}}
 </menu>
 {% endif %}
 
-{% if LeftCenterMenu %}
+{% if LeftCenterMenu != "" %}
 <menu class='Left Center'>
     {{LeftCenterMenu}}
 </menu>
 {% endif %}
 
-{% if RightCenterMenu %}
+{% if RightCenterMenu != "" %}
 <menu class='Right Center'>
     {{RightCenterMenu}}
 </menu>
