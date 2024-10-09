@@ -19,3 +19,5 @@
 * [set_Include](set_Include.md)
 * [get_Layout](get_Layout.md)
 * [set_Layout](set_Layout.md)
+* [get_Post](get_Post.md)
+* [set_Post](set_Post.md)
