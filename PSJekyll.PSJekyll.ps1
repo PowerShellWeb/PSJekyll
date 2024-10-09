@@ -48,6 +48,8 @@ $PSJekyll.CurrentSite.Data = @{
     PSModuleCmdletNames   = $sourceModule.ExportedCmdlets.Keys
     PSModuleAliasNames    = $sourceModule.ExportedAliases.Keys
     PSModuleVariableNames = $sourceModule.ExportedVariables.Keys
+    PSModuleExportTypeNames = $sourceModule.ExportedTypeFiles | 
+        ForEach-Object { (Select-Xml -XPath //Types/Type -Path $_).Node.Name }
 }
 $PSJekyll.CurrentSite.Data
 # It is important to use [Ordered], otherwise, the order of the keys will be random.
@@ -103,6 +105,7 @@ $PSJekyll.CurrentSite.Page = 'Aliases', "{% include PSAlias.md %}"
 $PSJekyll.CurrentSite.Page = 'Cmdlet', "{% include PSCmdlet.md %}"
 $PSJekyll.CurrentSite.Page = 'Cmdlets', "{% include PSCmdlet.md %}"
 $PSJekyll.CurrentSite.Page = 'PSTag', "{% include PSTag.md %}"
+$PSJekyll.CurrentSite.Page = 'PSTypeName', "{% include PSTypeName.md %}"
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 $PSJekyll.CurrentSite.Page
