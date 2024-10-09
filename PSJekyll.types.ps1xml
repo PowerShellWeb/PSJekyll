@@ -1007,7 +1007,17 @@ New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
       <ScriptProperty>
         <Name>Layout</Name>
         <GetScriptBlock>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Gets the layout files of a site.
+.DESCRIPTION
+    Gets the layout files in a Jekyll site.
+
+    Layout files are used to define the structure of a page.
+.LINK
+    https://jekyllrb.com/docs/layouts/
+#&gt;
+param()
 
 foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
     $specialFile.pstypenames.add("PSJekyll.LayoutFile")
@@ -1017,7 +1027,17 @@ foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
 
                     </GetScriptBlock>
         <SetScriptBlock>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Sets the layout files of a site.
+.DESCRIPTION
+    Sets the layout files in a Jekyll site.
+
+    Layout files are used to define the structure of a page.
+.LINK
+    https://jekyllrb.com/docs/layouts/
+#&gt;
+param()
 
 $unrolledArguments = @($args | . { process { $_ } })
 
