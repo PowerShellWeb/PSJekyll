@@ -7,7 +7,7 @@ param()
 {{page.menu.TopLeft}}
 {{site.menu.TopLeft}}
 {{site.data.menu.TopLeft}}
-{% usless site.NoGitHubLink || site.NoLink %}
+{% unless site.NoGitHubLink or site.NoLink %}
     {{include.GitHubLink}}
 {% endif %}
 {% endcapture %}
