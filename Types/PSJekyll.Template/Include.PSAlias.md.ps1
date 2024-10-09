@@ -2,7 +2,8 @@ param()
 
 @"
 {% for aliasName in site.data.PSModuleAliasNames %}
-{% if site.pages | where: "url", "/{{aliasName}}" %}
+{% assign pageLink = site.pages | where: "url", "/{{aliasName}}" %}
+{% if pageLink %}
 * [{{ aliasName }}](/{{aliasName}})
 {% else %}
 * {{ aliasName }}
