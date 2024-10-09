@@ -1,0 +1,12 @@
+{% if page.margin %}
+<style id='globalMargin' type='text/css'>{{page.margin}}</style>
+{% elsif site.margin %}
+<style id='globalMargin' type='text/css'>{{site.margin}}</style>
+{% else %}
+<style type='text/css' id='globalMargin'>
+body > * { margin: 1em; }                
+@media (max-width: 960px) {
+    body > * { margin: .5em; }
+}
+</style>
+{% endif %}
