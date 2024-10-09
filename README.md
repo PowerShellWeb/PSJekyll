@@ -1,5 +1,5 @@
 <div align='center'>
-<img src='Assets/PSJekyll-Animated.svg' />
+    <img alt='PSJekyll Logo (Animated)' style='height:50%' src='Assets/PSJekyll-Animated.svg' />
 </div>
 
 # PSJekyll
@@ -23,6 +23,10 @@ This helps you automate updating content and data within a Jekyll site or GitHub
 - uses: PowerShellWeb/PSJekyll@main
 ~~~
 
+Using this action will run any `*.PSJekyll.ps1` files in your repository.
+
+Any files outputted from this will be checked into the current branch.
+
 ## PSJekyll Container
 
 PSJekyll ships every build in a container.
@@ -39,6 +43,6 @@ docker run --interactive --tty --publish 8069:4000 ghcr.io/powershellweb/psjekyl
 
 ## PSJekyll Commands
 
-* [New-PSJekyll](New-PSJekyll) creates sites with `jekyll new`
-* [Start-PSJekyll](Start-PSJekyll) starts Jekyll servers in a job.
-* [Stop-PSJekyll](Stop-PSJekyll) stops running Jekyll jobs.
+* New-PSJekyll creates Jekyll sites.
+* Start-PSJekyll starts Jekyll servers in a job.
+* Stop-PSJekyll stops running Jekyll jobs.
