@@ -5,7 +5,7 @@
 
 
 * [html](html.md)
-* [IncludeCopyright](IncludeCopyright.md)
+* [html](html.md)
 * [IncludeFooter](IncludeFooter.md)
 * [IncludeGoogleFont](IncludeGoogleFont.md)
 * [IncludeImportMap](IncludeImportMap.md)
