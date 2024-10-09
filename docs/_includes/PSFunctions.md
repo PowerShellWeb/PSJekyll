@@ -1,3 +1,3 @@
 {% for functionName in site.data.PSModuleFunctionNames %}
-"* [{{ functionName }}](/{{functionName}})"
+* [{{ functionName }}](/{{functionName}})
 {% endfor %}
