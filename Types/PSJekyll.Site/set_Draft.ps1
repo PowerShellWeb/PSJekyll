@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+    Sets a draft in a Jekyll site.
+.DESCRIPTION
+    Sets a draft in a Jekyll site, using PowerShell.
+    
+    This will create a new draft in the `_drafts` folder.
+
+    If no metadata is provided, it will default to the current date and the title of the draft.
+#>
 param()
 
 $unrolledArguments = @($args | . { process { $_ } })
@@ -28,14 +38,14 @@ if (-not $metadata.date) {
     $metadata.date = [DateTime]::Now.ToString("yyyy-MM-dd HH:mm:ss K")
 }
 if (-not $metadata.title) {
-    $metadata.title = $Name
+    $metadata.title = $Name -replace '\.+?$'
 }
 
-
-
-Set-Content -Path (
-    $this.Directory,"_drafts",($Name | toMarkdownFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
-) -Value $(
+New-Item -Path (
+    $this.Directory,"_drafts",($Name | toMarkdownFileName) -join 
+        ([IO.Path]::DirectorySeparatorChar) -replace 
+            '^\\' -replace '[\\/]', [IO.Path]::DirectorySeparatorChar
+) -Force -Value $(
     @(
         $metadata | & $psJekyll.FormatYaml.Script -YamlHeader
         $content
