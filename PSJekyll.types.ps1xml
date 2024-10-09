@@ -1938,6 +1938,21 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.Releases.md</Name>
+        <Script>
+                        param()
+
+@(
+@"
+{% for release in site.github.releases %}
+# [{{ release.tag_name }}]({{ release.html_url }})
+{{ release.body }}
+{% endfor %}
+"@
+)
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.Repos.md</Name>
         <Script>
                         &lt;#
