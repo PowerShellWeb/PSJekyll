@@ -1629,41 +1629,35 @@ body &gt; * { margin: 1em; }
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
-        <Name>IncludeMyRepos</Name>
+        <Name>Include.OpenGraph.html</Name>
         <Script>
                         &lt;#
 .SYNOPSIS
-    Include my repositories.
+    Include Open Graph meta tags in a Jekyll site.
 .DESCRIPTION
-    Include my repositories in the site.
-    
-    This will add a list of the owner's repositories to the site.
+    Include Open Graph meta tags in a Jekyll site.
 
-    This will only work in GitHub Pages.
-.LINK
-    https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md
+    These tags can help social media sites understand the content of your site, and show preview images.
+
+    This script is intended to be included in the head of a Jekyll site.
+
+    It will output the Open Graph meta tags for the current page and site.
+.NOTES
+    Tags included:
+    - og:site_name
+    - og:title
+    - og:type
+    - og:description
+    - og:url
+    - og:image
+    - article:published_time
 #&gt;
 param()
-
-@'
-{% for repository in site.github.public_repositories %}
-  * [{{ repository.name }}]({{ repository.html_url }})
-{% endfor %}
-'@
-
-                    </Script>
-      </ScriptMethod>
-      <ScriptMethod>
-        <Name>IncludeOpenGraph</Name>
-        <Script>
-                        param()
 
 @'
 &lt;meta content="{{ site.title }}" property="og:site_name" /&gt;
 {% if page.title %}
 &lt;meta content="{{ page.title }}" property="og:title" /&gt;
-{% elsif page.stylesheet %}
-&lt;meta content="{{ page.stylesheet }}" property="og:title" /&gt;
 {% else %}
 &lt;meta content="{{ site.title }}" property="og:title" /&gt;
 {% endif %}
@@ -1707,6 +1701,31 @@ param()
 {% endif %}
 '@
 
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>IncludeMyRepos</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Include my repositories.
+.DESCRIPTION
+    Include my repositories in the site.
+    
+    This will add a list of the owner's repositories to the site.
+
+    This will only work in GitHub Pages.
+.LINK
+    https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md
+#&gt;
+param()
+
+@'
+{% for repository in site.github.public_repositories %}
+  * [{{ repository.name }}]({{ repository.html_url }})
+{% endfor %}
+'@
 
                     </Script>
       </ScriptMethod>
