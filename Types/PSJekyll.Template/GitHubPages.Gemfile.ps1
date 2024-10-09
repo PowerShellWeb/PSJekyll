@@ -3,6 +3,8 @@
     Creates a GitHub Pages Gemfile.
 .DESCRIPTION
     Creates a Gemfile for GitHub Pages.
+.EXAMPLE
+    $PSJekyll.Template.'GitHubPages.Gemfile'()
 #>
 param()
 
