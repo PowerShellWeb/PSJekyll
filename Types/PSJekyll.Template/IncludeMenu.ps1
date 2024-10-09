@@ -2,6 +2,7 @@ param()
 
 
 @'
+
 {% capture TopLeftMenu %}
 {% if page.menu.TopLeft %}
     {{page.menu.TopLeft}}
@@ -13,6 +14,7 @@ param()
     {{include.GitHubLink}}
 {% endif %}
 {% endcapture %}
+
 {% if topLeftMenu %}
 <menu class='TopLeftMenu'>
     {{topLeftMenu}}
