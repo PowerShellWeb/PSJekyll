@@ -68,7 +68,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     if ($templateMethod.Name -notmatch '^(?>layout|include)\p{P}+') {
         continue
     }
-    $templateFileType = $matches.0
+    $templateFileType = $matches.0 -replace '\p{P}+$'
     
     $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))"
 
@@ -76,7 +76,13 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
         $templateFileName += '.html'
     }
     $templateOut = $templateMethod.Invoke()
-    $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut
+    try {
+        $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut
+    } catch {
+        $err = $_
+        Write-Error -Message "Failed to set $templateFileName of $templateFileType : $err"
+    }
+    
 }
 
 $PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
