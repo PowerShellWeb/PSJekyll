@@ -1365,6 +1365,26 @@ if ($CodeFont) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.Htmx.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes the htmx library.
+.DESCRIPTION
+    Optionally includes the htmx library in a Jekyll site.
+
+    If the site or page has any `.htmx` property, then the htmx library will be included.
+#&gt;
+param()
+
+@'
+{% if page.htmx or site.htmx %}
+&lt;script src='https://unpkg.com/htmx.org@latest'&gt;&lt;/script&gt;
+{% endif %}
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.ImportMap.html</Name>
         <Script>
                         &lt;#
@@ -1807,7 +1827,8 @@ param()
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
     {% include Margin.html %}
-    {% include Stylesheet.html %}    
+    {% include Stylesheet.html %}
+    {% include Htmx.html %}
 &lt;/head&gt;
 &lt;body&gt;
 
