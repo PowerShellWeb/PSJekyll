@@ -15,7 +15,10 @@ $PSJekyll.CurrentSite.Data = @{
             Copyright, 
             CompanyName, 
             Author,
-            Tags
+            @{
+                Name = 'Tags'
+                Expression = { @($_.PrivateData.PSData.Tags | Select-Object -Unique)}
+            }            
     PSModuleExports = @(
         foreach ($command in $sourceModule.ExportedCommands.Values) {
             [Ordered]@{
