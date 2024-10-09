@@ -88,7 +88,7 @@ foreach ($templateMember in $PSJekyll.Template.psobject.Members) {
     }    
 }
 
-$PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
+$PSJekyll.CurrentSite.Page = 'Tree', "{% include SiteTree.html %}"
 $PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.md %}"
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include

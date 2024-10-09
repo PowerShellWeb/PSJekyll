@@ -1,3 +1,11 @@
+<#
+.SYNOPSIS
+    Gets the site tree.
+.DESCRIPTION
+    Gets the site tree of the Jekyll site.  
+    
+    This will return all pages in the Jekyll site.
+#>
 param()
 
 @'
