@@ -1730,9 +1730,17 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
-        <Name>IncludeSiteMap</Name>
+        <Name>Include.SiteTree.html</Name>
         <Script>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Gets the site tree.
+.DESCRIPTION
+    Gets the site tree of the Jekyll site.  
+    
+    This will return all pages in the Jekyll site.
+#&gt;
+param()
 
 @'
 {% assign pages_by_url = site.pages | sort: "url" %}
