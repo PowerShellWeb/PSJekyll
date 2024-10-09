@@ -11,5 +11,15 @@
   "Description": "Give Jekyll more power with PowerShell",
   "Copyright": "2024",
   "CompanyName": "PowerShellWeb",
-  "Author": "James Brundage"
+  "Author": "James Brundage",
+  "Tags": [
+    "PowerShellWeb",
+    "Jekyll",
+    "Docker",
+    "GitHubAction",
+    "PowerShellWeb",
+    "Jekyll",
+    "Docker",
+    "GitHubAction"
+  ]
 }
