@@ -94,6 +94,8 @@ $PSJekyll.CurrentSite.Page = 'Function', "{% include PSFunctions.md %}"
 $PSJekyll.CurrentSite.Page = 'Functions', "{% include PSFunctions.md %}"
 $PSJekyll.CurrentSite.Page = 'Alias', "{% include PSAlias.md %}"
 $PSJekyll.CurrentSite.Page = 'Aliases', "{% include PSAlias.md %}"
+$PSJekyll.CurrentSite.Page = 'Cmdlet', "{% include PSCmdlet.md %}"
+$PSJekyll.CurrentSite.Page = 'Cmdlets', "{% include PSCmdlet.md %}"
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 $PSJekyll.CurrentSite.Page
