@@ -108,11 +108,10 @@ function InitializeAction {
 
     # Configure git based on the $env:GITHUB_ACTOR
     if (-not $UserName) { $UserName = $env:GITHUB_ACTOR }
-    if (-not $actorID)  { $actorID = $env:GITHUB_ACTOR_ID }
-    $actorInfo = Invoke-RestMethod -Uri "https://api.github.com/user/$actorID"
+    if (-not $actorID)  { $actorID = $env:GITHUB_ACTOR_ID }    
     if (-not $UserEmail) { $UserEmail = "$UserName@noreply.github.com" }
     git config --global user.email $UserEmail
-    git config --global user.name  $actorInfo.name
+    git config --global user.name  $env:GITHUB_ACTOR
 
     # Pull down any changes
     git pull | Out-Host
