@@ -1234,7 +1234,7 @@ $RepositoryUrl
     {{site.menu.TopLeft}}
     {{site.data.menu.TopLeft}}
 {% endcapture %}
-{% assign TopLeftMenu = TopLeftMenu | strip %}}
+{% assign TopLeftMenu = TopLeftMenu | strip %}
 
 {% capture TopRightMenu %}
     {{page.menu.TopRight}}
@@ -1329,49 +1329,49 @@ $RepositoryUrl
 &lt;/style&gt;
 {% endif %}
 
-{% if TopLeftMenu %}
+{% if TopLeftMenu != "" %}
 &lt;menu class='Top Left'&gt;
     {{TopLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopRightMenu %}
+{% if TopRightMenu != "" %}
 &lt;menu class='Top Right'&gt;
     {{TopRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopCenterMenu %}
+{% if TopCenterMenu != "" %}
 &lt;menu class='Top Center'&gt;
     {{TopCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomLeftMenu %}
+{% if BottomLeftMenu != "" %}
 &lt;menu class='Bottom Left'&gt;
     {{BottomLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomRightMenu %}
+{% if BottomRightMenu != "" %}
 &lt;menu class='Bottom Right'&gt;
     {{BottomRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomCenterMenu %}
+{% if BottomCenterMenu != "" %}
 &lt;menu class='Bottom Center'&gt;
     {{BottomCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if LeftCenterMenu %}
+{% if LeftCenterMenu != "" %}
 &lt;menu class='Left Center'&gt;
     {{LeftCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if RightCenterMenu %}
+{% if RightCenterMenu != "" %}
 &lt;menu class='Right Center'&gt;
     {{RightCenterMenu}}
 &lt;/menu&gt;
