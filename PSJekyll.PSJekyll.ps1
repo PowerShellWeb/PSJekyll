@@ -14,7 +14,8 @@ $PSJekyll.CurrentSite.Data = @{
             Description, 
             Copyright, 
             CompanyName, 
-            Author
+            Author,
+            Tags
     PSModuleExports = @(
         foreach ($command in $sourceModule.ExportedCommands.Values) {
             [Ordered]@{
