@@ -1895,12 +1895,8 @@ param()
                         param()
 
 @"
-{% for cmdletName in site.data.PSModuleCmdletNames %}
-{% if site.pages | where: "url", "/{{cmdletName}}" %}
+{% for cmdletName in site.data.PSModule.CmdletNames %}
 * [{{ cmdletName }}](/{{cmdletName}})
-{% else %}
-* {{ cmdletName }}
-{% endif %}
 {% endfor %}
 "@
                     </Script>
@@ -1911,12 +1907,8 @@ param()
                         param()
 
 @"
-{% for functionName in site.data.PSModuleFunctionNames %}
-{% if site.pages | where: "url", "/{{functionName}}" %}
+{% for functionName in site.data.PSModule.FunctionNames %}
 * [{{ functionName }}](/{{functionName}})
-{% else %}
-* {{ functionName }}
-{% endif %}
 {% endfor %}
 "@
                     </Script>
@@ -1927,7 +1919,7 @@ param()
                         param()
 
 @"
-{% for tagName in site.data.PSModuleInfo.Tags %}
+{% for tagName in site.data.PSModule.Info.Tags %}
 * [{{ tagName }}](https://www.powershellgallery.com/packages?q=Tags%3A%22{{tagName}}%22)
 {% endfor %}
 "@
