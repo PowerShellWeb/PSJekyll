@@ -1286,6 +1286,16 @@ if ($PaletteName) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.Contributor.md</Name>
+        <Script>
+                        param()
+
+"{% for contributor in site.github.contributors %}"
+"* [{{ contributor.login }}]({{ contributor.html_url }})"
+"{% endfor %}"
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.Copyright.html</Name>
         <Script>
                         &lt;#
