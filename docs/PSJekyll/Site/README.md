@@ -4,6 +4,8 @@
 ### Script Methods
 
 
+* [get_404](get_404.md)
+* [set_404](set_404.md)
 * [get_Config](get_Config.md)
 * [set_Config](set_Config.md)
 * [get_Data](get_Data.md)
