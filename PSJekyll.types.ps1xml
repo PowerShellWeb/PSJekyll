@@ -1669,31 +1669,6 @@ body &gt; * { margin: 1em; }
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
-        <Name>Include.MyRepos.md</Name>
-        <Script>
-                        &lt;#
-.SYNOPSIS
-    Include my repositories.
-.DESCRIPTION
-    Include my repositories in the site.
-    
-    This will add a list of the owner's repositories to the site.
-
-    This will only work in GitHub Pages.
-.LINK
-    https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md
-#&gt;
-param()
-
-@'
-{% for repository in site.github.public_repositories %}
-  * [{{ repository.name }}]({{ repository.html_url }})
-{% endfor %}
-'@
-
-                    </Script>
-      </ScriptMethod>
-      <ScriptMethod>
         <Name>Include.OpenGraph.html</Name>
         <Script>
                         &lt;#
@@ -1827,6 +1802,31 @@ param()
 * [{{ tagName }}](https://www.powershellgallery.com/packages?q=Tags%3A%22{{tagName}}%22)
 {% endfor %}
 "@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Repos.md</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Include my repositories.
+.DESCRIPTION
+    Include my repositories in the site.
+    
+    This will add a list of the owner's repositories to the site.
+
+    This will only work in GitHub Pages.
+.LINK
+    https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md
+#&gt;
+param()
+
+@'
+{% for repository in site.github.public_repositories %}
+  * [{{ repository.name }}]({{ repository.html_url }})
+{% endfor %}
+'@
+
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
