@@ -10,7 +10,6 @@
 #>
 param($Footer)
 
-
 if ($footer) {
 "<footer>$footer</footer>"
 } else {
@@ -21,7 +20,7 @@ if ($footer) {
 {% elsif site.footer %}
     {{site.footer}}
 {% else %}
-    {{include Copyright.html}}
+    {% include Copyright.html %}
 {% endif %}
 </footer>
 "@
