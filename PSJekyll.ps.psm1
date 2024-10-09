@@ -1,13 +1,5 @@
-$myGitDirectory = Join-Path $PSScriptRoot .git
-if (Test-Path $myGitDirectory) {    
-    $commandsPath = Join-Path $PSScriptRoot Commands
-    Write-Verbose "Git directory found, loading commands from $commandsPath"
-    [include('*-*')]$commandsPath
-} else {
-    Write-Verbose "Git directory not found, loading allcommands.ps1"
-    . (Join-Path $PSScriptRoot "allcommands.ps1")
-}
-
+$commandsPath = Join-Path $PSScriptRoot Commands
+[include('*-*')]$commandsPath
 
 $myModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $ExecutionContext.SessionState.PSVariable.Set($myModule.Name, $myModule)
@@ -22,8 +14,6 @@ if ($home) {
     }
     New-PSDrive -Name "My$($MyModule.Name)" -PSProvider FileSystem -Scope Global -Root $MyModuleProfileDirectory -ErrorAction Ignore
 }
-
-$KnownVerbs = Get-Verb | Select-Object -ExpandProperty Verb
 
 # Set a script variable of this, set to the module
 # (so all scripts in this scope default to the correct `$this`)
