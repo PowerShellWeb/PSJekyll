@@ -8,7 +8,7 @@ Push-Location $sitePath
 $PSJekyll.CurrentSite.Domain = "psjekyll.powershellweb.com"
 $PSJekyll.CurrentSite.Data = @{LastDateBuilt = [datetime]::UtcNow.Date.ToString('yyyy-MM-dd')}
 $PSJekyll.CurrentSite.Data = @{
-    PSModuleInfo = $sourceModule |
+    "PSModule/Info" = $sourceModule |
         Select-Object -Property Name, 
             Version, 
             Description, 
@@ -19,7 +19,7 @@ $PSJekyll.CurrentSite.Data = @{
                 Name = 'Tags'
                 Expression = { @($_.PrivateData.PSData.Tags | Select-Object -Unique)}
             }            
-    PSModuleExports = @(
+    "PSModule/Exports" = @(
         foreach ($command in $sourceModule.ExportedCommands.Values) {
             [Ordered]@{
                 Name = $command.Name
@@ -44,11 +44,11 @@ $PSJekyll.CurrentSite.Data = @{
         }
     )
         
-    PSModuleFunctionNames = $sourceModule.ExportedFunctions.Keys
-    PSModuleCmdletNames   = $sourceModule.ExportedCmdlets.Keys
-    PSModuleAliasNames    = $sourceModule.ExportedAliases.Keys
-    PSModuleVariableNames = $sourceModule.ExportedVariables.Keys
-    PSModuleExportTypeNames = $sourceModule.ExportedTypeFiles | 
+    "PSModule/FunctionNames" = $sourceModule.ExportedFunctions.Keys
+    "PSModule/CmdletNames"   = $sourceModule.ExportedCmdlets.Keys
+    "PSModule/AliasNames"    = $sourceModule.ExportedAliases.Keys
+    "PSModule/VariableNames" = $sourceModule.ExportedVariables.Keys
+    "PSModule/TypeNames"     = $sourceModule.ExportedTypeFiles | 
         ForEach-Object { (Select-Xml -XPath //Types/Type -Path $_).Node.Name }
 }
 $PSJekyll.CurrentSite.Data
