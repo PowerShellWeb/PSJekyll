@@ -79,23 +79,6 @@ if ($args) {
                     Split-Path | 
                     Push-Location   
             }
-            if (-not (Test-Path './Gemfile')) {
-                $defaultGemFile = @(
-                    "source 'https://rubygems.org'"
-                    "gem 'jekyll', '~> $((jekyll --version) -replace '^jekyll\s' -replace '\s')'"
-                    if ($env:JekyllThemeName -and $env:JekyllThemeVersion) {
-                        "gem '$env:JekyllThemeName', '~> $env:JekyllThemeVersion'"
-                    } else {
-                        'gem "minima", "~> 2.5"'
-                    }                    
-                    "group :jejkyll_plugins do"
-                    "  gem 'jekyll-feed', '~> 0.12'"
-                    "end"                    
-                    'gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]'
-                ) -join [Environment]::newline
-                Set-Content -Path './Gemfile' -Value $defaultGemFile
-            }
-                
             $jekyllJob = Start-PSJekyll
             while ($jekyllJob.State -notin 'Completed','Failed') {                
                 Start-Sleep -Milliseconds (Get-Random -Min 1000 -Max 10000)
@@ -115,7 +98,10 @@ if ($args) {
     {
         # If a single drive is mounted, start the Jekyll server.
         if ($mountedFolders.Length -eq 1) {
-            Push-Location $mountedFolders[0].Fullname
+            Push-Location $mountedFolders[0].Fullname            
+            Start-PSJekyll
+        } elseif ($psJekyll.CurrentSite) {           
+            Push-Location $psJekyll.CurrentSite.Directory.FullName
             Start-PSJekyll
         }
     }
