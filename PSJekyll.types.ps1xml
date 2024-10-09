@@ -1194,7 +1194,19 @@ if (-not (Test-Path $destinationPath)) {
       <ScriptProperty>
         <Name>Post</Name>
         <GetScriptBlock>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Gets the posts in a site.
+.DESCRIPTION
+    Gets the post files in a Jekyll site.
+
+    Any file in the _posts directory is considered a post.
+.EXAMPLE
+    $psJekyll.CurrentSite.Post
+.LINK
+    https://jekyllrb.com/docs/posts/
+#&gt;
+param()
 
 foreach ($specialFile in $this.File -match '[\\/]_posts[\\/]') {    
     $specialFile.pstypenames.add("PSJekyll.Published.Post")
@@ -1204,7 +1216,17 @@ foreach ($specialFile in $this.File -match '[\\/]_posts[\\/]') {
 
                     </GetScriptBlock>
         <SetScriptBlock>
-                        param()
+                        &lt;#
+.SYNOPSIS
+    Sets the posts in a site.
+.DESCRIPTION
+    Sets the post files in a Jekyll site.
+
+    Any file in the _posts directory is considered a post.
+.LINK
+    https://jekyllrb.com/docs/posts/
+#&gt;
+param()
 
 $unrolledArguments = @($args | . { process { $_ } })
 $currentName = ''
