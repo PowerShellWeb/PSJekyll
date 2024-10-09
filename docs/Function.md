@@ -2,4 +2,4 @@
 
 title: Function
 ---
-{% include PSFunctionList.md %}
+{% include PSFunctions.md %}
