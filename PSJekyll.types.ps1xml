@@ -1938,6 +1938,22 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.PSTypeName.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for functionName in site.data.PSModuleFunctionNames %}
+{% if site.pages | where: "url", "/{{functionName}}" %}
+* [{{ functionName }}](/{{functionName}})
+{% else %}
+* {{ functionName }}
+{% endif %}
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.Releases.md</Name>
         <Script>
                         param()
