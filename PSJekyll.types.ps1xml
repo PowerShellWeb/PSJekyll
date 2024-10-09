@@ -1225,6 +1225,39 @@ if ($Copyright) {
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.Footer.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a footer
+.DESCRIPTION
+    Include for a footer.
+    
+    This can be included in Jekyll anytime a footer is needed.
+
+    It is automatically included below the content of any page.
+#&gt;
+param($Footer)
+
+
+if ($footer) {
+"&lt;footer&gt;$footer&lt;/footer&gt;"
+} else {
+@"
+&lt;footer&gt;
+{% if page.footer %}
+    {{page.footer}}
+{% elsif site.footer %}
+    {{site.footer}}
+{% else %}
+    {{include Copyright.html}}
+{% endif %}
+&lt;/footer&gt;
+"@
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.GitHubLink.html</Name>
         <Script>
                         &lt;#
@@ -1535,39 +1568,6 @@ body &gt; * { margin: 1em; }
 {% endif %}
 '@
 
-                    </Script>
-      </ScriptMethod>
-      <ScriptMethod>
-        <Name>IncludeFooter</Name>
-        <Script>
-                        &lt;#
-.SYNOPSIS
-    Includes a footer
-.DESCRIPTION
-    Include for a footer.
-    
-    This can be included in Jekyll anytime a footer is needed.
-
-    It is automatically included below the content of any page.
-#&gt;
-param($Footer)
-
-
-if ($footer) {
-"&lt;footer&gt;$footer&lt;/footer&gt;"
-} else {
-@"
-&lt;footer&gt;
-{% if page.footer %}
-    {{page.footer}}
-{% elsif site.footer %}
-    {{site.footer}}
-{% else %}
-    {{include Copyright.html}}
-{% endif %}
-&lt;/footer&gt;
-"@
-}
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
