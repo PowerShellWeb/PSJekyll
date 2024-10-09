@@ -1421,7 +1421,7 @@ body &gt; * { margin: 1em; }
     {{site.menu.TopRight}}
     {{site.data.menu.TopRight}}
     {% unless site.NoGitHubLink or site.NoLink %}
-        {{include GitHubLink}}
+        {% include GitHubLink %}
     {% endunless %}
 {% endcapture %}
 {% assign TopRightMenu = TopRightMenu | strip %}
@@ -1509,49 +1509,49 @@ body &gt; * { margin: 1em; }
 &lt;/style&gt;
 {% endif %}
 
-{% if TopLeftMenu | strip %}
+{% if TopLeftMenu %}
 &lt;menu class='Top Left'&gt;
     {{TopLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopRightMenu | strip %}
+{% if TopRightMenu %}
 &lt;menu class='Top Right'&gt;
     {{TopRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if TopCenterMenu | strip %}
+{% if TopCenterMenu %}
 &lt;menu class='Top Center'&gt;
     {{TopCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomLeftMenu | strip %}
+{% if BottomLeftMenu %}
 &lt;menu class='Bottom Left'&gt;
     {{BottomLeftMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomRightMenu | strip %}
+{% if BottomRightMenu %}
 &lt;menu class='Bottom Right'&gt;
     {{BottomRightMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if BottomCenterMenu | strip %}
+{% if BottomCenterMenu %}
 &lt;menu class='Bottom Center'&gt;
     {{BottomCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if LeftCenterMenu | strip %}
+{% if LeftCenterMenu %}
 &lt;menu class='Left Center'&gt;
     {{LeftCenterMenu}}
 &lt;/menu&gt;
 {% endif %}
 
-{% if RightCenterMenu | strip %}
+{% if RightCenterMenu %}
 &lt;menu class='Right Center'&gt;
     {{RightCenterMenu}}
 &lt;/menu&gt;
