@@ -15,9 +15,9 @@ $RepositoryUrl
 )
 
 @(if ($RepositoryUrl) {
-    "[GitHub]($RepositoryUrl)"
+    "<a href='$RepositoryUrl'>GitHub</a>"
 } else {
     "{% if site.github.repository_url %}"
-        "[GitHub]({{site.github.repository_url}})"
+        "<a href='{{site.github.repository_url}}'>GitHub</a>"
     "{% endif %}"
 }) -join [Environment]::Newline
