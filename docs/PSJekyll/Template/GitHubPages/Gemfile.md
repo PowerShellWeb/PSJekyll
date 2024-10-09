@@ -11,3 +11,12 @@ Creates a GitHub Pages Gemfile.
 Creates a Gemfile for GitHub Pages.
 
 ---
+
+### Examples
+> EXAMPLE 1
+
+```PowerShell
+$PSJekyll.Template.'GitHubPages.Gemfile'()
+```
+
+---
