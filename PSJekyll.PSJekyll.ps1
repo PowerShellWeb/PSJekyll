@@ -64,17 +64,22 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
 }
 $PSJekyll.CurrentSite.Config
 
-foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
-    if ($templateMethod.Name -notmatch '^(?>layout|include)\p{P}{0,}') {
+foreach ($templateMember in $PSJekyll.Template.psobject.Members) {
+    if ($templateMember.Name -notmatch '^(?>layout|include)\p{P}{0,}') {
         continue
     }
     $templateFileType = $matches.0 -replace '\p{P}{0,}$'    
-    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))\p{P}{0,}"
+    $templateFileName = $templateMember.Name -replace "^$([Regex]::Escape($templateFileType))\p{P}{0,}"
 
-    if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
+    if ($templateMember.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
     }
-    $templateOut = $templateMethod.Invoke()
+    $templateOut = 
+        if ($templateMember.Invoke) {
+            $templateMember.Invoke()
+        } else {
+            $templateMember.Value
+        }
     try {
         $PSJekyll.CurrentSite.$templateFileType = $templateFileName, $templateOut
     } catch {
@@ -84,7 +89,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
 }
 
 $PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
-$PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.html %}"
+$PSJekyll.CurrentSite.Page = 'MyRepos', "{% include MyRepos.md %}"
 $PSJekyll.CurrentSite.Layout
 $PSJekyll.CurrentSite.Include
 $PSJekyll.CurrentSite.Page
