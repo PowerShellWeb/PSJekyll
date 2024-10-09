@@ -1,12 +1,9 @@
 param()
 
 @"
-{% for aliasName in site.data.PSModuleAliasNames %}
-{% assign pageLink = site.pages | where: "url", "/{{aliasName}}" %}
-{% if pageLink %}
-* [{{ aliasName }}](/{{aliasName}})
-{% else %}
-* {{ aliasName }}
-{% endif %}
+| Alias | Command |
+|-|-|
+{% for alias in site.data.PSModule.Aliases %}
+| {{ alias.Name }} | [{{ alias.Definition }}](/{{alias.Definition}}) |
 {% endfor %}
 "@

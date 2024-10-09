@@ -47,9 +47,13 @@ $PSJekyll.CurrentSite.Data = @{
     "PSModule/FunctionNames" = $sourceModule.ExportedFunctions.Keys
     "PSModule/CmdletNames"   = $sourceModule.ExportedCmdlets.Keys
     "PSModule/AliasNames"    = $sourceModule.ExportedAliases.Keys
+    "PSModule/Aliases" = @($sourceModule.ExportedAliases.Values |
+        ForEach-Object { [Ordered]@{Name=$_.Name;Definition=$_.Definition} })
+
     "PSModule/VariableNames" = $sourceModule.ExportedVariables.Keys
     "PSModule/TypeNames"     = $sourceModule.ExportedTypeFiles | 
         ForEach-Object { (Select-Xml -XPath //Types/Type -Path $_).Node.Name }
+    
 }
 $PSJekyll.CurrentSite.Data
 # It is important to use [Ordered], otherwise, the order of the keys will be random.
