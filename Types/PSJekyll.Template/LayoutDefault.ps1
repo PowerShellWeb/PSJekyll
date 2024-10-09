@@ -12,7 +12,8 @@
     {% include GoogleFont.html %}
     {% include 4bitcss.html %}
     {% include Margin.html %}
-    {% include Stylesheet.html %}    
+    {% include Stylesheet.html %}
+    {% include Htmx.html %}
 </head>
 <body>
 
