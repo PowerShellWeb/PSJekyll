@@ -1786,6 +1786,22 @@ param()
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Include.PSCmdlet.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for cmdletName in site.data.PSModuleCmdletNames %}
+{% if site.pages | where: "url", "/{{cmdletName}}" %}
+* [{{ cmdletName }}](/{{cmdletName}})
+{% else %}
+* {{ cmdletName }}
+{% endif %}
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.PSFunctions.md</Name>
         <Script>
                         param()
