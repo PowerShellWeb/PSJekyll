@@ -65,12 +65,11 @@ $PSJekyll.CurrentSite.Config = [Ordered]@{
 $PSJekyll.CurrentSite.Config
 
 foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
-    if ($templateMethod.Name -notmatch '^(?>layout|include)\p{P}+') {
+    if ($templateMethod.Name -notmatch '^(?>layout|include)\p{P}{0,}') {
         continue
     }
-    $templateFileType = $matches.0 -replace '\p{P}+$'
-    
-    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))\p{P}+"
+    $templateFileType = $matches.0 -replace '\p{P}{0,}$'    
+    $templateFileName = $templateMethod.Name -replace "^$([Regex]::Escape($templateFileType))\p{P}{0,}"
 
     if ($templateMethod.Name -notmatch '\.([^\.]+?)$') {
         $templateFileName += '.html'
@@ -81,8 +80,7 @@ foreach ($templateMethod in $PSJekyll.Template.psobject.Methods) {
     } catch {
         $err = $_
         Write-Error -Message "Failed to set $templateFileName of $templateFileType : $err"
-    }
-    
+    }    
 }
 
 $PSJekyll.CurrentSite.Page = 'SiteMap', "{% include SiteMap.html %}"
