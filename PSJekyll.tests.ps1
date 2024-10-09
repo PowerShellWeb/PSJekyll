@@ -2,7 +2,7 @@ describe PSJekyll {
     beforeAll {
         $jekyllInPath =  $ExecutionContext.SessionState.InvokeCommand.GetCommand('jekyll', 'Application')
         if (-not $jekyllInPath -and $env:GITHUB_WORKFLOW) {
-            "::group::Installing FFMpeg" | Out-Host
+            "::group::Installing prerequites" | Out-Host
             sudo apt update | Out-Host            
             sudo apt install ruby-full bundler -y | Out-Host
             sudo gem install jekyll | Out-Host
@@ -50,7 +50,7 @@ describe PSJekyll {
                 $aPageOutput.OuterXml | Should -Match "$([DateTime]::now.ToString('yyyy-MM-dd'))"
             }            
             Pop-Location
-            Get-Job | Stop-PSJekyll
+            Get-Job | Stop-Job
             Get-Job | Remove-Job
             Remove-Item -Recurse -Force $siteName            
         }
