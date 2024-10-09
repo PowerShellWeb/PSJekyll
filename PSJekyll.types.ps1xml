@@ -1165,6 +1165,24 @@ Set-Content -Path (
     <Name>PSJekyll.Template</Name>
     <Members>
       <ScriptMethod>
+        <Name>GitHubPages.Gemfile</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Creates a GitHub Pages Gemfile.
+.DESCRIPTION
+    Creates a Gemfile for GitHub Pages.
+#&gt;
+param()
+
+@'
+source "https://rubygems.org"
+gem 'github-pages', group: :jekyll_plugins
+'@
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Include.4bitcss.html</Name>
         <Script>
                         param(
