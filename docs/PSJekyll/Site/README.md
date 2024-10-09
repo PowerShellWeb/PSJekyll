@@ -14,3 +14,5 @@
 * [set_Draft](set_Draft.md)
 * [get_Include](get_Include.md)
 * [set_Include](set_Include.md)
+* [get_Layout](get_Layout.md)
+* [set_Layout](set_Layout.md)
