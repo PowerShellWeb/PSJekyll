@@ -14,5 +14,5 @@ jobs:
         id: PSJekyll
         with: 
           TargetBranch: edits-$([DateTime]::Now.ToString("o") -replace "T.+$")
-          CommitMessage: Syncing Issues and Discussions
+          CommitMessage: Syncing Issues [skip ci]
 
