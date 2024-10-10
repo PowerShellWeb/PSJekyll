@@ -1,0 +1,25 @@
+{% if page.imports %}
+    {% assign importMap = page.imports %}
+{% elsif page.importMap %}
+    {% assign importMap = page.importMap %}
+{% elsif site.imports %}
+    {% assign importMap = site.imports %}
+{% elsif site.importMap %}
+    {% assign importMap = site.importMap %}
+{% elsif site.data.imports %}
+    {% assign importMap = site.data.imports %}
+{% elsif site.data.importMap %}
+    {% assign importMap = site.data.importMap %}
+{% endif %}
+{% if importMap %}
+<script type="importmap">
+{
+    "imports": {
+        {% for eachImport in importMap %}
+            "{{eachImport[0]}}": "{{eachImport[1]}}"{% unless forloop.last %},
+            {% endunless %}
+        {% endfor %}
+    }
+}
+</script>    
+{% endif %}

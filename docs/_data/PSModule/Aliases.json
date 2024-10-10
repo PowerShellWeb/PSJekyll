@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "New-Jekyll",
+    "Definition": "New-PSJekyll"
+  },
+  {
+    "Name": "Remove-Jekyll",
+    "Definition": "Remove-PSJekyll"
+  },
+  {
+    "Name": "Set-Jekyll",
+    "Definition": "Set-PSJekyll"
+  },
+  {
+    "Name": "Start-Jekyll",
+    "Definition": "Start-PSJekyll"
+  },
+  {
+    "Name": "Stop-Jekyll",
+    "Definition": "Stop-PSJekyll"
+  }
+]

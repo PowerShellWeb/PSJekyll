@@ -1,0 +1,2102 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>PSJekyll</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Site</Name>
+        <ReferencedMemberName>CurrentSite</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptMethod>
+        <Name>FormatMarkdown</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Formats an object as Markdown
+.DESCRIPTION
+    Formats an object as Markdown, with many options to work with
+.EXAMPLE
+    Format-Markdown -ScriptBlock {
+        Get-Process
+    }
+.EXAMPLE
+        1..6 | Format-Markdown  -HeadingSize { $_ }
+#&gt;
+param(            
+[Parameter(ValueFromPipeline,ValueFromPipelineByPropertyName)]
+[PSObject]
+$InputObject,
+
+# If set, will treat the -InputObject as a paragraph.
+# This is the default for strings, booleans, numbers, and other primitive types.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$MarkdownParagraph,
+
+# If set, will generate a markdown table.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$MarkdownTable,
+
+# If provided, will align columnns in a markdown table.    
+[Parameter(ValueFromPipelineByPropertyName)]
+[ValidateSet("Left","Right","Center", "")]
+[string[]]
+$MarkdownTableAlignment,
+
+# An array of properties.  Providing this implies -MarkdownTable
+[Parameter(ValueFromPipelineByPropertyName)]
+[PSObject[]]
+$Property,
+
+# A heading.
+# If provided without -HeadingSize, -HeadingSize will default to 2.
+# If provided with -InputObject, -Heading will take priority.
+[Parameter(ValueFromPipelineByPropertyName)]    
+[string]
+$Heading,
+
+# The heading size (1-6)
+# If provided without -Heading, the -InputObject will be considered to be a heading.
+[Parameter(ValueFromPipelineByPropertyName)]
+[ValidateRange(1,6)]
+[int]
+$HeadingSize,
+
+# If set, will create a link.  The -InputObject will be used as the link content    
+[Parameter(ValueFromPipelineByPropertyName)]
+[Alias('Hyperlink', 'Href')]
+[string]
+$Link,
+
+# If set, will create an image link.  The -Inputobject will be used as the link content.
+[Parameter(ValueFromPipelineByPropertyName)]
+[string]
+$ImageLink,
+
+# If set, will generate a bullet point list.
+[Parameter(ValueFromPipelineByPropertyName)]
+[Alias('BulletpointList')]
+[switch]
+$BulletPoint,
+
+# If set, bullet or numbered list items will have a checkbox.
+# Each piped -InputObject will be an additional list item.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$Checkbox,
+
+# If set, bullet or numbered list items will be checked.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$Checked,
+
+# If set, will generate a numbered list.
+# Each piped -InputObject will be an additional list item.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$NumberedList,
+
+# If set, will generate a block quote.
+# Each line of the -InputObject will be block quoted.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$BlockQuote,
+
+# If set, will generate a block quote of a particular depth.
+# Each line of the -InputObject will be block quoted.
+[Parameter(ValueFromPipelineByPropertyName)]
+[ValidateRange(1,3)]
+[int]
+$BlockQuoteDepth,
+    
+# If provided, will create a markdown numbered list with this particular item as the number.
+[Parameter(ValueFromPipelineByPropertyName)]
+[int]
+$Number,
+
+# If set, will generate a horizontal rule.  
+# If other parameters are provided, the horiztonal rule will be placed after.
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$HorizontalRule,
+
+# If set, will output the -InputObject as a Markdown code block
+[Parameter(ValueFromPipelineByPropertyName)]
+[switch]
+$Code,
+
+# If set, will output the -InputObject as a Markdown code block, with a given language
+# If the -InputObject is a ScriptBlock, -CodeLanguage will be set to PowerShell.
+[Parameter(ValueFromPipelineByPropertyName)]
+[string]
+$CodeLanguage,
+
+# If provided, will output a script block as a Markdown code block.
+[Parameter(ValueFromPipelineByPropertyName)]
+[ScriptBlock]
+$ScriptBlock
+)
+
+begin {
+    $numberedListCounter = 0
+    $IsFirst = $true
+    filter LinkInput {
+        $in = $_
+        if ($ImageLink) {
+            "![$in]($imageLink)"
+        } elseif ($link) {
+            "[$in]($link)"
+        } else {
+            "$in"
+        }
+    }
+
+    $markdownLines = @()
+}
+
+process {
+    
+    if ($ScriptBlock -or $inputObject -is [scriptblock]) {  # If a -ScriptBlock was provided
+        $CodeLanguage = 'PowerShell' # use PowerShell as a Code Language.
+    }
+
+    # If a -HeadingSize or a -Heading were provided, render a heading.
+    if ($HeadingSize -or $Heading) 
+    {  
+        if (-not $HeadingSize) { $HeadingSize = 2} # If the -HeadingSize was not set, set it to 2.
+        $headingContent = "$(if ($Heading) { $Heading} else { $inputObject | LinkInput})"
+        $markdownLines += 
+            if ($HeadingSize -eq 1) {                
+                $headingContent
+                '=' * [Math]::Max($headingContent.Length, 3)
+            }
+            elseif ($HeadingSize -eq 2) {
+                $headingContent
+                '-' * [Math]::Max($headingContent.Length, 3)
+            }
+            else  {
+                ("#"*$HeadingSize) + " $headingContent" # Output the -Heading or the -InputObject.
+            }
+    }
+    # If -Code or -CodeLanguage was provided, render a Markdown code block.
+    elseif ($Code -or $CodeLanguage)
+    { 
+        # If the -InputObject was a [ScriptBlock] or there is a -ScriptBlock 
+        if ($InputObject -is [scriptblock] -or $ScriptBlock) {
+            $CodeLanguage  = 'PowerShell' # set the code language to PowerShell.
+        }
+        $markdownLines += (
+            '```' + # Start the code fence,
+                $(if ($CodeLanguage) { $CodeLanguage}) + # add the language,
+                [Environment]::newline + # then a newline,
+                $(
+                    $codeContent = $(if ($ScriptBlock) { "$scriptBlock" } else { $inputObject | LinkInput})  # then the -ScriptBlock or -InputObject
+                    $codeContent
+                ) +
+                [Environment]::newline + # then a newline
+            '```' # then close the code fence.
+        )
+    }
+    # If -BulletPoint was passed, render a Bullet Point list.
+    elseif ($BulletPoint) 
+    { 
+        $markdownLines += "*$(if ($Checkbox) { "[$(if ($Checked) {"x"} else {" "})]"}) $($inputObject | LinkInput)"
+    }
+    # If -NumberedList was passed, render a numbered list.
+    elseif ($NumberedList -or $Number) 
+    {
+        $numberedListCounter++ # Increment the counter
+        $markdownLines += "$(if ($number) { $number } else {$numberedListCounter}).$(if ($Checkbox) {" [$(if ($Checked) {"x"} else {" "})]"}) $($inputObject | LinkInput)"
+    }
+    elseif ($BlockQuote -or $BlockQuoteDepth) {
+        if (-not $BlockQuoteDepth) { $BlockQuoteDepth = 1 }
+        $markdownLines += ("&gt;" * $BlockQuoteDepth ) + ' ' + (
+            "$inputObject" -split '(?&gt;\r\n|\n)' -join (
+                [Environment]::NewLine + ("&gt;" * $BlockQuoteDepth) + ' '
+            )
+        )
+    }
+    # Otherwise, we have to determine if -InputObject should be a -MarkdownTable or a -MarkdownParagraph.
+    else
+    {
+        # If the input is a primitive type or a string, it should be a markdown paragraph
+        if (($inputObject.GetType -and $inputObject.GetType().IsPrimitive) -or 
+            $inputObject -is [string]) {
+            $MarkdownParagraph = $true
+        }
+        # If it is a dictionary, it should be a markdown table.
+        elseif ($inputObject -is [Collections.IDictionary]) 
+        {
+            $MarkdownTable = $true
+        }
+        # If the input is an array, apply the same logic:
+        elseif ($inputObject -is [Object[]] -or $InputObject -is [PSObject[]]) {
+            $allPrimitives = 1
+            # if the array was all primitives or strings                
+            foreach ($in in $InputObject) {
+                $allPrimitives = $allPrimitives -band (
+                    ($in.GetType -and $in.GetType().IsPrimitive) -or $in -is [string]
+                )
+            }
+            if ($allPrimitives) { # output as a paragraph.
+                $MarkdownParagraph = $true
+            } else {
+                $MarkdownTable = $true
+            }
+        }
+        # If we're still not sure, output as a table.                     
+        else {
+            $MarkdownTable = $true
+        }
+    }
+
+    if ($MarkdownParagraph) {
+        # If we're outputting as a paragraph, add the input and link it if needed.
+        $markdownLines += $inputObject | LinkInput
+    } elseif ($MarkdownTable) {
+        # If we're rendering a table, we need to go row-by-row.
+        foreach ($in in $InputObject) {
+            $propertyList = @(
+                # we first need to get a list of properties.
+                # If there was a -Property parameter provided, use it.
+                if ($Property) {
+                    foreach ($prop in $Property) {
+                        if ($prop -is [string]) { # Strings in -Property should be taken as property names
+                            $prop
+                        } elseif ($prop.Name -and $prop.Expression -and $prop.Expression -is [scriptblock]) {
+                            # and anything with a name and expression script block will run the expression script block.
+                            $_ = $psItem = $in
+                            @{name=$prop.Name;Value = . $prop.Expression}
+                        }
+                    }
+                } 
+                # Otherwise, if the input was a dictionary
+                elseif ($in -is [Collections.IDictionary]) 
+                {
+                    foreach ($k in $in.Keys) { # take all keys from the dictionary
+                        if ($MyInvocation.MyCommand.Parameters[$k]) { continue } # that are not parameters of this function.
+                        $k
+                    }                        
+                }
+                # Otherwise, walk over all properties on the object
+                else {
+                    foreach ($psProp in $In.psobject.properties) {
+                        # and skip any properties that are parameters of this function.
+                        if ($psProp.Name -notin $MyInvocation.MyCommand.Parameters.Keys) {
+                            $psProp
+                        }
+                    }
+                }
+            )
+
+            # If we're rendering the first row of a table
+            if ($IsFirst) {
+                # Create the header
+                $markdownLines +=
+                    '|' + (@(foreach ($prop in $propertyList) {
+                        if ($prop -is [string]) {
+                            $prop
+                        } else {
+                            $prop.Name
+                        }
+                    }) -replace ([Environment]::newline), '&lt;br/&gt;' -replace '\|', '\|' -join '|') + '|'
+                # Then create the alignment row.
+                $markdownLines +=
+                    '|' + $(
+                        $columnNumber =0 
+                        @(
+                            foreach ($prop in $propertyList) {
+                                $colLength = 
+                                    if ($prop -is [string]) {
+                                        $prop.Length
+                                    } else {
+                                        $prop.Name.Length
+                                    }
+                                if ($MarkdownTableAlignment) {
+                                    if ($MarkdownTableAlignment[$columnNumber] -eq 'Left') {
+                                        ':' + ("-" * ([Math]::Max($colLength,2) - 1))
+                                    }
+                                    elseif ($MarkdownTableAlignment[$columnNumber] -eq 'Right') {
+                                        ("-" * ([Math]::Max($colLength,2) - 1)) + ':'
+                                    }
+                                    elseif ($MarkdownTableAlignment[$columnNumber] -eq 'Center') {
+                                        ':' + ("-" * ([Math]::max($colLength, 3) - 2)) + ':'
+                                    } else {
+                                        "-" * $colLength
+                                    }
+                                } else {
+                                    "-" * $colLength
+                                }
+                                
+                                $columnNumber++
+                            }
+                        ) -replace ([Environment]::newline), '&lt;br/&gt;' -replace '\|', '\|' -join '|') + '|'                    
+                $IsFirst = $false
+            }
+            
+            # Now we create the row for this object.
+
+            $markdownLine = '|' + (
+                @(
+                    foreach ($prop in $propertyList) {
+                        if ($prop -is [string]) {
+                            $in.$prop | LinkInput
+                        } else {
+                            $prop.Value | LinkInput
+                        }
+                    }
+                ) -replace ([Environment]::newline), '&lt;br/&gt;' -replace '\|', '\|' -join '|') + '|'
+
+            $markdownLines += $markdownLine
+        }                                    
+    }
+
+        
+    if (  # There are a few combinations of parameters that make us want to write the -InputObject as a paragraph:
+        ($ScriptBlock -and $inputObject) -or # * If -ScriptBlock and -InputObject were both provided.
+        ($Heading -and $inputObject)         # * if -Heading and -InputObject were both provided
+    ) {
+        $markdownLines += $InputObject | LinkInput
+    }
+
+
+    # If we're going to render a horizontal rule (and -MarkdownTable has not been set)
+    if ($HorizontalRule -and -not $MarkdownTable) {
+        # add the horizontal rule at the end.
+        if ($host.UI.RawUI.BufferSize.Width) {                
+            $markdownLines += (([string]$HorizontalRuleCharacter) * ($Host.UI.RawUI.BufferSize.Width - 1))
+        } else {
+            $markdownLines += "---"
+        }                        
+    }
+}
+
+end {
+    # Now we need to make one last pass to normalize tables
+    if ($markdownLines -match '^\|') { # (that is, if we have tables to normalize).
+        $maxColumnSize  = @{} # To normalize the table, we need to track the maximum size per column
+        foreach ($ml in $markdownLines) {
+            if ($ml -match '\^|') {
+                $columnCount = 0
+                foreach ($tablePart in $ml -split '(?&lt;!\\)\|' -ne '') {
+                    if ((-not $maxColumnSize[$columnCount]) -or $maxColumnSize[$columnCount] -lt $tablePart.Length) {
+                        $maxColumnSize[$columnCount] = [Math]::Max($tablePart.Length, 2)
+                    }
+                    $columnCount++
+                }
+            }
+        }
+        # One we know the maximum size per column, walk over each line
+        $markdownLines = @(foreach ($ml in $markdownLines) {
+            if ($ml -match '\^|') {
+                $columnCount = 0
+                # Recreate the line with the right amount of padding.
+                '|' + (@(foreach ($tablePart in $ml -split '(?&lt;!\\)\|' -ne '') {
+                    if ($tablePart -match '^[:\-]+$') {
+                        if ($tablePart -match '^\:-{0,}\:$') { # If it's an alignment column, make sure to keep the alignment.
+                            if ($maxColumnSize[$columnCount] -gt 2) {
+                                ':' + ('-' * ($maxColumnSize[$columnCount] - 2)) + ':'
+                            } else {
+                                '::'
+                            }
+                        }
+                        elseif ($tablePart -match '\:$') {
+                            $tablePart.PadLeft($maxColumnSize[$columnCount], '-')
+                        } 
+                        elseif ($tablePart -match '^\:') {
+                            $tablePart.PadRight($maxColumnSize[$columnCount], '-')
+                        }
+                        else {
+                            $tablePart.PadRight($maxColumnSize[$columnCount], '-')
+                        }
+                    } else {
+                        $tablePart.PadRight($maxColumnSize[$columnCount], ' ')
+                    }
+                    $columnCount++                                            
+                }) -join '|') + '|'
+            } else {
+                $ml
+            }
+        })
+    }
+    $markdownLines -join [Environment]::NewLine        
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>FormatYAML</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Formats objects as YAML
+.DESCRIPTION
+    Formats an object as YAML.
+.EXAMPLE
+    Format-Yaml -InputObject @("a", "b", "c")
+.EXAMPLE
+    @{a="b";c="d";e=@{f=@('g')}} | Format-Yaml
+#&gt;
+param(
+# The InputObject.
+[Parameter(ValueFromPipeline)]
+[PSObject]
+$InputObject,
+
+# If set, will make a YAML header by adding a YAML Document tag above and below output.
+[Alias('YAMLDocument')]
+[switch]
+$YamlHeader,
+
+[int]
+$Indent = 0,
+
+# The maximum depth of objects to include.
+# Beyond this depth, an empty string will be returned.    
+[int]
+$Depth
+)
+
+begin {
+    if (-not $Depth) { $depth = $FormatEnumerationLimit }
+    $toYaml = {
+        param(
+        [Parameter(ValueFromPipeline,Position=0)]$Object,
+        [Object]$Parent,
+        [Object]$GrandParent,
+        [int]$Indent = 0)
+        
+        begin { $n = 0; $mySelf = $myInvocation.MyCommand.ScriptBlock }
+        process {
+            $n++
+            if ($Object -eq $null) { return }
+
+            if ($depth) {
+                $myDepth = $indent / 2
+                if ($myDepth -gt $depth) {
+                    return ''
+                }
+            }
+        
+            if ($Parent -and $Parent -is [Collections.IList]) {
+                if ($Parent.IndexOf($Object) -gt 0) { ' ' * $Indent }
+                '- '
+            }
+        
+            #region Primitives
+            if ( $Object -is [string] ) { # If it's a string
+                if ($object -match '\n') { # see if it's a multline string.
+                    "|" # If it is, emit the multiline indicator
+                    $indent +=2
+                    foreach ($l in $object -split '(?&gt;\r\n|\n)') { # and emit each line indented
+                        [Environment]::NewLine
+                        ' ' * $indent
+                        $l
+                    }
+                    $indent -=2
+                } elseif ("$object".Contains('*')) {
+                    "'$($Object -replace "'","''")'"
+                } else {
+                    $object
+                }
+        
+                if ($Parent -is [Collections.IList]) { # If the parent object was a list
+                    [Environment]::NewLine # emit a newline.
+                }
+                return # Once the string has been emitted, return.
+            }
+            if ( $Object.GetType().IsPrimitive ) { # If it is a primitive type
+                "$Object".ToLower()  # Emit it in lowercase.
+                if ($Parent -is [Collections.IList]) {
+                    [Environment]::NewLine
+                }
+                return
+            }
+            #endregion Primitives
+        
+            #region KVP
+            if ( $Object -is [Collections.DictionaryEntry] -or $object -is [Management.Automation.PSPropertyInfo]) {
+                if ($Parent -isnot [Collections.IList] -and
+                    ($GrandParent -isnot [Collections.IList] -or $n -gt 1)) {
+                    [Environment]::NewLine + (" " * $Indent)
+                }
+                if ($object.Key -and $Object.Key -is [string]) {
+                    $Object.Key +": "
+                } elseif ($object.Name -and $object.Name -is [string]) {
+                    $Object.Name +": "
+                }
+            }
+        
+            if ( $Object -is [Collections.DictionaryEntry] -or $Object -is [Management.Automation.PSPropertyInfo]) {
+                &amp; $mySelf -Object $Object.Value -Parent $Object -GrandParent $parent -Indent $Indent
+                return
+            }
+            #endregion KVP
+        
+        
+            #region Nested
+            if ($parent -and ($Object -is [Collections.IDictionary] -or $Object  -is [PSObject])) {
+                $Indent += 2
+            } 
+            elseif ($object -is [Collections.IList]) {
+                $allPrimitive = 1
+                foreach ($Obj in $Object) { 
+                    $allPrimitive = $allPrimitive -band (
+                        $Obj -is [string] -or 
+                        $obj.GetType().IsPrimitive
+                    ) 
+                }
+                if ($parent -and -not $allPrimitive) {
+                    $Indent += 2
+                }
+            }
+        
+        
+            if ( $Object -is [Collections.IDictionary] ) {
+                $Object.GetEnumerator() |
+                    &amp; $mySelf -Parent $Object -GrandParent $Parent -Indent $Indent
+            } elseif ($Object -is [Collections.IList]) {
+        
+                [Environment]::NewLine + (' ' * $Indent)
+        
+                $Object |
+                    &amp; $mySelf -Parent $Object -GrandParent $Parent -Indent $Indent
+        
+            } 
+            elseif ($object -is [enum]) {
+                $object.ToString()
+            }
+            elseif ($Object.PSObject.Properties) {
+                $Object.psobject.properties |
+                    &amp; $mySelf -Parent $Object -GrandParent $Parent -Indent $Indent
+            }
+        
+            if ($Object -is [Collections.IDictionary] -or $Object  -is [PSCustomObject] -or $Object -is [Collections.IList]) {
+                if ($Parent -is [Collections.IList]) { [Environment]::NewLine }
+                $Indent -= 2;
+            }
+            #endregion Nested
+        }                
+    }
+    function IndentString([string]$String,[int]$Indent) {
+        @(foreach ($line in @($String -split '(?&gt;\r\n|\n)')) {
+            (' ' * $indent) + $line 
+        }) -join [Environment]::NewLine
+    }
+    $inputWasNotPiped = $PSBoundParameters.InputObject -as [bool]
+    $allInputObjects  = @()
+}
+
+process {
+    if ($inputWasNotPiped) {
+        IndentString ('' + $(if ($YamlHeader) { '---' + [Environment]::NewLine })  + (
+            (&amp; $toYaml -object $inputObject) -join '' -replace 
+                "$([Environment]::NewLine * 2)", [Environment]::NewLine
+        ) + $(if ($YamlHeader) { [Environment]::NewLine  + '---'})) -Indent $Indent
+    } else {
+        $allInputObjects += $inputObject
+    }
+}
+
+end {
+    if (-not $allInputObjects) { return }    
+    if ($allInputObjects.Length -eq 1) {
+        IndentString ('' + $(if ($YamlHeader) { '---' + [Environment]::NewLine}) + (
+            (&amp; $toYaml -object $inputObject) -join '' -replace 
+                "$([Environment]::NewLine * 2)", [Environment]::NewLine
+        ) + $(if ($YamlHeader) { [Environment]::NewLine  + '---'})) -Indent $Indent
+    } else {
+        IndentString ('' + $(if ($YamlHeader) { '---' + [Environment]::NewLine})  + (
+            (&amp; $toYaml -object $allInputObjects) -join '' -replace 
+                "$([Environment]::NewLine * 2)", [Environment]::NewLine
+        ) + $(if ($YamlHeader) { [Environment]::NewLine  + '---'})) -Indent $Indent
+    }
+}
+
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>CurrentSite</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the current site.
+.DESCRIPTION
+    Gets one or more current Jekyll sites.
+    
+    The current site is any directory containing a _config.yml.  
+    
+    If no directory is found, it will consider the the current directory to be the site.
+.EXAMPLE
+    $psJekyll.CurrentSite
+#&gt;
+param(
+$this = $PSJekyll
+)
+
+$jekyllConfigFiles = Get-ChildItem -Path $pwd -Recurse -Filter _config.yml
+if (-not $jekyllConfigFiles) {
+    $currentFolder = Get-Item $pwd
+    [PSCustomObject]@{
+        PSTypeName = 'PSJekyll.Site'
+        Directory = $currentFolder
+        SiteName = $currentFolder.Name
+    }
+}
+
+foreach ($jekyllConfigFile in $jekyllConfigFiles) {
+    [PSCustomObject]@{
+        PSTypeName = 'PSJekyll.Site'
+        Directory = $jekyllConfigFile.Directory
+        SiteName = $jekyllConfigFile.Directory.Name
+    }
+}
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Template</Name>
+        <GetScriptBlock>
+                        [PSCustomObject]@{PSTypeName='PSJekyll.Template'}
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSJekyll.Site</Name>
+    <Members>
+      <AliasProperty>
+        <Name>Drafts</Name>
+        <ReferencedMemberName>Draft</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Files</Name>
+        <ReferencedMemberName>File</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Includes</Name>
+        <ReferencedMemberName>Include</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Layouts</Name>
+        <ReferencedMemberName>Layout</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Pages</Name>
+        <ReferencedMemberName>Page</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Posts</Name>
+        <ReferencedMemberName>Post</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>404</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the 404 of the site.
+.DESCRIPTION
+    Gets a custom 404 of a Jekyll site.  
+    
+    This can be provided by a 404.html file in the root of the site.
+.EXAMPLE
+    $psJekyll.CurrentSite.404
+#&gt;
+param()
+$404File = Join-Path $this.Directory "404.html"
+if (Test-Path $404File) {
+    Get-Item -Path $404File
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the 404 of the site.
+.DESCRIPTION
+    Sets a custom 404 of a Jekyll site.  
+    
+    This can be provided by a 404.html file in the root of the site.
+.EXAMPLE
+    $psJekyll.CurrentSite.404 = "File Not Found"
+#&gt;
+param()
+$this.Page = @("404.html") + $args
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Config</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the config of the site.
+.DESCRIPTION
+    Gets the configuration of the Jekyll site.  
+    
+    This can be provided by a _config.yml file in the root of the site (and essentially marks it as a site)
+.EXAMPLE
+    $psJekyll.CurrentSite.Config
+#&gt;
+param()
+$configFile = Join-Path $this.Directory "_config.yml"
+if (Test-Path $configFile) {
+    Get-Item -Path $configFile
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the config of the site.
+.DESCRIPTION
+    Gets the configuration of the Jekyll site.  
+    
+    This can be provided by a _config.yml file in the root of the site (and essentially marks it as a site)
+.EXAMPLE
+    $psJekyll.CurrentSite.Config = [Ordered]@{
+        title = 'My Awesome Site'
+        description = 'This is a site that is awesome.'
+        permalink = 'pretty'
+    }
+#&gt;
+param(
+# The new configuration object.
+# This will be converted to YAML and added to the _config.yml file.
+$Value
+)
+$configFile = Join-Path $this.Directory "_config.yml"
+$valueToAdd = 
+    if ($value -is [string]) {
+        $value
+    } 
+    elseif ($value -is [IO.FileInfo]) {
+        Get-Content -Path $value.FullName
+    }
+    else {
+        &amp; $PSJekyll.FormatYAML.Script $value
+    }
+
+New-Item -ItemType File -Path $configFile -Force -Value $valueToAdd
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Data</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets data files in a Jekyll site
+.DESCRIPTION
+    Gets data files in a Jekyll site, using PowerShell.
+
+    This will return the file objects in the _data folder.
+#&gt;
+param()
+
+foreach ($specialFile in $this.File -match '[\\/]_data[\\/]') {
+    $specialFile.pstypenames.add("PSJekyll.DataFile")
+    $specialFile
+}
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets data files in a Jekyll site
+.DESCRIPTION
+    Sets data files in a Jekyll site, using PowerShell.
+
+    Data files are a simple and powerful way to add custom data to your site. 
+    
+    Simply use this to set a property, and the data will be available in Jekyll within `site.data`
+#&gt;
+param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+$currentName = ''
+
+filter toJsonFileName {
+    $_ -replace '(?:\.json)?$', '.json'
+}
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {        
+        foreach ($keyValue in $arg.GetEnumerator()) {            
+            $targetPath = 
+                $this.Directory,"_data",($keyValue.Key | toJsonFileName) -join 
+                    [IO.Path]::DirectorySeparatorChar -replace 
+                        '[\\/]', [IO.Path]::DirectorySeparatorChar
+
+            New-Item -Path $targetPath -ItemType File -Force -Value (
+                ConvertTo-Json -Depth $FormatEnumerationLimit -InputObject $($keyValue.Value)
+            )
+        }
+    }
+    elseif ($arg -is [string]) {
+        $currentName = $arg
+    }
+    elseif ($currentName) {
+        $targetPath = $this.Directory,"_data",($currentName | toJsonFileName) -join 
+            [IO.Path]::DirectorySeparatorChar -replace 
+                '[\\/]', [IO.Path]::DirectorySeparatorChar
+        New-Item -Path $targetPath -ItemType File -Force -Value (
+            ConvertTo-Json -Depth ($FormatEnumerationLimit * 2) -InputObject $arg
+        )            
+    }
+}
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Domain</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the domain name of the site.
+.DESCRIPTION
+    Gets the domain name of the Jekyll site.  
+    
+    This can be provided by a CNAME file in the root of the site.
+.EXAMPLE
+    $PSJekyll.CurrentSite.Domain
+#&gt;
+$cNamePath = Join-Path $this.Directory "CNAME"
+if (Test-Path $cNamePath) {
+    Get-Content -Path $cNamePath
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the domain name of the site.
+.DESCRIPTION
+    Sets the domain name of the Jekyll site.  
+    
+    This will create a CNAME file in the root of the site.
+
+    This will also attempt to resolve the domain name to ensure it is valid, and will write a warning if it is not.
+.EXAMPLE
+    $PSJekyll.CurrentSite.Domain = 'psjekyll.powershellweb.com'
+#&gt;
+param([string]$cname)
+$cNamePath = Join-Path $this.Directory "CNAME"
+New-Item -ItemType File -Path $cNamePath -Force -Value $cname
+$tryToResolveCName = try {
+    [Net.Dns]::Resolve($cname)
+} catch {
+    Write-Warning "Could not resolve the domain name '$cname'."
+}
+
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Draft</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets drafts in a Jekyll site.    
+.DESCRIPTION
+    Gets drafts in a Jekyll site, using PowerShell.
+
+    This will return the file objects in the `_drafts` folder.
+#&gt;
+param()
+
+foreach ($specialFile in $this.File -match '[\\/]_drafts[\\/]') {    
+    $specialFile.pstypenames.add("PSJekyll.Draft.Post")
+    $specialFile.pstypenames.add("PSJekyll.Post")    
+    $specialFile
+}
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets a draft in a Jekyll site.
+.DESCRIPTION
+    Sets a draft in a Jekyll site, using PowerShell.
+    
+    This will create a new draft in the `_drafts` folder.
+
+    If no metadata is provided, it will default to the current date and the title of the draft.
+#&gt;
+param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+$currentName = ''
+
+filter toMarkdownFileName {
+    $_ -replace '(?:\.md)?$', '.md' -replace '[\s\p{P}]','-'
+}
+
+$name, $content, $metdata = $null, $null, $null
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {
+        $metadata = $arg        
+    }
+    elseif ($arg -is [string] -and -not $name) {
+        $Name = $arg
+    }
+    elseif ($arg -is [string] -and -not $content) {
+        $content = $arg            
+    }
+}
+
+if (-not $metadata) {
+    $metadata = [Ordered]@{}
+}
+if (-not $metadata.date) {
+    $metadata.date = [DateTime]::Now.ToString("yyyy-MM-dd HH:mm:ss K")
+}
+if (-not $metadata.title) {
+    $metadata.title = $Name -replace '\.+?$'
+}
+
+New-Item -Path (
+    $this.Directory,"_drafts",($Name | toMarkdownFileName) -join 
+        ([IO.Path]::DirectorySeparatorChar) -replace 
+            '^\\' -replace '[\\/]', [IO.Path]::DirectorySeparatorChar
+) -Force -Value $(
+    @(
+        $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
+        $content
+    ) -join [Environment]::NewLine
+)
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>File</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the files in a site.
+.DESCRIPTION
+    Gets the files in a Jekyll site.
+.EXAMPLE
+    $psJekyll.CurrentSite.File
+#&gt;
+if ($this.Directory -and -not $this.'.FileList') {
+    $this.psobject.properties.add([psnoteproperty]::new('.FileList', @($this.Directory.EnumerateFiles("*",'AllDirectories'))))    
+}
+return $this.'.FileList'
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Include</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the include files of a site.
+.DESCRIPTION
+    Gets the include files in a Jekyll site.
+
+    Include files are used to include content inline in a page.
+.LINK
+    https://jekyllrb.com/docs/includes/
+#&gt;
+
+param()
+
+foreach ($specialFile in $this.File -match '[\\/]_includes[\\/]') {
+    $specialFile.pstypenames.add("PSJekyll.IncludeFile")
+    $specialFile
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets an include file.
+.DESCRIPTION
+    Sets an include file in a Jekyll site.
+
+    Include files are used to include content inline in a page.
+.LINK
+    https://jekyllrb.com/docs/includes/
+#&gt;
+param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+
+filter toFileName {
+    $_ -replace '[&lt;&gt;\|\?\*:]', '-' -replace '\s','-'
+}
+
+$name, $content, $metdata = $null, $null, $null
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {
+        $metadata = $arg        
+    }
+    elseif ($arg -is [string] -and -not $name) {
+        $Name = $arg
+    }
+    elseif ($arg -is [string] -and -not $content) {
+        $content = $arg            
+    }
+}
+
+if (-not $metadata) {
+    $metadata = [Ordered]@{}
+}
+if (-not $metadata.title) {
+    $metadata.title = $Name
+}
+
+
+$destinationPath = $this.Directory,"_includes",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+# Includes cannot have front matter.
+$destinationContent = $content
+
+New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Layout</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the layout files of a site.
+.DESCRIPTION
+    Gets the layout files in a Jekyll site.
+
+    Layout files are used to define the structure of a page.
+.LINK
+    https://jekyllrb.com/docs/layouts/
+#&gt;
+param()
+
+foreach ($specialFile in $this.File -match '[\\/]_layouts[\\/]') {
+    $specialFile.pstypenames.add("PSJekyll.LayoutFile")
+    $specialFile
+}
+
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the layout files of a site.
+.DESCRIPTION
+    Sets the layout files in a Jekyll site.
+
+    Layout files are used to define the structure of a page.
+.LINK
+    https://jekyllrb.com/docs/layouts/
+#&gt;
+param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+
+filter toFileName {
+    $_ -replace '[&lt;&gt;\|\?\*:]', '-' -replace '\s','-'
+}
+
+$name, $content, $metdata = $null, $null, $null
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {
+        $metadata = $arg        
+    }
+    elseif ($arg -is [string] -and -not $name) {
+        $Name = $arg
+    }
+    elseif ($arg -is [string] -and -not $content) {
+        $content = $arg            
+    }
+}
+
+if (-not $metadata) {
+    $metadata = [Ordered]@{}
+}
+if (-not $metadata.title) {
+    $metadata.title = $Name
+}
+
+if ($name -notmatch '\.[^\.]+$') {
+    $Name += '.html'
+}
+
+
+$destinationPath = $this.Directory,"_layouts",($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = $(
+    @(
+        $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
+        $content
+    ) -join [Environment]::NewLine
+)
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Page</Name>
+        <GetScriptBlock>
+                        foreach ($specialFile in $this.File -notmatch '[\\/]_.+?[\\/]' -match '\.(?&gt;md|markdown|html?)$') {
+    $specialFile.pstypenames.add("PSJekyll.Page")    
+    $specialFile
+}
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+
+filter toFileName {
+    $_ -replace '[&lt;&gt;\|\?\*:]', '-' -replace '\s','-'
+}
+
+$name, $content, $metdata = $null, $null, $null
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {
+        $metadata = $arg        
+    }
+    elseif ($arg -is [string] -and -not $name) {
+        $Name = $arg
+    }
+    elseif ($arg -is [string] -and -not $content) {
+        $content = $arg            
+    }
+}
+
+if (-not $metadata) {
+    $metadata = [Ordered]@{}
+}
+if (-not $metadata.title) {
+    $metadata.title = $Name
+}
+
+if ($name -notmatch '\.(?&gt;md|markdown|html?)$') {
+    $Name += '.md'
+}
+
+$destinationPath = $this.Directory,($Name | toFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+$destinationContent = @(
+    $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
+    $content
+) -join [Environment]::NewLine
+
+if (-not (Test-Path $destinationPath)) {
+    New-Item -Path $destinationPath -ItemType File -Value $destinationContent -Force
+} else {
+    Set-Content -Path $destinationPath -Value $destinationContent
+}
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Post</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the posts in a site.
+.DESCRIPTION
+    Gets the post files in a Jekyll site.
+
+    Any file in the _posts directory is considered a post.
+.EXAMPLE
+    $psJekyll.CurrentSite.Post
+.LINK
+    https://jekyllrb.com/docs/posts/
+#&gt;
+param()
+
+foreach ($specialFile in $this.File -match '[\\/]_posts[\\/]') {    
+    $specialFile.pstypenames.add("PSJekyll.Published.Post")
+    $specialFile.pstypenames.add("PSJekyll.Post")    
+    $specialFile
+}
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the posts in a site.
+.DESCRIPTION
+    Sets the post files in a Jekyll site.
+
+    Any file in the _posts directory is considered a post.
+.LINK
+    https://jekyllrb.com/docs/posts/
+#&gt;
+param()
+
+$unrolledArguments = @($args | . { process { $_ } })
+$currentName = ''
+
+filter toMarkdownFileName {
+    $_ -replace '(?:\.md)?$', '.md' -replace '[\s\p{P}]','-'
+}
+
+$name, $content, $metdata = $null, $null, $null
+
+foreach ($arg in $unrolledArguments) {
+    if ($arg -is [Collections.IDictionary]) {
+        $metadata = $arg        
+    }
+    elseif ($arg -is [string] -and -not $name) {
+        $Name = $arg
+    }
+    elseif ($arg -is [string] -and -not $content) {
+        $content = $arg            
+    }
+}
+
+if (-not $metadata) {
+    $metadata = [Ordered]@{}
+}
+if (-not $metadata.date) {
+    $metadata.date = [DateTime]::Now.ToString("yyyy-MM-dd HH:mm:ss K")
+}
+if (-not $metadata.title) {
+    $metadata.title = $Name
+}
+
+
+
+Set-Content -Path (
+    $this.Directory,"_posts",($Name | toMarkdownFileName) -join ([IO.Path]::DirectorySeparatorChar) -replace '^\\'
+) -Value $(
+    @(
+        $metadata | &amp; $psJekyll.FormatYaml.Script -YamlHeader
+        $content
+    ) -join [Environment]::NewLine
+)
+                    </SetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSJekyll.Template</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>GitHubPages.Gemfile</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Creates a GitHub Pages Gemfile.
+.DESCRIPTION
+    Creates a Gemfile for GitHub Pages.
+.EXAMPLE
+    $PSJekyll.Template.'GitHubPages.Gemfile'()
+#&gt;
+param()
+
+@'
+source "https://rubygems.org"
+gem 'github-pages', group: :jekyll_plugins
+'@
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.4bitcss.html</Name>
+        <Script>
+                        param(
+[string]
+$PaletteName
+)
+
+if ($PaletteName) {
+@"
+&lt;link rel="stylesheet" id="4bitcss" type="text/css" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/$($PaletteName -replace '\.css$').css" /&gt;
+"@
+} else {
+    @(
+        "{% if page.palette %}"
+            '&lt;link rel="stylesheet" type="text/css" id="4bitcss" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{page.palette}}.css" /&gt;'
+        "{% elsif site.palette %}"
+            '&lt;link rel="stylesheet" type="text/css" id="4bitcss" href="https://cdn.jsdelivr.net/gh/2bitdesigns/4bitcss@latest/css/{{site.palette}}.css" /&gt;'
+        "{% endif %}"
+    ) -join [Environment]::Newline
+}
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Contributor.md</Name>
+        <Script>
+                        param()
+
+"{% for contributor in site.github.contributors %}"
+"* [{{ contributor.login }}]({{ contributor.html_url }})"
+"{% endfor %}"
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Copyright.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a copyright notice
+.DESCRIPTION
+    Include for a copyright notice.
+    
+    This can be included in Jekyll anytime a copyright notice is needed.
+#&gt;
+param(
+# A custom copyright notice.
+[string]
+$Copyright
+)
+
+if ($Copyright) {
+    return $Copyright
+} else {
+@"
+&amp;copy; {% if page.copyright %}
+    {{page.copyright}}
+{% elsif site.copyright %}
+    {{site.copyright}}
+{% elsif site.data.PSModuleInfo.Copyright %}
+    {{site.data.PSModuleInfo.Copyright}}
+{% else %}
+    {{ site.time | date: '%Y' }} {{ site.author }}
+{% endif %}
+"@
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Footer.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a footer
+.DESCRIPTION
+    Include for a footer.
+    
+    This can be included in Jekyll anytime a footer is needed.
+
+    It is automatically included below the content of any page.
+#&gt;
+param($Footer)
+
+if ($footer) {
+"&lt;footer&gt;$footer&lt;/footer&gt;"
+} else {
+@"
+&lt;footer&gt;
+{% if page.footer %}
+    {{page.footer}}
+{% elsif site.footer %}
+    {{site.footer}}
+{% else %}
+    {% include Copyright.html %}
+{% endif %}
+&lt;/footer&gt;
+"@
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.GitHubLink.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a link to a GitHub repository.
+.DESCRIPTION
+    Include for a link to a GitHub repository.
+    
+    This can be included in Jekyll anytime a link to a GitHub repository is needed.
+
+    If no link is provided, the template will attempt to use the site's repository URL.
+    (this will only work in a GitHub page)
+#&gt;
+param(
+[uri]
+$RepositoryUrl
+)
+
+@(if ($RepositoryUrl) {
+    "&lt;a href='$RepositoryUrl'&gt;GitHub&lt;/a&gt;"
+} else {
+    "{% if site.github.repository_url %}"
+        "&lt;a href='{{site.github.repository_url}}'&gt;GitHub&lt;/a&gt;"
+    "{% endif %}"
+}) -join [Environment]::Newline
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.GoogleAnalytics.html</Name>
+        <Script>
+                        param($AnalyticsId = 'site.analyticsId')
+
+@"
+{% if $AnalyticsId %}
+&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id={{$AnalyticsId}}"&gt;&lt;/script&gt;
+&lt;script&gt;
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{$AnalyticsId}}');
+&lt;/script&gt;
+{% endif %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.GoogleFont.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes a Google Font.
+.DESCRIPTION
+    Includes a Google Font in the site.
+    
+    This will add a link to the Google Font.
+    
+    It can be located within the site or page front matter.
+#&gt;
+
+param(
+# The name of the font to include.
+# If no value is directly provided, it will attempt to find a value in site.googleFont.
+# If no font is found, it will default to Roboto.
+[string]
+$FontName,
+
+# The code font to include.
+# If no code font is provided, it will default to Roboto Mono.
+[string]
+$CodeFont
+)
+@(
+if ($FontName) {
+    "&lt;link href='https://fonts.googleapis.com/css?family=$fontName' rel='stylesheet'&gt;"
+} else {    
+    "{% if page.googleFont %}"
+        "&lt;link href='https://fonts.googleapis.com/css?family={{page.googleFont}}' rel='stylesheet'&gt;"
+        "&lt;style type='text/css'&gt;body { font-family: '{{page.googleFont}}',sans-serif } &lt;/style&gt;"
+    "{% elsif site.googleFont %}"
+        "&lt;link href='https://fonts.googleapis.com/css?family={{site.googleFont}}' rel='stylesheet'&gt;"
+        "&lt;style type='text/css'&gt;body { font-family: '{{site.googleFont}}',sans-serif } &lt;/style&gt;"
+    "{% else %}"
+        "&lt;link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'&gt;"
+        "&lt;style type='text/css'&gt;body { font-family: 'Roboto',sans-serif } &lt;/style&gt;"
+    "{% endif %}"    
+}
+
+if ($CodeFont) {
+    "&lt;link href='https://fonts.googleapis.com/css?family=$CodeFont' rel='stylesheet'&gt;"
+} else {    
+        "{% if page.codeFont %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family={{page.codeFont}}' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;code, pre { font-family: '{{page.codeFont}}',monospace } &lt;/style&gt;"
+        "{% elsif site.codeFont %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family={{site.codeFont}}' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;code, pre { font-family: '{{site.codeFont}}',monospace } &lt;/style&gt;"
+        "{% else %}"
+            "&lt;link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet'&gt;"
+            "&lt;style type='text/css'&gt;code, pre { font-family: 'Roboto Mono',monospace } &lt;/style&gt;"
+        "{% endif %}"
+}
+) -join [Environment]::Newline
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Htmx.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes the htmx library.
+.DESCRIPTION
+    Optionally includes the htmx library in a Jekyll site.
+
+    If the site or page has any `.htmx` property, then the htmx library will be included.
+#&gt;
+param()
+
+@'
+{% if page.htmx or site.htmx %}
+&lt;script src='https://unpkg.com/htmx.org@latest'&gt;&lt;/script&gt;
+{% endif %}
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.ImportMap.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes an import map.
+.DESCRIPTION
+    Includes an import map in the site.
+    
+    This will add a script tag with the import map.  It should be located in the head of the site.
+
+    An importmap can be defined in the front matter of a page, in the site data, or in the site configuration.
+
+    It may be called either `.imports` or `.importMap`.
+#&gt;
+param(
+# The import map to include.
+# If no import map is included, then it will attempt to find an import map in the site or page front matter.
+[object]
+$ImportMap
+)
+
+if ($ImportMap) {
+"&lt;script type='importmap'&gt;"
+[Ordered]@{
+    imports = $ImportMap
+} | ConvertTo-Json -Depth 3
+"&lt;/script&gt;"
+} else {
+@'
+{% if page.imports %}
+    {% assign importMap = page.imports %}
+{% elsif page.importMap %}
+    {% assign importMap = page.importMap %}
+{% elsif site.imports %}
+    {% assign importMap = site.imports %}
+{% elsif site.importMap %}
+    {% assign importMap = site.importMap %}
+{% elsif site.data.imports %}
+    {% assign importMap = site.data.imports %}
+{% elsif site.data.importMap %}
+    {% assign importMap = site.data.importMap %}
+{% endif %}
+{% if importMap %}
+&lt;script type="importmap"&gt;
+{
+    "imports": {
+        {% for eachImport in importMap %}
+            "{{eachImport[0]}}": "{{eachImport[1]}}"{% unless forloop.last %},
+            {% endunless %}
+        {% endfor %}
+    }
+}
+&lt;/script&gt;    
+{% endif %}
+'@    
+}
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Margin.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes site margins
+.DESCRIPTION
+    Includes site margins in the site.
+    
+    This will add a style tag with the margin.  It should be located in the head of the site.
+
+    If the margin parameter is provided, it will be used.  
+    
+    Otherwise, the `page.margin` or `site.margin` will be used.
+
+    If neither margin exists, it will default to a margin of `1em` for all elements, 
+    and `0.5em` for all elements when the screen is less than `960px`.
+#&gt;
+param(
+# The margin to include.
+[string]
+$Margin
+)
+
+if ($margin) {
+    "&lt;style type='text/css' id='globalMargin'&gt;$margin&lt;/style&gt;" 
+} else {
+    @(
+        "{% if page.margin %}"
+            "&lt;style id='globalMargin' type='text/css'&gt;{{page.margin}}&lt;/style&gt;"
+        "{% elsif site.margin %}"
+            "&lt;style id='globalMargin' type='text/css'&gt;{{site.margin}}&lt;/style&gt;"
+        "{% else %}"
+@"
+&lt;style type='text/css' id='globalMargin'&gt;
+body &gt; * { margin: 1em; }                
+@media (max-width: 960px) {
+    body &gt; * { margin: .5em; }
+}
+&lt;/style&gt;
+"@
+        "{% endif %}"
+    ) -join [Environment]::Newline
+}
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Menu.html</Name>
+        <Script>
+                        param()
+
+
+@'
+{% capture TopLeftMenu %}
+    {{page.menu.TopLeft}}
+    {{site.menu.TopLeft}}
+    {{site.data.menu.TopLeft}}
+{% endcapture %}
+{% assign TopLeftMenu = TopLeftMenu | strip %}
+
+{% capture TopRightMenu %}
+    {{page.menu.TopRight}}
+    {{site.menu.TopRight}}
+    {{site.data.menu.TopRight}}
+    {% unless site.NoGitHubLink or site.NoLink %}
+        {% include GitHubLink.html %}
+    {% endunless %}
+{% endcapture %}
+{% assign TopRightMenu = TopRightMenu | strip %}
+
+{% capture TopCenterMenu %}
+    {{page.menu.TopCenter}}
+    {{site.menu.TopCenter}}
+    {{site.data.menu.TopCenter}}
+{% endcapture %}
+{% assign TopCenterMenu = TopCenterMenu | strip %}
+
+{% capture BottomLeftMenu %}
+    {{page.menu.BottomLeft}}
+    {{site.menu.BottomLeft}}
+    {{site.data.menu.BottomLeft}}
+{% endcapture %}
+{% assign BottomLeftMenu = BottomLeftMenu | strip %}
+
+{% capture BottomRightMenu %}
+    {{page.menu.BottomRight}}
+    {{site.menu.BottomRight}}
+    {{site.data.menu.BottomRight}}
+{% endcapture %}
+{% assign BottomRightMenu = BottomRightMenu | strip %}
+
+{% capture BottomCenterMenu %}
+    {{page.menu.BottomCenter}}
+    {{site.menu.BottomCenter}}
+    {{site.data.menu.BottomCenter}}
+{% endcapture %}
+{% assign BottomCenterMenu = BottomCenterMenu | strip %}
+
+{% capture LeftCenterMenu %}
+    {{page.menu.LeftCenter}}
+    {{site.menu.LeftCenter}}
+    {{site.data.menu.LeftCenter}}
+{% endcapture %}
+{% assign LeftCenterMenu = LeftCenterMenu | strip %}
+
+{% capture RightCenterMenu %}
+    {{page.menu.RightCenter}}
+    {{site.menu.RightCenter}}
+    {{site.data.menu.RightCenter}}
+{% endcapture %}
+{% assign RightCenterMenu = RightCenterMenu | strip %}
+
+{% if TopLeftMenu or TopRightMenu or TopCenterMenu or BottomLeftMenu or BottomRightMenu or BottomCenterMenu or LeftCenterMenu or RightCenterMenu %}
+&lt;style&gt;
+    /* Menu Styles */
+    menu {
+        z-index: 100;
+        position: fixed;
+        display: float;
+        margin: 1em;
+    }
+    menu[class~=Left] {
+        left: 0;
+        text-align: left;
+    }
+    menu[class~=Right] {
+        right: 0;
+        text-align: right;
+    }
+    menu[class~=Top] {
+        top: 0;        
+    }
+    menu[class~=Bottom] {
+        bottom: 0;        
+    }
+    menu[class~=Center] {
+        text-align: center;
+    }
+    .Top.Center {
+        width: 100%;
+    }
+    .Left.Center {
+        height: 100%;
+    }
+    .Right.Center {
+        height: 100%;
+    }
+    .Bottom.Center {
+        width: 100%;
+    }
+&lt;/style&gt;
+{% endif %}
+
+{% if TopLeftMenu != "" %}
+&lt;menu class='Top Left'&gt;
+    {{TopLeftMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if TopRightMenu != "" %}
+&lt;menu class='Top Right'&gt;
+    {{TopRightMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if TopCenterMenu != "" %}
+&lt;menu class='Top Center'&gt;
+    {{TopCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if BottomLeftMenu != "" %}
+&lt;menu class='Bottom Left'&gt;
+    {{BottomLeftMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if BottomRightMenu != "" %}
+&lt;menu class='Bottom Right'&gt;
+    {{BottomRightMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if BottomCenterMenu != "" %}
+&lt;menu class='Bottom Center'&gt;
+    {{BottomCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if LeftCenterMenu != "" %}
+&lt;menu class='Left Center'&gt;
+    {{LeftCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
+
+{% if RightCenterMenu != "" %}
+&lt;menu class='Right Center'&gt;
+    {{RightCenterMenu}}
+&lt;/menu&gt;
+{% endif %}
+'@
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.OpenGraph.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Include Open Graph meta tags in a Jekyll site.
+.DESCRIPTION
+    Include Open Graph meta tags in a Jekyll site.
+
+    These tags can help social media sites understand the content of your site, and show preview images.
+
+    This script is intended to be included in the head of a Jekyll site.
+
+    It will output the Open Graph meta tags for the current page and site.
+.NOTES
+    Tags included:
+    - og:site_name
+    - og:title
+    - og:type
+    - og:description
+    - og:url
+    - og:image
+    - article:published_time
+#&gt;
+param()
+
+@'
+&lt;meta content="{{ site.title }}" property="og:site_name" /&gt;
+{% if page.title %}
+&lt;meta content="{{ page.title }}" property="og:title" /&gt;
+{% else %}
+&lt;meta content="{{ site.title }}" property="og:title" /&gt;
+{% endif %}
+{% if page.type %}
+&lt;meta content="{{ page.type }}" property="og:type" /&gt;
+{% else %}
+&lt;meta content="website" property="og:type" /&gt;
+{% endif %}
+{% if page.description %}
+&lt;meta content="{{ page.description }}" property="og:description" /&gt;
+&lt;meta name="description" content="{{ page.description }}" /&gt;
+&lt;meta name="twitter:description" content="{{ page.description }}" /&gt;
+{% elsif content %}
+
+&lt;meta property="og:description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+&lt;meta name="description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+&lt;meta name="twitter:description" content="{{ content | strip_html | truncatewords: 20 }}" /&gt;
+
+{% elsif site.description %}
+&lt;meta content="{{ site.description }}" property="og:description" /&gt;
+&lt;meta name="description" content="{{ site.description }}" /&gt;
+&lt;meta name="twitter:description" content="{{ site.description }}" /&gt;
+{% endif %}
+{% if page.date %}
+    &lt;meta content="{{ page.date | date_to_xmlschema }}" property="article:published_time" /&gt;
+{% endif %}
+{% if page.url %}
+    &lt;meta content="{{ site.url }}{{ page.url }}" property="og:url" /&gt;
+    &lt;meta name="twitter:url" content="{{ site.url }}{{ page.url }}" /&gt;
+    &lt;meta name="twitter:domain" content="{{ site.url }}" /&gt;
+{% endif %}
+
+{% if page.image %}
+    &lt;meta content="/{{ page.image }}" property="og:image" /&gt;
+    &lt;meta name="twitter:image" content="{{ site.url }}/{{ page.image }}" /&gt;
+    &lt;meta name="twitter:image:src" content="{{ site.url }}/{{ page.image }}"  /&gt;
+{% elsif site.image %}
+    &lt;meta content="{{ site.url }}/{{ site.image }}" property="og:image" /&gt;
+    &lt;meta name="twitter:image" content="{{ site.url }}/{{ site.image }}" /&gt;
+    &lt;meta name="twitter:image:src" content="{{ site.url }}/{{ site.image }}" /&gt;
+{% endif %}
+'@
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.OrgMember.md</Name>
+        <Script>
+                        param()
+
+"{% for member in site.github.organization_members %}"
+"* [{{ member.login }}]({{ member.html_url }})"
+"{% endfor %}"
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.PSAlias.md</Name>
+        <Script>
+                        param()
+
+@"
+| Alias | Command |
+|:-|-:|{% for alias in site.data.PSModule.Aliases %}
+|{{ alias.Name }}|[{{ alias.Definition }}](/{{alias.Definition}})|
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.PSCmdlet.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for cmdletName in site.data.PSModule.CmdletNames %}
+* [{{ cmdletName }}](/{{cmdletName}})
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.PSFunctions.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for functionName in site.data.PSModule.FunctionNames %}
+* [{{ functionName }}](/{{functionName}})
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.PSTag.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for tagName in site.data.PSModule.Info.Tags %}
+* [{{ tagName }}](https://www.powershellgallery.com/packages?q=Tags%3A%22{{tagName}}%22)
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.PSTypeName.md</Name>
+        <Script>
+                        param()
+
+@"
+{% for typeName in site.data.PSModule.TypeNames %}
+* [{{ typeName }}](/{{typeName | replace: ".", "/"}})
+{% endfor %}
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Releases.md</Name>
+        <Script>
+                        param()
+
+@(
+@"
+{% for release in site.github.releases %}
+# [{{ release.tag_name }}]({{ release.html_url }})
+{{ release.body }}
+{% endfor %}
+"@
+)
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Repos.md</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Include my repositories.
+.DESCRIPTION
+    Include my repositories in the site.
+    
+    This will add a list of the owner's repositories to the site.
+
+    This will only work in GitHub Pages.
+.LINK
+    https://github.com/jekyll/github-metadata/blob/main/docs/site.github.md
+#&gt;
+param()
+
+@'
+{% for repository in site.github.public_repositories %}
+  * [{{ repository.name }}]({{ repository.html_url }})
+{% endfor %}
+'@
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.SiteTree.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Gets the site tree.
+.DESCRIPTION
+    Gets the site tree of the Jekyll site.  
+    
+    This will return all pages in the Jekyll site.
+#&gt;
+param()
+
+@'
+{% assign pages_by_url = site.pages | sort: "url" %}
+{% assign page_depth = 0 %}
+
+{% for page in pages_by_url %}
+    {% if page.title == nil %}
+        {% continue %}
+    {% endif %}
+    {% assign page_parts = page.url | split: "/" %}
+    {% if page_parts.size &gt; page_depth %}
+    {% assign page_depth = page_parts.size %}
+&lt;ul&gt;
+    {% endif %}       
+    {% if page_parts.size &lt; page_depth %}
+    {% assign page_depth = page_parts.size %}
+&lt;/ul&gt;
+    {% endif %}
+&lt;li&gt;
+&lt;a href='{{page.url}}'&gt;{{ page.title }}&lt;/a&gt;
+&lt;/li&gt;      
+{% endfor %}
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Include.Stylesheet.html</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Includes stylesheets in a Jekyll site.
+.DESCRIPTION
+    Optionally includes stylesheets in a Jekyll site.
+    
+    If the site or page has any `.stylesheet` property, then the stylesheets will be included.
+#&gt;
+param()
+
+@'
+{% if site.data.stylesheet %}
+    {% for stylesheet in site.data.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+{% if page.stylesheet %}
+    {% for stylesheet in page.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+{% if include.stylesheet %}
+    {% for stylesheet in include.stylesheet %}
+        &lt;link rel="stylesheet" type="text/css" href="{{ stylesheet }}" /&gt;
+    {% endfor %}
+{% endif %}
+'@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>LayoutDefault</Name>
+        <Script>
+                        
+@"
+&lt;!DOCTYPE html&gt;
+&lt;html lang="{{ site.lang | default: "en" }}"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    {% include GoogleAnalytics.html %}
+    {% include ImportMap.html %}
+    {% include OpenGraph.html %}
+    {% include GoogleFont.html %}
+    {% include 4bitcss.html %}
+    {% include Margin.html %}
+    {% include Stylesheet.html %}
+    {% include Htmx.html %}
+&lt;/head&gt;
+&lt;body&gt;
+
+{% include Menu.html %}
+
+{{content}}
+
+{% include Footer.html %}
+&lt;/body&gt;
+"@
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>MinGemFile</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Minimal Gemfile for Jekyll projects.
+.DESCRIPTION
+    Generates the minimal Gemfile for Jekyll projects.
+#&gt;
+param()
+
+"source 'https://rubygems.org'"
+"gem 'jekyll'"
+
+                    </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+</Types>

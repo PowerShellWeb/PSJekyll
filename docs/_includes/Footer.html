@@ -1,0 +1,9 @@
+<footer>
+{% if page.footer %}
+    {{page.footer}}
+{% elsif site.footer %}
+    {{site.footer}}
+{% else %}
+    {% include Copyright.html %}
+{% endif %}
+</footer>

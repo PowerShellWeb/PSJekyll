@@ -1,0 +1,12 @@
+
+title: PSJekyll
+description: A PowerShell module for creating Jekyll sites.
+url: https://psjekyll.powershellweb.com
+permalink: pretty
+palette: Konsolas
+analyticsId: G-R5C30737B2
+googleFont: Noto Sans
+stylesheet: https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css
+defaults: 
+  - values: 
+      layout: Default

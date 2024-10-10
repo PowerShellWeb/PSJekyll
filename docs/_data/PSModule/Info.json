@@ -1,0 +1,23 @@
+{
+  "Name": "PSJekyll",
+  "Version": {
+    "Major": 0,
+    "Minor": 1,
+    "Build": -1,
+    "Revision": -1,
+    "MajorRevision": -1,
+    "MinorRevision": -1
+  },
+  "Description": "Scarily Simple Static Sites with Jekyll and PowerShell",
+  "Copyright": "2024",
+  "CompanyName": "PowerShellWeb",
+  "Author": "James Brundage",
+  "Tags": [
+    "PowerShellWeb",
+    "Jekyll",
+    "Docker",
+    "Container",
+    "GitHubAction",
+    "StaticSite"
+  ]
+}
