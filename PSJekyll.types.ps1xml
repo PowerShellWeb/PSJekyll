@@ -3,6 +3,10 @@
   <Type>
     <Name>PSJekyll</Name>
     <Members>
+      <AliasProperty>
+        <Name>Site</Name>
+        <ReferencedMemberName>CurrentSite</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>FormatMarkdown</Name>
         <Script>
