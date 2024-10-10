@@ -8,7 +8,7 @@
     "MajorRevision": -1,
     "MinorRevision": -1
   },
-  "Description": "Give Jekyll more power with PowerShell",
+  "Description": "Scarily Simple Static Sites with Jekyll and PowerShell",
   "Copyright": "2024",
   "CompanyName": "PowerShellWeb",
   "Author": "James Brundage",
@@ -16,6 +16,8 @@
     "PowerShellWeb",
     "Jekyll",
     "Docker",
-    "GitHubAction"
+    "Container",
+    "GitHubAction",
+    "StaticSite"
   ]
 }
