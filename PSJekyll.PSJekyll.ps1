@@ -1,7 +1,10 @@
 # PSJekyll site self creation
 $sitePath = Join-Path $PSScriptRoot 'docs'
 
-$sourceModule = Import-Module ./ -PassThru
+$sourceModule = Get-Module PSJekyll
+if (-not $sourceModule) { 
+    $sourceModule = Import-Module ./ -PassThru
+} 
 
 
 Push-Location $sitePath
