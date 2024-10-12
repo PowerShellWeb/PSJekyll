@@ -12,6 +12,5 @@ jobs:
         uses: PowerShellWeb/PSJekyll@main
         id: PSJekyll
         with: 
-          TargetBranch: edits-$([DateTime]::Now.ToString("o") -replace "T.+$")
           CommitMessage: Syncing Discussions [skip ci]
 
