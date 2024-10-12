@@ -2,6 +2,9 @@
 name: Sync Issue
 on: 
   issues: 
+    types: 
+    - opened
+    - edited
 jobs: 
   SyncIssue: 
     runs-on: ubuntu-latest
@@ -13,6 +16,5 @@ jobs:
         uses: PowerShellWeb/PSJekyll@main
         id: PSJekyll
         with: 
-          TargetBranch: edits-$([DateTime]::Now.ToString("o") -replace "T.+$")
           CommitMessage: Syncing Issues [skip ci]
 

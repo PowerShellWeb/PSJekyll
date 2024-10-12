@@ -12,4 +12,7 @@ New-GitHubWorkflow -Name "Build PSJekyll" -On Push,
         IMAGE_NAME = '${{ github.repository }}'
     }) -OutputPath .\.github\workflows\BuildPSJekyll.yml
 
+New-GitHubWorkflow -Name "Sync Issue" -On IssueOpenedOrEdited -Job SyncIssue -OutputPath .\.github\workflows\SyncIssue.yml
+New-GitHubWorkflow -Name "Sync Discussion" -On Discussion -Job SyncDiscussion -OutputPath .\.github\workflows\SyncDiscussion.yml
+
 Pop-Location
