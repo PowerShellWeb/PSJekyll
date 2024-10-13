@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": "* [ ] `PSJekyll.Template.Include.Discussion` should include a discussion\r\n* [ ] `PSJekyll.Template.Include.Issue` should include an issue\r\n* [ ] `PSJekyll.Template.Include.3jsScene` should include a threejs scene\r\n* [ ] `PSJekyll.Template.Include.YouTube` should include a YouTube video\r\n* [ ] `PSJekyll.Template.Include.FeatherIcon` should include feather icons\r\n* [ ] `PSJekyll.Template.Include.Icon` should include icons\r\n\r\n\r\n\r\n",
+  "body": "* [ ] `PSJekyll.Template.Include.Discussion` should include a discussion\r\n* [ ] `PSJekyll.Template.Include.Issue` should include an issue\r\n* [ ] `PSJekyll.Template.Include.3jsScene` should include a threejs scene\r\n* [ ] `PSJekyll.Template.Include.YouTube` should include a YouTube video\r\n* [ ] `PSJekyll.Template.Include.FeatherIcon` should include feather icons\r\n* [ ] `PSJekyll.Template.Include.Icon` should include icons\r\n* [ ] `PSJekyll.Template.Include.Raster` should rasterize a svg\r\n\r\n\r\n\r\n",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97/timeline",
   "title": "Additional PSJekyll Includes",
-  "updated_at": "2024-10-13T16:45:41Z",
+  "updated_at": "2024-10-13T23:25:04Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
