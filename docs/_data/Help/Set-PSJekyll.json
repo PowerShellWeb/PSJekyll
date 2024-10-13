@@ -1,0 +1,33 @@
+{
+  "Synopsis": "Sets the content of a file in Jekyll",
+  "Description": "Sets the content of a file in Jekyll.\n\nThis is only slightly smarter than Set-Content.  \n\nIt will convert the content to JSON if the file ends in .json, and to CSV if the file ends in .csv or .tsv.\n\nOtherwise, it will create a YAML header and then set the content.",
+  "Parameters": [
+    {
+      "Name": null,
+      "Type": null,
+      "Description": "",
+      "Required": false,
+      "Position": 0,
+      "Aliases": null,
+      "DefaultValue": null,
+      "Globbing": false,
+      "PipelineInput": null,
+      "variableLength": false
+    }
+  ],
+  "Notes": [
+    null
+  ],
+  "CommandType": "Function",
+  "Component": [
+    null
+  ],
+  "Inputs": [
+    null
+  ],
+  "Outputs": [
+    null
+  ],
+  "Links": [],
+  "Examples": []
+}
