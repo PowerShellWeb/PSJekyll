@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": null,
+  "body": "Sync should be open-ended.\r\n\r\nAny command named `Sync*Jekyll`, and any extended type named `Sync*Jekyll` may be presumed to be a Sync function.\r\n\r\nAll `Sync-PSJekyll` should be doing is calling any `Sync*Jekyll` commands, or a provided scriptblock.\r\n\r\nAny dictionaries returned should attempt to become a change in the site, for example, if `@{Page=\"aPage\", \"SomeText\"}` was provided, then we should attempt to create a page called `aPage` with some text in it. ",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/100/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/100/timeline",
   "title": "`Sync-PSJekyll` should synchronize content to a Jekyll site",
-  "updated_at": "2024-10-15T03:04:02Z",
+  "updated_at": "2024-10-15T03:04:15Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/100",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
