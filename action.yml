@@ -301,6 +301,7 @@ runs:
                 $checkDetached = git symbolic-ref -q HEAD
                 if (-not $LASTEXITCODE) {
                     "::notice::Pushing Changes" | Out-Host
+                    git pull | Out-Host # Pull before push
                     if ($TargetBranch -and $anyFilesChanged) {
                         git push --set-upstream origin $TargetBranch
                     } elseif ($anyFilesChanged) {
