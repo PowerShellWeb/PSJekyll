@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": "PSJekyll's action should attempt to improve in a few ways:\r\n\r\n* [ ] #103\r\n* [ ] #104\r\n* [ ] #105\r\n* [ ] #106\r\n",
+  "body": "PSJekyll's action should attempt to improve in a few ways:\r\n\r\n* [ ] #103\r\n* [ ] #104\r\n* [ ] #105\r\n* [ ] `PSJekyll` action `-NoCommit` should not commit\r\n",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/102/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/102/timeline",
   "title": "`PSJekyll` Action Improvement",
-  "updated_at": "2024-10-15T03:26:04Z",
+  "updated_at": "2024-10-15T03:26:02Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/102",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
