@@ -299,15 +299,25 @@ runs:
                 }
             
                 $checkDetached = git symbolic-ref -q HEAD
-                if (-not $LASTEXITCODE) {
-                    "::notice::Pushing Changes" | Out-Host
-                    git pull | Out-Host # Pull before push
+                if (-not $LASTEXITCODE) {            
                     if ($TargetBranch -and $anyFilesChanged) {
-                        git push --set-upstream origin $TargetBranch
+                        git push --set-upstream origin $TargetBranch | Out-Host
                     } elseif ($anyFilesChanged) {
-                        git push
+                        git push | Out-Host
                     }
-                    "Git Push Output: $($gitPushed  | Out-String)"
+                    
+                    # If git push did not work
+                    if ($LASTEXITCODE) {
+                        # pull
+                        git pull | Out-Host
+                        # try to amend the commit (to keep the message)
+                        if ($gitHubEvent.head_commit.message) {
+                            git commit --amend $gitHubEvent.head_commit.message | Out-Host
+                        }
+                        # push again
+                        git push | Out-Host
+                    }
+                    
                 } else {
                     "::notice::Not pushing changes (on detached head)" | Out-Host
                     $LASTEXITCODE = 0
