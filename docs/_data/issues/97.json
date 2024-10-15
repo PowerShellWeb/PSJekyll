@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": "* [ ] #111\r\n* [ ] #112\r\n* [ ] `PSJekyll.Template.Include.3jsScene` should include a threejs scene\r\n* [ ] `PSJekyll.Template.Include.YouTube` should include a YouTube video\r\n* [ ] #113\r\n* [ ] #114\r\n* [ ] #115\r\n\r\n\r\n\r\n",
+  "body": "* [ ] #111\r\n* [ ] #112\r\n* [ ] #117\r\n* [ ] #116\r\n* [ ] #113\r\n* [ ] #114\r\n* [ ] #115\r\n\r\n\r\n\r\n",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97/timeline",
   "title": "Additional PSJekyll Includes",
-  "updated_at": "2024-10-15T04:00:45Z",
+  "updated_at": "2024-10-15T04:00:50Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/97",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
