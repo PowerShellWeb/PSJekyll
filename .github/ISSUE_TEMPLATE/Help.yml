@@ -1,0 +1,14 @@
+name: Help
+description: Request Help
+labels: ["help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        What do you need help with?
+  - type: textarea
+    id: HelpWanted
+    attributes:
+      label: Help Wanted
+    validations:
+      required: true
