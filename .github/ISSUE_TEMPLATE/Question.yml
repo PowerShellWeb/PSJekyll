@@ -1,0 +1,14 @@
+name: Question
+description: Ask a Question
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        What do you want to know?
+  - type: textarea
+    id: Question
+    attributes:
+      label: What is the Question?
+    validations:
+      required: true  
