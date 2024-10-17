@@ -1,0 +1,38 @@
+name: Feature
+description: Request a Feature
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        What do you want?  Tell us more and we'll see what we can do.  
+  - type: input
+    id: Synopsis
+    attributes:
+      label: Synopsis
+      description: A Short Description.
+    validations:
+      required: true
+  - type: textarea
+    id: Description
+    attributes:
+      label: Description
+      description: Describe what you want.
+    validations:
+      required: false  
+  - type: textarea
+    id: Example
+    attributes:
+      label: Example
+      description: Any examples?  Put them in code blocks.
+      render: PowerShell
+    validations:
+      required: false
+  - type: textarea
+    id: Links
+    attributes:
+      label: Links
+      description: Any related links?
+    validations:
+      required: false
