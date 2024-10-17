@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": "* [ ] #107\r\n* [ ] #108\r\n* [ ] #109\r\n* [ ] `PSJekyll.Sync.Gist` should sync GitHub gists\r\n* [ ] #110",
+  "body": "* [ ] #107\r\n* [ ] #108\r\n* [ ] #109\r\n* [ ] #118\r\n* [ ] #110",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/101/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/101/timeline",
   "title": "`PSJekyll Syncs`",
-  "updated_at": "2024-10-17T05:41:12Z",
+  "updated_at": "2024-10-17T05:41:18Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/101",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
