@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": "PSJekyll should create a number of issue templates, for two reasons:\r\n\r\n1. It may help streamline issue organization\r\n2. It can demonstrate constructing static site data from structured issues\r\n\r\n* [x] #120\r\n* [ ] #121\r\n* [ ] #122\r\n* [ ] #123\r\n* [ ] #124\r\n\r\n",
+  "body": "PSJekyll should create a number of issue templates, for two reasons:\r\n\r\n1. It may help streamline issue organization\r\n2. It can demonstrate constructing static site data from structured issues\r\n\r\n* [x] #120\r\n* [x] #121\r\n* [ ] #122\r\n* [ ] #123\r\n* [ ] #124\r\n\r\n",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/119/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/119/timeline",
   "title": "`PSJekyll` Issue Templates",
-  "updated_at": "2024-10-17T06:12:20Z",
+  "updated_at": "2024-10-17T06:20:28Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/119",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
