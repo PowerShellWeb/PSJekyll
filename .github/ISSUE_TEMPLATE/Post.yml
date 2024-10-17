@@ -9,7 +9,6 @@ body:
   - type: textarea
     id: Content
     attributes:
-      label: Post Content
-      description: What do you want to say?
+      label: Content      
     validations:
       required: true  
