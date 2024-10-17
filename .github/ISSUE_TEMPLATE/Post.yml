@@ -1,0 +1,15 @@
+name: Post
+description: Write a Post
+labels: ["post"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        What do you want to say?
+  - type: textarea
+    id: Content
+    attributes:
+      label: Post Content
+      description: What do you want to say?
+    validations:
+      required: true  
