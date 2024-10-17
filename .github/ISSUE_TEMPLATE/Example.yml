@@ -1,0 +1,15 @@
+name: Example
+description: Share an Example
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Show off your samples
+  - type: textarea
+    id: Example
+    attributes:
+      label: Example
+      description: Provide an example (in Markdown)
+    validations:
+      required: true
