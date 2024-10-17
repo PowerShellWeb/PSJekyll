@@ -1,0 +1,23 @@
+name: Link
+description: Add a Link
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share a useful link
+  - type: input
+    id: Synopsis
+    attributes:
+      label: Synopsis
+      description: A Short Description.
+    validations:
+      required: true
+  - type: input
+    id: Link
+    attributes:
+      label: Link
+      description: The Link URL.
+    validations:
+      required: true
+  
