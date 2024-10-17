@@ -1,0 +1,20 @@
+name: Joke
+description: Share a Joke
+labels: ["joke"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please be funny.
+  - type: textarea
+    id: Setup
+    attributes:
+      label: Set Up      
+    validations:
+      required: true
+  - type: textarea
+    id: Punchline 
+    attributes:
+      label: Punchline
+    validations:
+      required: true  
