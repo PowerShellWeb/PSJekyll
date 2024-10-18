@@ -16,8 +16,8 @@ if (-not $gitHubEvent.issue -and -not $gitHubEvent.discussion) {
 if ($env:GitHubToken) {
     "GitHub Token is present" | Out-Host
 }
-if ($env:GitHubToken -and $env:GITHUB_REPOSIORY) {
-    $owner, $repo = $env:GITHUB_REPOSIORY -split '/'
+if ($env:GitHubToken -and $githubEvent.Repository) {
+    $owner, $repo = $githubEvent.Repository.owner.login, $githubEvent.Repository.name
     "Getting issues for $owner, $repo" | Out-Host
     $queryString = @(
         if ($IssueState) {
