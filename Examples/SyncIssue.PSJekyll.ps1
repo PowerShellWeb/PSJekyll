@@ -3,9 +3,12 @@ if (-not $gitHubEvent.issue -and -not $gitHubEvent.discussion) {
 }
 
 Start-Sleep -Seconds (Get-Random -Minimum 10 -Maximum 20)
-get merge origin/main | Out-Host
+git merge origin/main | Out-Host
 git pull | Out-Host
 
+if ($GitHubToken) {
+    "GitHub Token is present" | Out-Host
+}
 if ($GitHubToken -and $env:GIHUB_REPOSIORY) {
     $owner, $repo = $env:GIHUB_REPOSIORY -split '/'
     "Getting issues for $owner, $repo" | Out-Host
