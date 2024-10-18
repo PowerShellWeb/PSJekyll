@@ -30,7 +30,7 @@ if ($env:GitHubToken -and $githubEvent.Repository) {
     ) -join '&'
     $issues = 
         Invoke-RestMethod -Uri "https://api.github.com/repos/$owner/$repo/issues?$queryString" -Headers @{
-            "Authorization" = "token $GitHubToken"
+            "Authorization" = "token $env:GitHubToken"
         }
     foreach ($issue in $issues) {
         $psJekyll.CurrentSite.Data = @{"issues/$($issue.number)" = $issue}
