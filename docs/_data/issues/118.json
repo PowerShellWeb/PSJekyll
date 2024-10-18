@@ -3,7 +3,7 @@
   "assignee": null,
   "assignees": [],
   "author_association": "MEMBER",
-  "body": null,
+  "body": "This should enumerate [gists using the api](https://docs.github.com/en/rest/gists?apiVersion=2022-11-28), and set them into data",
   "closed_at": null,
   "comments": 0,
   "comments_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/118/comments",
@@ -35,7 +35,7 @@
   "state_reason": null,
   "timeline_url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/118/timeline",
   "title": "`PSJekyll.Sync.Gist` should sync GitHub gists",
-  "updated_at": "2024-10-17T05:41:18Z",
+  "updated_at": "2024-10-18T01:59:39Z",
   "url": "https://api.github.com/repos/PowerShellWeb/PSJekyll/issues/118",
   "user": {
     "avatar_url": "https://avatars.githubusercontent.com/u/1043665?v=4",
@@ -55,6 +55,7 @@
     "starred_url": "https://api.github.com/users/StartAutomating/starred{/owner}{/repo}",
     "subscriptions_url": "https://api.github.com/users/StartAutomating/subscriptions",
     "type": "User",
-    "url": "https://api.github.com/users/StartAutomating"
+    "url": "https://api.github.com/users/StartAutomating",
+    "user_view_type": "public"
   }
 }
